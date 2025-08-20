@@ -1,0 +1,12 @@
+{
+    "require": {
+        "vincentlanglet/twig-cs-fixer": "^3.9"
+    },
+    "config": {
+        "platform": {
+            "php": "8.4"
+        },
+        "bin-dir": "../bin",
+        "sort-packages": true
+    }
+}

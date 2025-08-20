@@ -1,0 +1,12 @@
+{
+    "require": {
+        "friendsofphp/php-cs-fixer": "^3.86"
+    },
+    "config": {
+        "platform": {
+            "php": "8.4"
+        },
+        "bin-dir": "../bin",
+        "sort-packages": true
+    }
+}
