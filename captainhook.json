@@ -6,7 +6,7 @@
     "verbosity": "normal",
     "run": {
       "mode": "docker",
-      "exec": "docker compose run --rm -T php"
+      "exec": "docker exec -it blueprint-php-1"
     }
   },
   "commit-msg": {
@@ -21,7 +21,11 @@
       "enabled": true,
       "actions": [
           {
-              "action": "composer analyze"
+              "action": "composer analyze",
+              "config": {
+                "allow-failure": false,
+                "label": "Analyse Deptrac & PHPStan"
+              }
           }
       ]
   },
@@ -43,15 +47,6 @@
                 {
                     "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
                     "args": ["php"]
-                }
-            ]
-          },
-          {
-            "action": "composer analyze:deptrac",
-            "conditions": [
-                {
-                    "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
-                    "args": [["php"]]
                 }
             ]
           }
