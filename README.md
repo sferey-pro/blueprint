@@ -54,4 +54,6 @@ L'objectif est d'outiller notre projet pour garantir la qualité et la cohérenc
 * [X] **Création de scripts Composer** (`lint`, `analyze`) pour faciliter l'usage des outils.
 * [X] **Installation de Doctrine**.
 * [X] **Installation et configuration de PHPUnit**, **Zenstruck/Foundry**, **DAMA\DoctrineTestBundle** et **symfony/maker-bundle**.
+* [X] **Installation du Profiler**.
+* [X] **Configuration de Symfony CLI**.
 
