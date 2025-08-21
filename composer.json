@@ -58,9 +58,14 @@
             "@auto-scripts"
         ],
         "lint": [
+            "@lint:syntax",
             "@lint:style"
         ],
-        "lint:style": "tools/bin/php-cs-fixer fix"
+        "lint:style": "tools/bin/php-cs-fixer fix",
+        "lint:syntax": [
+            "bin/console lint:yaml config",
+            "bin/console lint:container"
+        ]
     },
     "conflict": {
         "symfony/symfony": "*"
