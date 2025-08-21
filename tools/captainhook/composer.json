@@ -1,6 +1,7 @@
 {
     "require": {
-        "captainhook/captainhook": "^5.25"
+        "captainhook/captainhook": "^5.25",
+        "ramsey/conventional-commits": "^1.6"
     },
     "config": {
         "platform": {

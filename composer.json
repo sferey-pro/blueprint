@@ -72,6 +72,9 @@
         "symfony/symfony": "*"
     },
     "extra": {
+        "ramsey/conventional-commits": {
+            "configFile": "conventional-commits.json"
+        },
         "symfony": {
             "allow-contrib": false,
             "require": "7.3.*",

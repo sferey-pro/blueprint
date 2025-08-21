@@ -5,6 +5,14 @@
       "exec": "docker compose run --rm -T php"
     }
   },
+  "commit-msg": {
+    "enabled": true,
+    "actions": [
+        {
+            "action": "\\Ramsey\\CaptainHook\\ValidateConventionalCommit"
+        }
+    ]
+  },
   "pre-commit": {
       "enabled": true,
       "actions": [
@@ -27,5 +35,13 @@
             ]
           }
       ]
-  }
+  },
+  "prepare-commit-msg": {
+        "enabled": true,
+        "actions": [
+            {
+                "action": "\\Ramsey\\CaptainHook\\PrepareConventionalCommit"
+            }
+        ]
+    }
 }
