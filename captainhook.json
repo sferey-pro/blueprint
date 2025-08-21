@@ -1,5 +1,9 @@
 {
   "config": {
+    "ansi-colors": true,
+    "fail-on-first-error": false,
+    "plugins": [],
+    "verbosity": "normal",
     "run": {
       "mode": "docker",
       "exec": "docker compose run --rm -T php"
@@ -12,6 +16,14 @@
             "action": "\\Ramsey\\CaptainHook\\ValidateConventionalCommit"
         }
     ]
+  },
+  "pre-push": {
+      "enabled": true,
+      "actions": [
+          {
+              "action": "composer analyze"
+          }
+      ]
   },
   "pre-commit": {
       "enabled": true,
@@ -31,6 +43,15 @@
                 {
                     "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
                     "args": ["php"]
+                }
+            ]
+          },
+          {
+            "action": "composer analyze:deptrac",
+            "conditions": [
+                {
+                    "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
+                    "args": [["php"]]
                 }
             ]
           }

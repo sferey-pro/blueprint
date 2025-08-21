@@ -57,13 +57,19 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
+        "analyze": [
+            "@analyze:deptrac",
+            "@analyze:phpstan"
+        ],
+        "analyze:deptrac": "tools/bin/deptrac",
+        "analyze:phpstan": "tools/bin/phpstan analyze --ansi -v",
         "lint": [
             "@lint:syntax",
             "@lint:style"
         ],
         "lint:style": "tools/bin/php-cs-fixer fix",
         "lint:syntax": [
-            "parallel-lint --colors src",
+            "tools/bin/parallel-lint --colors src",
             "bin/console lint:yaml config",
             "bin/console lint:container"
         ]

@@ -1,0 +1,25 @@
+deptrac:
+  paths:
+    - ./src
+  cache_file: ./var/.deptrac.cache
+  exclude_files:
+    - '#.*test.*#'
+  layers:
+    - name: Controller
+      collectors:
+        - type: classLike
+          value: .*Controller.*
+    - name: Repository
+      collectors:
+        - type: classLike
+          value: .*Repository.*
+    - name: Service
+      collectors:
+        - type: classLike
+          value: .*Service.*
+  ruleset:
+    Controller:
+      - Service
+    Service:
+      - Repository
+    Repository:
