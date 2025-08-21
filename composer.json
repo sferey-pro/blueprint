@@ -56,7 +56,11 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "lint": [
+            "@lint:style"
+        ],
+        "lint:style": "tools/bin/php-cs-fixer fix"
     },
     "conflict": {
         "symfony/symfony": "*"
