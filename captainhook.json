@@ -6,14 +6,17 @@
     "verbosity": "normal",
     "run": {
       "mode": "docker",
-      "exec": "docker exec -it blueprint-php-1"
+      "exec": "docker compose exec php"
     }
   },
   "commit-msg": {
     "enabled": true,
     "actions": [
         {
-            "action": "\\Ramsey\\CaptainHook\\ValidateConventionalCommit"
+            "action": "\\Ramsey\\CaptainHook\\ValidateConventionalCommit",
+              "config": {
+                "label": "👮 Validation du commit message"
+              }
         }
     ]
   },
@@ -23,8 +26,7 @@
           {
               "action": "composer analyze",
               "config": {
-                "allow-failure": false,
-                "label": "Analyse Deptrac & PHPStan"
+                "label": "🔬 Analyse statique approfondie du code"
               }
           }
       ]
@@ -34,21 +36,27 @@
       "actions": [
           {
             "action": "composer lint:syntax",
-            "conditions": [
-                {
-                    "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
-                    "args": [["php", "twig", "yaml", "yml"]]
-                }
-            ]
+              "config": {
+                "label": "✅ Vérification de la syntaxe PHP"
+              },
+              "conditions": [
+                  {
+                      "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
+                      "args": [["php", "twig", "yaml", "yml"]]
+                  }
+              ]
           },
           {
             "action": "composer lint:style -- {$STAGED_FILES|of-type:php}",
-            "conditions": [
-                {
-                    "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
-                    "args": ["php"]
-                }
-            ]
+              "config": {
+                "label": "🎨 Analyse du style de code (PSR-12)"
+              },
+              "conditions": [
+                  {
+                      "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
+                      "args": ["php"]
+                  }
+              ]
           }
       ]
   },
@@ -56,7 +64,10 @@
         "enabled": true,
         "actions": [
             {
-                "action": "\\Ramsey\\CaptainHook\\PrepareConventionalCommit"
+                "action": "\\Ramsey\\CaptainHook\\PrepareConventionalCommit",
+                "config": {
+                  "label": "🖊️ Préparation du commit message"
+                }
             }
         ]
     }
