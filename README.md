@@ -29,12 +29,12 @@ C'est une zone pragmatique pour le contenu simple (pages FAQ, CGU, etc.) qui ne 
 
 ## Stack Technique & Qualité
 
-* **Langage** : PHP 8.3+
+* **Langage** : PHP 8.4+
 * **Framework** : Symfony 7+
 * **Qualité de Code** : La qualité est automatisée et garantie par un ensemble d'outils rigoureux :
     * **CaptainHook** : Hooks Git pour valider le code et les messages de commit avant qu'ils n'entrent dans le repository.
     * **PHP-CS-Fixer** : Respect de la norme de code PSR-12.
-    * **PHPStan / Psalm** : Analyse statique de code pour la détection d'erreurs.
+    * **PHPStan** : Analyse statique de code pour la détection d'erreurs.
     * **Deptrac** : Validation des dépendances architecturales pour garantir l'isolation des couches.
 
 ---
@@ -45,10 +45,13 @@ C'est une zone pragmatique pour le contenu simple (pages FAQ, CGU, etc.) qui ne 
 
 L'objectif est d'outiller notre projet pour garantir la qualité et la cohérence dès le premier commit.
 
-* [ ] **Initialisation du projet** avec symfony-docker.
-* [ ] **Installation et configuration de CaptainHook** pour automatiser les vérifications.
-    * [ ] Hook `commit-msg` pour forcer le formatage des messages (Conventional Commits).
-    * [ ] Hook `pre-commit` pour lancer le linter et l'analyse statique.
-* [ ] **Installation et configuration de PHP-CS-Fixer**, **PHPStan** et **Deptrac**.
-* [ ] **Création de scripts Composer** (`lint`, `test`, `analyse`) pour faciliter l'usage des outils.
+* [X] **Initialisation du projet** avec symfony-docker.
+* [X] **Installation et configuration de CaptainHook** pour automatiser les vérifications.
+    * [X] Hook `commit-msg` pour forcer le formatage des messages (Conventional Commits).
+    * [X] Hook `pre-commit` pour lancer le linter.
+    * [X] Hook `pre-push` pour lancer l'analyse statique.
+* [X] **Installation et configuration de PHP-CS-Fixer**, **PHPStan** et **Deptrac**.
+* [X] **Création de scripts Composer** (`lint`, `analyze`) pour faciliter l'usage des outils.
+* [ ] **Installation de Doctrine**.
+* [ ] **Installation et configuration de PHPUnit**, **Zenstruck/Foundry**, **DAMA\DoctrineTestBundle**.
 
