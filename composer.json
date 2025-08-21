@@ -63,6 +63,7 @@
         ],
         "lint:style": "tools/bin/php-cs-fixer fix",
         "lint:syntax": [
+            "parallel-lint --colors src",
             "bin/console lint:yaml config",
             "bin/console lint:container"
         ]

@@ -1,0 +1,13 @@
+{
+    "require": {
+        "php-parallel-lint/php-console-highlighter": "^1.0",
+        "php-parallel-lint/php-parallel-lint": "^1.4"
+    },
+    "config": {
+        "platform": {
+            "php": "8.4"
+        },
+        "bin-dir": "../bin",
+        "sort-packages": true
+    }
+}

@@ -9,6 +9,15 @@
       "enabled": true,
       "actions": [
           {
+            "action": "composer lint:syntax",
+            "conditions": [
+                {
+                    "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
+                    "args": [["php", "twig", "yaml", "yml"]]
+                }
+            ]
+          },
+          {
             "action": "composer lint:style -- {$STAGED_FILES|of-type:php}",
             "conditions": [
                 {
