@@ -24,9 +24,9 @@
       "enabled": true,
       "actions": [
           {
-              "action": "composer analyze",
+              "action": "composer test",
               "config": {
-                "label": "🔬 Analyse statique approfondie du code"
+                "label": "🔬 Analyse statique approfondie du code et lancement des tests"
               }
           }
       ]
@@ -47,7 +47,7 @@
               ]
           },
           {
-            "action": "composer lint:style -- {$STAGED_FILES|of-type:php}",
+            "action": "composer lint:style",
               "config": {
                 "label": "🎨 Analyse du style de code (PSR-12)"
               },

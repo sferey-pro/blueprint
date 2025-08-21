@@ -52,6 +52,6 @@ L'objectif est d'outiller notre projet pour garantir la qualité et la cohérenc
     * [X] Hook `pre-push` pour lancer l'analyse statique.
 * [X] **Installation et configuration de PHP-CS-Fixer**, **PHPStan** et **Deptrac**.
 * [X] **Création de scripts Composer** (`lint`, `analyze`) pour faciliter l'usage des outils.
-* [ ] **Installation de Doctrine**.
-* [ ] **Installation et configuration de PHPUnit**, **Zenstruck/Foundry**, **DAMA\DoctrineTestBundle**.
+* [X] **Installation de Doctrine**.
+* [X] **Installation et configuration de PHPUnit**, **Zenstruck/Foundry**, **DAMA\DoctrineTestBundle** et **symfony/maker-bundle**.
 

@@ -2,15 +2,25 @@ includes:
     - phpstan-baseline.neon
     - tools/phpstan/vendor/phpstan/phpstan-doctrine/extension.neon
     - tools/phpstan/vendor/phpstan/phpstan-symfony/extension.neon
+    - tools/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon
     - tools/phpstan/vendor/phpstan/phpstan-symfony/rules.neon
 
 parameters:
-    level: 9
+    tmpDir: ./var/.phpstan.cache
+    doctrine:
+        objectManagerLoader: tests/object-manager.php
+
+    level: 8
+
     paths:
         - bin
         - config
         - public
         - src
+        - tests
+    excludePaths:
+        - src/DataFixtures/
+
     symfony:
         containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
         constantHassers: false

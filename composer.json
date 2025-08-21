@@ -73,10 +73,16 @@
         ],
         "lint:style": "tools/bin/php-cs-fixer fix",
         "lint:syntax": [
-            "tools/bin/parallel-lint --colors src",
+            "tools/bin/parallel-lint --colors src tests",
             "bin/console lint:yaml config",
             "bin/console lint:container"
-        ]
+        ],
+        "test": [
+            "@lint",
+            "@analyze",
+            "@test:unit"
+        ],
+        "test:unit": "phpunit --colors=always"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -92,6 +98,12 @@
         }
     },
     "require-dev": {
-        "symfony/maker-bundle": "^1.64"
+        "dama/doctrine-test-bundle": "^8.3",
+        "doctrine/doctrine-fixtures-bundle": "^4.1",
+        "phpunit/phpunit": "^12.3",
+        "symfony/browser-kit": "7.3.*",
+        "symfony/css-selector": "7.3.*",
+        "symfony/maker-bundle": "^1.64",
+        "zenstruck/foundry": "^2.6"
     }
 }
