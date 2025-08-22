@@ -5,21 +5,14 @@ deptrac:
   exclude_files:
     - '#.*test.*#'
   layers:
-    - name: Controller
+    - name: Business
       collectors:
-        - type: classLike
-          value: .*Controller.*
-    - name: Repository
+        - type: directory
+          value: src/Business/.*
+    - name: Kernel
       collectors:
-        - type: classLike
-          value: .*Repository.*
-    - name: Service
-      collectors:
-        - type: classLike
-          value: .*Service.*
+        - type: directory
+          value: src/Kernel/.*
   ruleset:
-    Controller:
-      - Service
-    Service:
-      - Repository
-    Repository:
+    Business:
+        - Kernel

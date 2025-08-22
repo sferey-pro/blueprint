@@ -16,3 +16,15 @@ C'est la machinerie **transverse** de l'application. Il fournit les implémentat
 
 ### `src/Content`
 C'est une zone pragmatique pour le contenu simple (pages FAQ, CGU, etc.) qui ne nécessite pas la complexité d'un Bounded Context complet.
+
+
+## Structure cible dans src/ :
+
+```
+src/
+├── Business/
+│   ├── Contexts/
+│   └── Shared/
+├── Content/
+└── Kernel/
+```
