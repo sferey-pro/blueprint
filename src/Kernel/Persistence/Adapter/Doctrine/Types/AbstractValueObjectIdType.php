@@ -6,8 +6,7 @@ namespace App\Kernel\Persistence\Adapter\Doctrine\Types;
 
 use App\Business\Shared\Domain\ValueObject\AggregateRootId;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Exception\InvalidType;
-use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
+use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 
 /**
@@ -21,7 +20,7 @@ use Doctrine\DBAL\Types\Type;
 abstract class AbstractValueObjectIdType extends Type implements DoctrineCustomTypeInterface
 {
     /**
-     * Doit retourner le nom unique du type Doctrine (ex: 'user_id', 'saga_state_id').
+     * Doit retourner le nom unique du type Doctrine (ex: 'user_id', 'dummy_id').
      * Ce nom sera utilisé dans les fichiers de mapping XML.
      */
     abstract public function getName(): string;
@@ -57,13 +56,13 @@ abstract class AbstractValueObjectIdType extends Type implements DoctrineCustomT
         }
 
         if (!\is_string($value)) {
-            $this->throwInvalidType($value);
+            throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', $this->getValueObjectClass()]);
         }
 
         try {
             return $voClass::fromString($value);
         } catch (\InvalidArgumentException $e) {
-            $this->throwValueNotConvertible($value, $e);
+            throw ConversionException::conversionFailedFormat($value, $this->getName(), null);
         }
     }
 
@@ -89,13 +88,13 @@ abstract class AbstractValueObjectIdType extends Type implements DoctrineCustomT
         }
 
         if (!$valueObject instanceof AggregateRootId) {
-            $this->throwInvalidType($valueObject);
+            throw ConversionException::conversionFailedInvalidType($valueObject, $this->getName(), ['null', $this->getValueObjectClass()]);
         }
 
         try {
             return $this->getValueObjectClass()::fromString($valueObject)->$toString();
         } catch (\InvalidArgumentException $e) {
-            $this->throwValueNotConvertible($valueObject, $e);
+            throw ConversionException::conversionFailedFormat($valueObject, $this->getName(), null);
         }
     }
 
@@ -107,15 +106,5 @@ abstract class AbstractValueObjectIdType extends Type implements DoctrineCustomT
     private function hasNativeGuidType(AbstractPlatform $platform): bool
     {
         return $platform->getGuidTypeDeclarationSQL([]) !== $platform->getStringTypeDeclarationSQL(['fixed' => true, 'length' => 36]);
-    }
-
-    private function throwInvalidType(mixed $value): never
-    {
-        throw InvalidType::new($value, $this->getName(), ['null', 'string', $this->getValueObjectClass()]);
-    }
-
-    private function throwValueNotConvertible(mixed $value, \Throwable $previous): never
-    {
-        throw ValueNotConvertible::new($value, $this->getName(), null, $previous);
     }
 }
