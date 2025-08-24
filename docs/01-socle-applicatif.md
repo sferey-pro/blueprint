@@ -11,3 +11,5 @@
 * [ ] Création de l'abstraction pour les notifications (NotifierInterface).
 * [ ] Ajout du middleware transactionnel pour garantir l'intégrité des commandes.
 * [ ] Mise en place de l'initialisation du fuseau horaire via un EventSubscriber.
+
+* [x] **Création des briques de base pour les Aggregates** (`AggregateRoot`, `RecordsDomainEvents`, etc.) dans le Shared Kernel.
