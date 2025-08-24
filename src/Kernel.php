@@ -7,6 +7,7 @@ namespace App;
 use App\Kernel\Attribute\AsCommandHandler;
 use App\Kernel\Attribute\AsEventListener;
 use App\Kernel\Attribute\AsQueryHandler;
+use App\Kernel\Symfony\DependencyInjection\Compiler\AutoConfigureDoctrineTypesPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,6 +19,8 @@ class Kernel extends BaseKernel
 
     protected function build(ContainerBuilder $container): void
     {
+        $container->addCompilerPass(new AutoConfigureDoctrineTypesPass());
+
         $container->registerAttributeForAutoconfiguration(AsQueryHandler::class, static function (ChildDefinition $definition): void {
             $definition->addTag('messenger.message_handler', ['bus' => 'query.bus']);
         });
