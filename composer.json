@@ -74,7 +74,7 @@
             "@analyze:phpstan"
         ],
         "analyze:deptrac": "tools/bin/deptrac",
-        "analyze:phpstan": "tools/bin/phpstan analyze --ansi -v",
+        "analyze:phpstan": "tools/bin/phpstan analyze --memory-limit 1G --ansi -v",
         "lint": [
             "@lint:syntax",
             "@lint:style"

@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Business\Shared\Domain\ValueObject;
+namespace App\Kernel\ValueObject;
 
 /**
  * Classe de base pour les Value Objects qui ne sont qu'un wrapper
  * autour d'une unique valeur de type string.
+ *
+ * @template T of string
  */
 abstract readonly class AbstractStringValueObject implements ValueObjectInterface, \Stringable
 {
@@ -31,7 +33,7 @@ abstract readonly class AbstractStringValueObject implements ValueObjectInterfac
 
     public function equals(ValueObjectInterface $other): bool
     {
-        return $other instanceof static && $this->value === $other->value;
+        return $other instanceof static && $this->value === $other->value();
     }
 
     public function __toArray(): array
@@ -39,13 +41,13 @@ abstract readonly class AbstractStringValueObject implements ValueObjectInterfac
         return ['value' => $this->value];
     }
 
-    public static function fromArray(array $data): mixed
+    public static function fromArray(array $data): object
     {
         if (!isset($data['value'])) {
             throw new \InvalidArgumentException('Missing required fields: value');
         }
 
-        return static::create($data['value']);
+        return static::create($data['value'])->value();
     }
 
     #[\Override]

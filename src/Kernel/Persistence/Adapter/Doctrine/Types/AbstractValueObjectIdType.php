@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Kernel\Persistence\Adapter\Doctrine\Types;
 
-use App\Business\Shared\Domain\ValueObject\AggregateRootId;
+use App\Kernel\ValueObject\AggregateRootId;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
@@ -55,14 +55,10 @@ abstract class AbstractValueObjectIdType extends Type implements DoctrineCustomT
             return $value;
         }
 
-        if (!\is_string($value)) {
-            throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', $this->getValueObjectClass()]);
-        }
-
         try {
             return $voClass::fromString($value);
         } catch (\InvalidArgumentException $e) {
-            throw ConversionException::conversionFailedFormat($value, $this->getName(), null);
+            throw ConversionException::conversionFailed($value, $this->getName());
         }
     }
 
@@ -75,6 +71,10 @@ abstract class AbstractValueObjectIdType extends Type implements DoctrineCustomT
      */
     public function convertToDatabaseValue($valueObject, AbstractPlatform $platform): ?string
     {
+        if (null === $valueObject) {
+            return null;
+        }
+
         $toString = $this->hasNativeGuidType($platform) ? 'toRfc4122' : 'toBinary';
 
         $voClass = $this->getValueObjectClass();
@@ -83,18 +83,10 @@ abstract class AbstractValueObjectIdType extends Type implements DoctrineCustomT
             return $valueObject->value->$toString();
         }
 
-        if (null === $valueObject || '' === $valueObject) {
-            return null;
-        }
-
-        if (!$valueObject instanceof AggregateRootId) {
-            throw ConversionException::conversionFailedInvalidType($valueObject, $this->getName(), ['null', $this->getValueObjectClass()]);
-        }
-
         try {
             return $this->getValueObjectClass()::fromString($valueObject)->$toString();
         } catch (\InvalidArgumentException $e) {
-            throw ConversionException::conversionFailedFormat($valueObject, $this->getName(), null);
+            throw ConversionException::conversionFailed($valueObject, $this->getName());
         }
     }
 

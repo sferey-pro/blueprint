@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Business\Shared\Domain\ValueObject;
+namespace App\Kernel\ValueObject;
 
 /**
  * Contrat de base pour tous les objets de valeur (Value Objects) du domaine.
@@ -24,6 +24,13 @@ interface ValueObjectInterface
     public function equals(self $other): bool;
 
     /**
+     * Retourne la valeur encapsulée par le Value Object.
+     *
+     * @return mixed la valeur brute ou l'objet encapsulé
+     */
+    public function value(): mixed;
+
+    /**
      * Retourne une représentation string du Value Object.
      * Utile pour le debugging et les logs.
      */
@@ -41,8 +48,6 @@ interface ValueObjectInterface
      * Crée une instance depuis un array.
      *
      * @param array<string, mixed> $data
-     *
-     * @return static
      */
-    public static function fromArray(array $data): mixed;
+    public static function fromArray(array $data): object;
 }

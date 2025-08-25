@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Kernel\Persistence\Adapter\Doctrine\Types;
 
-use App\Business\Shared\Domain\ValueObject\AbstractStringValueObject;
+use App\Kernel\ValueObject\AbstractStringValueObject;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
 

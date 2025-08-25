@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Business\Shared\Domain\ValueObject;
+namespace App\Kernel\ValueObject;
 
 use Symfony\Component\Uid\AbstractUid as BaseUid;
 use Symfony\Component\Uid\Uuid;

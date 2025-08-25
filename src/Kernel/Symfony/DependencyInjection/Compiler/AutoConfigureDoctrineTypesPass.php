@@ -32,6 +32,9 @@ final class AutoConfigureDoctrineTypesPass implements CompilerPassInterface
         );
     }
 
+    /**
+     * @return array<string, array<string, string>>
+     */
     private function discoverTypes(ContainerBuilder $container): array
     {
         $discoveredTypes = [];

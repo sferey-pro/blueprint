@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Business\Shared\Domain\ValueObject;
+namespace App\Kernel\ValueObject;
 
-use App\Business\Shared\Domain\Exception\ValidationException;
-use App\Business\Shared\Domain\Result;
+use App\Kernel\Exception\ValidationException;
+use App\Kernel\Utility\Result;
 
 /**
  * Trait pour simplifier la création de ValueObjects validés.
