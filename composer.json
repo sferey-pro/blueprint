@@ -9,6 +9,7 @@
         "php": ">=8.4.11",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "beberlei/assert": "^3.3",
         "doctrine/dbal": "^3",
         "doctrine/doctrine-bundle": "^2.15",
         "doctrine/doctrine-migrations-bundle": "^3.4",
