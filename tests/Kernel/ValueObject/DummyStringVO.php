@@ -14,9 +14,8 @@ use App\Kernel\ValueObject\AbstractStringValueObject;
  */
 final readonly class DummyStringVO extends AbstractStringValueObject
 {
-    protected static function validate(...$args): void
+    protected static function validateString(string $value): void
     {
-        $value = $args[0];
         if ('' === $value) {
             throw InvalidValueObjectDataException::because('value cannot be empty.');
         }

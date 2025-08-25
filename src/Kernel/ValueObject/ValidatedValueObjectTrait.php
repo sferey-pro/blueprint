@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Kernel\ValueObject;
 
-use App\Kernel\Exception\InvalidValueObjectDataException;
 use App\Kernel\Exception\ValidationException;
 use App\Kernel\Utility\Result;
 
@@ -24,7 +23,7 @@ trait ValidatedValueObjectTrait
             static::validate(...$args);
 
             return Result::success(new static(...$args));
-        } catch (InvalidValueObjectDataException $e) {
+        } catch (\InvalidArgumentException $e) {
             return Result::failure(
                 new ValidationException(
                     \sprintf('%s validation failed: %s', static::class, $e->getMessage()),

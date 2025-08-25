@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Kernel\ValueObject;
 
 use App\Kernel\Exception\InvalidValueObjectDataException;
+use Assert\Assert;
 
 /**
  * Classe de base pour les Value Objects qui ne sont qu'un wrapper
@@ -24,6 +25,24 @@ abstract readonly class AbstractStringValueObject implements ValueObjectInterfac
     protected function __construct(public string $value)
     {
     }
+
+    /**
+     * Implémente la méthode générique du trait.
+     * Son rôle est de valider les arguments et de déléguer à une méthode typée.
+     */
+    final protected static function validate(...$args): void
+    {
+        Assert::that($args)->count(1, '%s expects a single string argument.', static::class);
+        Assert::that($args[0])->string('%s expects a single string argument, got %%s.', static::class);
+
+        static::validateString($args[0]);
+    }
+
+    /**
+     * Méthode de validation spécifique à la chaîne de caractères.
+     * À implémenter dans chaque ValueObject concret.
+     */
+    abstract protected static function validateString(string $value): void;
 
     /**
      * @return T

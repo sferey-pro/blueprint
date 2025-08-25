@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Business\Contexts\Greeting\Application;
+namespace App\Business\Contexts\Greeting\Application\Command;
 
-use App\Business\Contexts\Greeting\Application\Command\CreateGreetingCommand;
 use App\Business\Contexts\Greeting\Domain\Greeting;
 use App\Business\Contexts\Greeting\Domain\GreetingRepositoryInterface;
 use App\Kernel\Attribute\AsCommandHandler;
