@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Kernel\ValueObject;
 
+use App\Kernel\Exception\InvalidValueObjectDataException;
+
 /**
  * Classe de base pour les Value Objects qui ne sont qu'un wrapper
  * autour d'une unique valeur de type string.
@@ -44,7 +46,7 @@ abstract readonly class AbstractStringValueObject implements ValueObjectInterfac
     public static function fromArray(array $data): object
     {
         if (!isset($data['value'])) {
-            throw new \InvalidArgumentException('Missing required fields: value');
+            throw InvalidValueObjectDataException::because('Missing required fields: value');
         }
 
         return static::create($data['value'])->value();

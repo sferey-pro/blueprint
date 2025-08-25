@@ -6,6 +6,6 @@ namespace App\Business\Contexts\Greeting\Domain\ValueObject;
 
 use App\Kernel\ValueObject\AggregateRootId;
 
-final class GreetingId extends AggregateRootId
+final readonly class GreetingId extends AggregateRootId
 {
 }

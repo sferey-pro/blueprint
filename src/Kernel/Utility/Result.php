@@ -64,6 +64,22 @@ final class Result
     }
 
     /**
+     * Retourne l'erreur d'un résultat en échec.
+     *
+     * @throws \LogicException si on essaie d'accéder à l'erreur d'un résultat en succès
+     *
+     * @return TError
+     */
+    public function error(): \Throwable
+    {
+        if ($this->isSuccess()) {
+            throw new \LogicException('Cannot get error from a success result.');
+        }
+
+        return $this->error;
+    }
+
+    /**
      * @throws TError
      *
      * @return TValue

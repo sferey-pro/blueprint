@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Kernel\ValueObject;
 
+use App\Kernel\Exception\InvalidValueObjectDataException;
 use Symfony\Component\Uid\AbstractUid as BaseUid;
 use Symfony\Component\Uid\Uuid;
 
@@ -14,7 +15,7 @@ use Symfony\Component\Uid\Uuid;
  * pour créer des identifiants typés (comme EventId, UserId, etc.) tout en centralisant
  * la logique de génération et de comparaison.
  */
-abstract class AbstractUid implements \Stringable
+abstract readonly class AbstractUid implements \Stringable, ValueObjectInterface
 {
     final private function __construct(
         public BaseUid $value,
@@ -50,6 +51,25 @@ abstract class AbstractUid implements \Stringable
      */
     public function equals(?ValueObjectInterface $other): bool
     {
-        return $other instanceof static && $this->value->equals($other);
+        return $other instanceof static && $this->value->equals($other->value());
+    }
+
+    public function value(): BaseUid
+    {
+        return $this->value;
+    }
+
+    public function __toArray(): array
+    {
+        return ['value' => (string) $this->value];
+    }
+
+    public static function fromArray(array $data): static
+    {
+        if (!isset($data['value']) || !\is_string($data['value'])) {
+            throw InvalidValueObjectDataException::because('Missing or invalid required fields: value');
+        }
+
+        return static::fromString($data['value']);
     }
 }
