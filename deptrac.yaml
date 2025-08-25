@@ -1,7 +1,7 @@
 deptrac:
   paths:
     - ./src
-  cache_file: ./var/.deptrac.cache
+  cache_file: build/cache/.deptrac.cache
   exclude_files:
     - '#.*test.*#'
   layers:

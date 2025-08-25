@@ -56,5 +56,5 @@ return (new Config())
     ])
 
     ->setFinder($finder)                                 // https://cs.symfony.com/doc/config.html#the-simplest-config
-    ->setCacheFile(__DIR__.'/var/.php-cs-fixer.cache')   // https://cs.symfony.com/doc/usage.html#caching
+    ->setCacheFile(__DIR__.'/build/cache/.php-cs-fixer.cache')   // https://cs.symfony.com/doc/usage.html#caching
 ;

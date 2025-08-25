@@ -7,7 +7,7 @@ includes:
     - tools/phpstan/vendor/phpstan/phpstan-doctrine/rules.neon
 
 parameters:
-    tmpDir: ./var/.phpstan.cache
+    tmpDir: build/cache/.phpstan.cache
     doctrine:
         objectManagerLoader: tests/object-manager.php
 
