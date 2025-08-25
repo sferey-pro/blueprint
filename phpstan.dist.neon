@@ -17,7 +17,6 @@ parameters:
         - bin
         - public
         - src
-        - tests
 
     symfony:
         containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
