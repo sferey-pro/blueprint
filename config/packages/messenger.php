@@ -14,7 +14,9 @@ return static function (FrameworkConfig $framework): void {
 
     $messenger->defaultBus('command.bus');
 
-    $messenger->bus('command.bus');
+    $bus = $messenger->bus('command.bus');
+    $bus->middleware()->id('doctrine_transaction');
+
     $messenger->bus('query.bus');
 
     $messenger->bus('event.bus')
@@ -36,13 +38,6 @@ return static function (FrameworkConfig $framework): void {
 
     $messenger->transport('async_events')
         ->dsn(env('MESSENGER_TRANSPORT_DSN'))
-        ->retryStrategy()
-            ->maxRetries(0)
-    ;
-
-    $messenger->transport('saga_internal')
-        ->dsn(env('MESSENGER_TRANSPORT_DSN'))
-        ->failureTransport('failed_high_priority')
         ->retryStrategy()
             ->maxRetries(0)
     ;

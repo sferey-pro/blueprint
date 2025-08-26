@@ -17,6 +17,7 @@
         "runtime/frankenphp-symfony": "^0.2.0",
         "symfony/clock": "7.3.*",
         "symfony/console": "7.3.*",
+        "symfony/doctrine-messenger": "7.3.*",
         "symfony/dotenv": "7.3.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "7.3.*",
