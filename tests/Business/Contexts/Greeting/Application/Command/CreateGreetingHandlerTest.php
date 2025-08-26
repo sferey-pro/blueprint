@@ -9,12 +9,12 @@ use App\Business\Contexts\Greeting\Application\Command\CreateGreetingHandler;
 use App\Business\Contexts\Greeting\Domain\Greeting;
 use App\Business\Contexts\Greeting\Domain\GreetingRepositoryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;
 
-/**
- * @internal
- */
+#[Group('unit')]
+#[Group('greeting')]
 #[CoversClass(CreateGreetingHandler::class)]
 final class CreateGreetingHandlerTest extends TestCase
 {
