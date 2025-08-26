@@ -6,6 +6,7 @@ namespace App\Business\Contexts\Greeting\Domain;
 
 use App\Business\Contexts\Greeting\Domain\ValueObject\GreetingId;
 use App\Business\Contexts\Greeting\Infrastructure\Persistence\Doctrine\Repository\DoctrineGreetingRepository;
+use App\Business\Contexts\Greeting\Infrastructure\Persistence\Doctrine\Types\GreetingIdType;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DoctrineGreetingRepository::class)]
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Greeting
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'greeting_id', length: 36, unique: true)]
+    #[ORM\Column(type: GreetingIdType::NAME, length: 36, unique: true)]
     public private(set) GreetingId $id;
 
     #[ORM\Column(type: 'text')]
