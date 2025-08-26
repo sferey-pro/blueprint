@@ -9,11 +9,11 @@ use App\Kernel\Exception\ValidationException;
 use Assert\InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @internal
- */
+#[Group('unit')]
+#[Group('shared')]
 #[CoversClass(PhoneNumber::class)]
 final class PhoneNumberTest extends TestCase
 {

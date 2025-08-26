@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Tests\Kernel\ValueObject;
 
+use App\Kernel\ValueObject\AbstractUid;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Uuid;
 
-/**
- * @covers \App\Kernel\ValueObject\AbstractUid
- *
- * @internal
- */
+#[Group('unit')]
+#[Group('kernel')]
+#[CoversClass(AbstractUid::class)]
 final class AbstractUidTest extends TestCase
 {
     public function testGenerateCreatesInstance(): void

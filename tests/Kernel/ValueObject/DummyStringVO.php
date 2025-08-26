@@ -8,8 +8,6 @@ use App\Kernel\Exception\InvalidValueObjectDataException;
 use App\Kernel\ValueObject\AbstractStringValueObject;
 
 /**
- * @internal
- *
  * @template-extends AbstractStringValueObject<string>
  */
 final readonly class DummyStringVO extends AbstractStringValueObject

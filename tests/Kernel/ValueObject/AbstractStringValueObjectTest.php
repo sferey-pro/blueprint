@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace App\Tests\Kernel\ValueObject;
 
 use App\Kernel\Exception\ValidationException;
+use App\Kernel\ValueObject\AbstractStringValueObject;
+use App\Kernel\ValueObject\ValidatedValueObjectTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \App\Kernel\ValueObject\AbstractStringValueObject
- * @covers \App\Kernel\ValueObject\ValidatedValueObjectTrait
- *
- * @internal
- */
+#[Group('unit')]
+#[Group('kernel')]
+#[CoversClass(AbstractStringValueObject::class)]
+#[CoversTrait(ValidatedValueObjectTrait::class)]
 final class AbstractStringValueObjectTest extends TestCase
 {
     public function testCreateWithValidValueReturnsSuccessResult(): void

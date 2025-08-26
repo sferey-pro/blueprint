@@ -90,9 +90,23 @@
         "test": [
             "@lint",
             "@analyze",
-            "@test:unit"
+            "@test:db:setup",
+            "phpunit"
         ],
-        "test:unit": "phpunit --colors=always",
+        "test:unit": "phpunit --group unit",
+        "test:integration": [
+            "@test:db:setup",
+            "phpunit --group integration"
+        ],
+        "test:e2e": [
+            "@test:db:setup",
+            "phpunit --group e2e"
+        ],
+        "test:db:setup": [
+            "bin/console doctrine:database:drop --force --env=test --if-exists",
+            "bin/console doctrine:database:create --env=test",
+            "bin/console doctrine:migrations:migrate -n --env=test"
+        ],
         "test:coverage:ci": "phpunit --colors=always --coverage-text --coverage-clover build/coverage/clover.xml --coverage-cobertura build/coverage/cobertura.xml --coverage-crap4j build/coverage/crap4j.xml --coverage-xml build/coverage/coverage-xml --log-junit build/junit.xml",
         "test:coverage:html": "phpunit --colors=always --coverage-html build/coverage/coverage-html"
     },

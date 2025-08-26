@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Tests\Kernel\Utility;
 
 use App\Kernel\Utility\Result;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \App\Kernel\Utility\Result
- *
- * @internal
- */
+#[Group('unit')]
+#[Group('kernel')]
+#[CoversClass(Result::class)]
 final class ResultTest extends TestCase
 {
     public function testSuccess(): void
