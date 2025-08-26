@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Greeting
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'string', length: 36, unique: true)]
+    #[ORM\Column(type: 'greeting_id', length: 36, unique: true)]
     public private(set) GreetingId $id;
 
     #[ORM\Column(type: 'text')]
