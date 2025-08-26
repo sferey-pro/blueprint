@@ -18,7 +18,12 @@ doctrine:
             Doctrine\DBAL\Platforms\PostgreSQLPlatform: identity
         auto_mapping: true
         mappings:
-            
+            App:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/Business/Contexts'
+                prefix: 'App\Business\Contexts'
+                alias: App
         controller_resolver:
             auto_mapping: false
 
