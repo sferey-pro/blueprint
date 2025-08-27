@@ -17,11 +17,14 @@ final class GreetingTest extends TestCase
 {
     public function testCreate(): void
     {
+        // 1. Arrange
         $message = 'Hello, DDD!';
         $createdAt = new \DateTimeImmutable('2023-10-27 10:00:00');
 
+        // 2. Act
         $greeting = Greeting::create($message, $createdAt);
 
+        // 3. Assert
         self::assertInstanceOf(Greeting::class, $greeting);
         self::assertInstanceOf(GreetingId::class, $greeting->id);
         self::assertSame($message, $greeting->message());

@@ -27,6 +27,7 @@ final class PhoneNumberTest extends TestCase
         $result = PhoneNumber::create($validInput);
 
         self::assertTrue($result->isSuccess());
+
         $phoneNumber = $result->value();
         self::assertInstanceOf(PhoneNumber::class, $phoneNumber);
         self::assertSame($expectedNormalizedValue, $phoneNumber->value());
@@ -50,6 +51,7 @@ final class PhoneNumberTest extends TestCase
         $result = PhoneNumber::create($invalidValue);
 
         self::assertTrue($result->isFailure());
+
         $error = $result->error();
         self::assertInstanceOf(ValidationException::class, $error);
         self::assertInstanceOf(InvalidArgumentException::class, $error->getPrevious());

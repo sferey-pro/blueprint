@@ -22,6 +22,7 @@ final class EmailTest extends TestCase
         $result = Email::create('TEST@example.com');
 
         self::assertTrue($result->isSuccess());
+
         $email = $result->value();
         self::assertInstanceOf(Email::class, $email);
         self::assertSame('test@example.com', $email->value());
@@ -36,6 +37,7 @@ final class EmailTest extends TestCase
         $result = Email::create($invalidValue);
 
         self::assertTrue($result->isFailure());
+
         $error = $result->error();
         self::assertInstanceOf(ValidationException::class, $error);
         self::assertInstanceOf(InvalidArgumentException::class, $error->getPrevious());

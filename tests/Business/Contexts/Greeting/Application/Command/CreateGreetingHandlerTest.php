@@ -20,7 +20,7 @@ final class CreateGreetingHandlerTest extends TestCase
 {
     public function testInvoke(): void
     {
-        // 1. Préparation (Arrange)
+        // 1. Arrange
         $command = new CreateGreetingCommand('Hello from test!');
         $now = new \DateTimeImmutable();
 
@@ -38,11 +38,11 @@ final class CreateGreetingHandlerTest extends TestCase
             ->method('now')
             ->willReturn($now);
 
-        // 2. Action (Act)
+        // 2. Act
         $handler = new CreateGreetingHandler($repositoryMock, $clockMock);
         $handler($command);
 
-        // 3. Assertion (Assert)
+        // 3. Assert
         // Les assertions sont définies dans la configuration des mocks (expects, with).
         // Si la méthode "add" n'est pas appelée, ou pas avec le bon type d'objet, le test échouera.
     }

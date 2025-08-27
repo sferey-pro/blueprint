@@ -18,7 +18,7 @@ final class ListGreetingsHandlerTest extends TestCase
 {
     public function testInvoke(): void
     {
-        // 1. Arrange: On mock notre nouvelle abstraction, le Finder.
+        // 1. Arrange: On mock le Finder.
         $finderMock = $this->createMock(GreetingFinderInterface::class);
         $finderMock
             ->expects(self::once()) // On s'attend à ce que la méthode "findAllAsView" soit appelée.

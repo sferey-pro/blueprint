@@ -20,22 +20,21 @@ final class CreateGreetingCommandTest extends AbstractCommandTestCase
 
     public function testExecute(): void
     {
-        // 1. Préparation (Arrange)
+        // 1. Arrange
         $message = 'Hello from a Foundry-powered E2E test!';
 
-        // 2. Action (Act)
+        // 2. Act
         $commandTester = $this->executeCommand([
             'message' => $message,
         ]);
 
-        // 3. Assertion (Assert)
-
+        // 3. Assert
         // a) On vérifie la sortie de la commande
         $commandTester->assertCommandIsSuccessful();
         $output = $commandTester->getDisplay();
         self::assertStringContainsString('Le message de salutation a été créé avec succès !', $output);
 
-        // b) On vérifie l'effet de bord : la persistance en base de données avec la syntaxe expressive de Foundry
+        // b) On vérifie la persistance en base de données avec la syntaxe expressive de Foundry
         GreetingFactory::assert()->count(1, [
             'message' => $message,
         ]);
