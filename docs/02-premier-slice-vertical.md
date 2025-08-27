@@ -8,9 +8,9 @@ Ce milestone a pour but d'établir les patrons de conception que nous réutilise
 
 * [x] **Modéliser le domaine** du contexte `Greeting`.
 * [x] **Implémenter le cas d'usage d'écriture** (le `Command`).
-* [ ] **Implémenter le cas d'usage de lecture** (le `Query`).
+* [x] **Implémenter le cas d'usage de lecture** (le `Query`).
 * [x] **Mettre en place la persistance** avec Doctrine (l'`Adapter`).
-* [ ] **Créer une interface utilisateur** pour interagir avec le contexte.
+* [x] **Créer une interface utilisateur** pour interagir avec le contexte.
 
 ---
 
