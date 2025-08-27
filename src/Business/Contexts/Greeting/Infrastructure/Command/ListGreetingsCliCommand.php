@@ -29,21 +29,27 @@ final class ListGreetingsCliCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        /** @var list<GreetingView> $greetings */
-        $greetings = $this->queryBus->ask(new ListGreetingsQuery());
+        try {
+            /** @var list<GreetingView> $greetings */
+            $greetings = $this->queryBus->ask(new ListGreetingsQuery());
 
-        if (empty($greetings)) {
-            $io->info('Aucun message de salutation à afficher.');
+            if (empty($greetings)) {
+                $io->info('Aucun message de salutation à afficher.');
 
-            return Command::SUCCESS;
+                return Command::SUCCESS;
+            }
+
+            $tableRows = array_map(
+                static fn (GreetingView $greeting): array => [$greeting->id, $greeting->message, $greeting->createdAt],
+                $greetings
+            );
+
+            $io->table(['ID', 'Message', 'Créé le'], $tableRows);
+        } catch (\Throwable $e) {
+            $io->error(\sprintf('Une erreur est survenue : %s', $e->getMessage()));
+
+            return Command::FAILURE;
         }
-
-        $tableRows = array_map(
-            static fn (GreetingView $greeting): array => [$greeting->id, $greeting->message, $greeting->createdAt],
-            $greetings
-        );
-
-        $io->table(['ID', 'Message', 'Créé le'], $tableRows);
 
         return Command::SUCCESS;
     }

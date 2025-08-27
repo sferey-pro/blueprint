@@ -6,7 +6,7 @@ namespace App\Tests\E2E\Greeting;
 
 use App\Business\Contexts\Greeting\Infrastructure\Command\CreateGreetingCliCommand;
 use App\Tests\Factory\GreetingFactory;
-use App\Tests\Helper\Command\AbstractCommandTestCase;
+use App\Tests\Helper\Command\CommandTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use Zenstruck\Foundry\Test\ResetDatabase;
@@ -14,7 +14,7 @@ use Zenstruck\Foundry\Test\ResetDatabase;
 #[Group('e2e')]
 #[Group('greeting')]
 #[CoversClass(CreateGreetingCliCommand::class)]
-final class CreateGreetingCommandTest extends AbstractCommandTestCase
+final class CreateGreetingCommandTest extends CommandTestCase
 {
     use ResetDatabase;
 
