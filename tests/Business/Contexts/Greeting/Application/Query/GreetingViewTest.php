@@ -27,6 +27,6 @@ final class GreetingViewTest extends TestCase
         // 3. Assert
         self::assertSame($id, $view->id);
         self::assertSame($message, $view->message);
-        self::assertSame('2023-10-27 10:30:45', $view->createdAt);
+        self::assertSame('2023-10-27 10:30:45', $view->createdAt, 'The createdAt date should be formatted to "Y-m-d H:i:s"');
     }
 }

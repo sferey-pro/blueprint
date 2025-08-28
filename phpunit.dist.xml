@@ -35,9 +35,15 @@
         </include>
 
         <exclude>
+            <directory>src/Business/Contexts/*/Domain/Event</directory>
             <directory suffix="Command.php">src/Business/Contexts/*/Application/Command</directory>
             <directory suffix="Query.php">src/Business/Contexts/*/Application/Query</directory>
-            <directory>src/Business/Contexts/*/Domain/Event</directory>
+
+            <directory>src/Kernel/Attribute</directory>
+            <directory suffix="Interface.php">src/Kernel/Bus</directory>
+            <directory suffix="Interface.php">src/Kernel/Persistence/Adapter/Doctrine/Types</directory>
+            <directory suffix="Interface.php">src/Kernel/ValueObject</directory>
+
             <file>src/Kernel.php</file>
         </exclude>
 
