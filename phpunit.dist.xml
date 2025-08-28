@@ -35,6 +35,9 @@
         </include>
 
         <exclude>
+            <directory suffix="Command.php">src/Business/Contexts/*/Application/Command</directory>
+            <directory suffix="Query.php">src/Business/Contexts/*/Application/Query</directory>
+            <directory>src/Business/Contexts/*/Domain/Event</directory>
             <file>src/Kernel.php</file>
         </exclude>
 
