@@ -53,7 +53,7 @@ class Greeting extends AggregateRoot
         return $greeting;
     }
 
-    public function publish( ClockInterface $clock): void
+    public function publish(ClockInterface $clock): void
     {
         $this->status = GreetingStatus::PUBLISHED;
 

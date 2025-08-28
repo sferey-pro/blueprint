@@ -13,6 +13,7 @@ final readonly class CreateGreetingCommand implements Command
 {
     public function __construct(
         public string $message,
+        public ?\DateTimeImmutable $createdAt = null,
     ) {
     }
 }

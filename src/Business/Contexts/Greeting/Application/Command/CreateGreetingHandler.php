@@ -20,9 +20,13 @@ final readonly class CreateGreetingHandler
 
     public function __invoke(CreateGreetingCommand $command): void
     {
+        // On détermine la date métier : soit celle de la commande, soit "maintenant".
+        $businessCreatedAt = $command->createdAt ?? $this->clock->now();
+
         $greeting = Greeting::create(
             $command->message,
-            $this->clock->now()
+            $businessCreatedAt,
+            $this->clock
         );
 
         $this->repository->add($greeting);
