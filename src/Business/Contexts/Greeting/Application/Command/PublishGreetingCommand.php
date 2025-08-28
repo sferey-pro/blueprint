@@ -9,6 +9,8 @@ use App\Kernel\Bus\Message\Command;
 
 /**
  * Commande représentant l'intention de publier un Greeting.
+ *
+ * @template-implements Command<PublishGreetingHandler>
  */
 final readonly class PublishGreetingCommand implements Command
 {

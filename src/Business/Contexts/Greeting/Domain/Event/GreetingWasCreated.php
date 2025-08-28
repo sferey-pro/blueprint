@@ -6,12 +6,11 @@ namespace App\Business\Contexts\Greeting\Domain\Event;
 
 use App\Business\Contexts\Greeting\Domain\ValueObject\GreetingId;
 use App\Kernel\Bus\Message\AbstractDomainEvent;
-use App\Kernel\Bus\Message\DomainEvent;
 
 /**
  * Événement de domaine levé lorsqu'un Greeting est crée.
  *
- * @implements DomainEvent<self>
+ * @extends AbstractDomainEvent<self>
  */
 final readonly class GreetingWasCreated extends AbstractDomainEvent
 {

@@ -41,7 +41,7 @@ class Greeting extends AggregateRoot
 
     public static function create(string $message, \DateTimeImmutable $createdAt, ClockInterface $clock): self
     {
-        $greeting = new self(GreetingId::generate(), $message, $createdAt, $clock);
+        $greeting = new self(GreetingId::generate(), $message, $createdAt);
 
         $greeting->raise(new GreetingWasCreated(
             $greeting->id,
