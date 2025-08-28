@@ -12,6 +12,8 @@ Ce milestone a pour but d'établir les patrons de conception que nous réutilise
 * [x] **Mettre en place la persistance** avec Doctrine (l'`Adapter`).
 * [x] **Créer une interface utilisateur** pour interagir avec le contexte.
 
+* [] **Modéliser et implémenter le cycle de vie** de `Greeting` (Draft -> Published -> Archived).
+
 ---
 
 ## Anatomie du Bounded Context `Greeting`

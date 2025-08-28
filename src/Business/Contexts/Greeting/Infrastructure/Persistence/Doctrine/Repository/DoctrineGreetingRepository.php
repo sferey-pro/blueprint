@@ -8,6 +8,7 @@ use App\Business\Contexts\Greeting\Application\Query\GreetingFinderInterface;
 use App\Business\Contexts\Greeting\Application\Query\GreetingView;
 use App\Business\Contexts\Greeting\Domain\Greeting;
 use App\Business\Contexts\Greeting\Domain\GreetingRepositoryInterface;
+use App\Business\Contexts\Greeting\Domain\ValueObject\GreetingId;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -24,6 +25,13 @@ final class DoctrineGreetingRepository extends ServiceEntityRepository implement
     public function add(Greeting $greeting): void
     {
         $this->getEntityManager()->persist($greeting);
+    }
+
+    public function ofId(GreetingId $id): ?Greeting
+    {
+        $greeting = $this->find($id);
+
+        return $greeting;
     }
 
     public function findAllAsView(): array
