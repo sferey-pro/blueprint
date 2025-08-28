@@ -9,6 +9,7 @@ use App\Tests\Factory\GreetingFactory;
 use App\Tests\Helper\Command\CommandTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
+use Psr\Clock\ClockInterface;
 use Zenstruck\Foundry\Test\ResetDatabase;
 
 #[Group('e2e')]
@@ -21,7 +22,10 @@ final class ListGreetingsCommandTest extends CommandTestCase
     public function testExecuteWithGreetings(): void
     {
         // 1. Arrange: Crée 3 greetings en base de données
-        GreetingFactory::createMany(3);
+        GreetingFactory::new()
+            ->withClock(self::getContainer()->get(ClockInterface::class))
+            ->many(3)
+            ->create();
 
         // 2. Act: Exécute la commande
         $commandTester = $this->executeCommand([]);

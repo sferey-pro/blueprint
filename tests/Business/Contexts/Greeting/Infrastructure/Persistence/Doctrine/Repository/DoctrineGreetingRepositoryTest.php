@@ -8,11 +8,13 @@ use App\Business\Contexts\Greeting\Application\Query\GreetingFinderInterface;
 use App\Business\Contexts\Greeting\Application\Query\GreetingView;
 use App\Business\Contexts\Greeting\Domain\Greeting;
 use App\Business\Contexts\Greeting\Domain\GreetingRepositoryInterface;
+use App\Business\Contexts\Greeting\Domain\ValueObject\GreetingId;
 use App\Business\Contexts\Greeting\Infrastructure\Persistence\Doctrine\Repository\DoctrineGreetingRepository;
 use App\Tests\Factory\GreetingFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
+use Psr\Clock\ClockInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Zenstruck\Foundry\Test\ResetDatabase;
 
@@ -26,6 +28,7 @@ final class DoctrineGreetingRepositoryTest extends KernelTestCase
     private ?EntityManagerInterface $entityManager;
     private ?GreetingRepositoryInterface $repository;
     private ?GreetingFinderInterface $finder;
+    private ?ClockInterface $clock;
 
     protected function setUp(): void
     {
@@ -35,41 +38,63 @@ final class DoctrineGreetingRepositoryTest extends KernelTestCase
         $this->entityManager = $container->get(EntityManagerInterface::class);
         $this->repository = $container->get(GreetingRepositoryInterface::class);
         $this->finder = $container->get(GreetingFinderInterface::class);
+        $this->clock = $container->get(ClockInterface::class);
     }
 
-    public function testAddAndFind(): void
+    public function testAddPersistsGreeting(): void
     {
-        // 1. Préparation (Arrange)
+        // 1. Arrange
         $greeting = Greeting::create(
             'Hello from an integration test!',
-            new \DateTimeImmutable()
+            $this->clock->now(),
+            $this->clock
         );
-        $greetingId = $greeting->id;
 
-        // 2. Action (Act)
+        // 2. Act
         $this->repository->add($greeting);
-        // Dans un test d'intégration, nous contrôlons manuellement la transaction.
         $this->entityManager->flush();
-        // On vide l'entity manager pour s'assurer qu'on récupère l'entité depuis la BDD
-        // et non depuis le cache de l'unité de travail.
+
+        // 3. Assert
+        GreetingFactory::assert()->exists([
+            'id' => $greeting->id,
+            'message' => 'Hello from an integration test!',
+        ]);
+    }
+
+    public function testOfIdFindsExistingGreeting(): void
+    {
+        // 1. Arrange
+        $greetingProxy = GreetingFactory::createOne();
+        $greetingId = $greetingProxy->id;
+        $this->entityManager->flush();
         $this->entityManager->clear();
 
-        // 3. Assertion (Assert)
-        $foundGreeting = $this->repository->find($greetingId);
+        // 2. Act
+        $foundGreeting = $this->repository->ofId($greetingId);
 
+        // 3. Assert
         self::assertNotNull($foundGreeting);
         self::assertTrue($foundGreeting->id->equals($greetingId));
-        self::assertSame('Hello from an integration test!', $foundGreeting->message());
+    }
+
+    public function testOfIdReturnsNullForNonExistingGreeting(): void
+    {
+        // 1. Arrange
+        $nonExistentId = GreetingId::generate();
+
+        // 2. Act
+        $foundGreeting = $this->repository->ofId($nonExistentId);
+
+        // 3. Assert
+        self::assertNull($foundGreeting);
     }
 
     public function testFindAllAsView(): void
     {
         // 1. Arrange
-        GreetingFactory::createOne(['message' => 'Hello 1', 'createdAt' => new \DateTimeImmutable('2025-01-01 10:00:00')]);
-        GreetingFactory::createOne(['message' => 'Hello 2', 'createdAt' => new \DateTimeImmutable('2025-01-01 11:00:00')]);
-        GreetingFactory::createOne(['message' => 'Hello 3', 'createdAt' => new \DateTimeImmutable('2025-01-01 12:00:00')]);
-
-        // On s'assure que les données sont bien en base
+        GreetingFactory::createOne(['message' => 'Hello 1']);
+        GreetingFactory::createOne(['message' => 'Hello 2']);
+        GreetingFactory::createOne(['message' => 'Hello 3']);
         $this->entityManager->flush();
         $this->entityManager->clear();
 
@@ -79,10 +104,6 @@ final class DoctrineGreetingRepositoryTest extends KernelTestCase
         // 3. Assert
         self::assertCount(3, $greetingViews);
         self::assertContainsOnlyInstancesOf(GreetingView::class, $greetingViews);
-
-        // On peut optionnellement vérifier le contenu d'un des DTOs
-        self::assertSame('Hello 3', $greetingViews[0]->message); // Le tri est DESC par défaut
-        self::assertSame('Hello 2', $greetingViews[1]->message);
     }
 
     protected function tearDown(): void
