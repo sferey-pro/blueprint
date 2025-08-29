@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Business\Contexts\Greeting\Application\Query;
 
 use App\Business\Contexts\Greeting\Application\Query\GreetingView;
+use App\Business\Contexts\Greeting\Domain\GreetingStatus;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
@@ -19,10 +20,11 @@ final class GreetingViewTest extends TestCase
         // 1. Arrange
         $id = 'a72855f3-3361-41d3-8515-0181792b0efc';
         $message = 'Hello, DTO!';
+        $status = GreetingStatus::DRAFT;
         $createdAt = new \DateTimeImmutable('2023-10-27 10:30:45');
 
         // 2. Act
-        $view = new GreetingView($id, $message, $createdAt);
+        $view = new GreetingView($id, $message, $status, $createdAt);
 
         // 3. Assert
         self::assertSame($id, $view->id);

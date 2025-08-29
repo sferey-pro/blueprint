@@ -37,7 +37,7 @@ final class DoctrineGreetingRepository extends ServiceEntityRepository implement
     public function findAllAsView(): array
     {
         $dql = \sprintf(
-            'SELECT NEW %s(g.id, g.message, g.createdAt) FROM %s g ORDER BY g.createdAt DESC',
+            'SELECT NEW %s(g.id, g.message, g.status, g.createdAt) FROM %s g ORDER BY g.createdAt DESC',
             GreetingView::class,
             Greeting::class
         );

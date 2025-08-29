@@ -40,11 +40,11 @@ final class ListGreetingsCliCommand extends Command
             }
 
             $tableRows = array_map(
-                static fn (GreetingView $greeting): array => [$greeting->id, $greeting->message, $greeting->createdAt],
+                static fn (GreetingView $greeting): array => [$greeting->id, $greeting->status->getLabel(), $greeting->message, $greeting->createdAt],
                 $greetings
             );
 
-            $io->table(['ID', 'Message', 'Créé le'], $tableRows);
+            $io->table(['ID', 'Status', 'Message', 'Créé le'], $tableRows);
         } catch (\Throwable $e) {
             $io->error(\sprintf('Une erreur est survenue : %s', $e->getMessage()));
 

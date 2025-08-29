@@ -6,6 +6,7 @@ namespace App\Tests\Business\Contexts\Greeting\Infrastructure\Command;
 
 use App\Business\Contexts\Greeting\Application\Query\GreetingView;
 use App\Business\Contexts\Greeting\Application\Query\ListGreetingsQuery;
+use App\Business\Contexts\Greeting\Domain\GreetingStatus;
 use App\Business\Contexts\Greeting\Infrastructure\Command\ListGreetingsCliCommand;
 use App\Kernel\Bus\QueryBusInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -38,8 +39,8 @@ final class ListGreetingsCliCommandTest extends TestCase
     {
         // 1. Arrange : On configure le mock pour qu'il retourne une liste de DTOs.
         $greetings = [
-            new GreetingView('id-1', 'Message 1', new \DateTimeImmutable()),
-            new GreetingView('id-2', 'Message 2', new \DateTimeImmutable()),
+            new GreetingView('id-1', 'Message 1', GreetingStatus::DRAFT, new \DateTimeImmutable()),
+            new GreetingView('id-2', 'Message 2', GreetingStatus::PUBLISHED, new \DateTimeImmutable()),
         ];
         $this->queryBusMock
             ->expects(self::once())

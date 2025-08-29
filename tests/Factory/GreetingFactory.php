@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Factory;
 
 use App\Business\Contexts\Greeting\Domain\Greeting;
+use App\Business\Contexts\Greeting\Domain\GreetingStatus;
 use Psr\Clock\ClockInterface;
 use Symfony\Component\Clock\Clock;
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
@@ -23,6 +24,7 @@ final class GreetingFactory extends PersistentObjectFactory
     {
         return [
             'message' => self::faker()->sentence(),
+            'status' => self::faker()->randomElement(GreetingStatus::cases()),
             'createdAt' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
         ];
     }

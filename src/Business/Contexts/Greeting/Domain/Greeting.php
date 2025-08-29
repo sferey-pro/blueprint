@@ -61,4 +61,9 @@ class Greeting extends AggregateRoot
             new GreetingWasPublished($this->id, $clock->now())
         );
     }
+
+    public function getStatus(): string
+    {
+        return $this->status->value;
+    }
 }

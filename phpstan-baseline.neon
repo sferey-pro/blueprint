@@ -1,6 +1,24 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Method App\\Business\\Contexts\\Greeting\\Domain\\GreetingStatus\:\:array\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Business/Contexts/Greeting/Domain/GreetingStatus.php
+
+		-
+			message: '#^Method App\\Business\\Contexts\\Greeting\\Domain\\GreetingStatus\:\:names\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Business/Contexts/Greeting/Domain/GreetingStatus.php
+
+		-
+			message: '#^Method App\\Business\\Contexts\\Greeting\\Domain\\GreetingStatus\:\:values\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Business/Contexts/Greeting/Domain/GreetingStatus.php
+
+		-
 			message: '#^Method App\\Kernel\\Persistence\\Adapter\\Doctrine\\Types\\AbstractValueObjectStringType\:\:convertToPHPValue\(\) return type with generic class App\\Kernel\\ValueObject\\AbstractStringValueObject does not specify its types\: T$#'
 			identifier: missingType.generics
 			count: 1
