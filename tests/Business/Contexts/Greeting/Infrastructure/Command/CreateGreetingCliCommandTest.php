@@ -7,6 +7,7 @@ namespace App\Tests\Business\Contexts\Greeting\Infrastructure\Command;
 use App\Business\Contexts\Greeting\Application\Command\CreateGreetingCommand;
 use App\Business\Contexts\Greeting\Infrastructure\Command\CreateGreetingCliCommand;
 use App\Kernel\Bus\CommandBusInterface;
+use App\Kernel\Exception\ValidationException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -58,6 +59,31 @@ final class CreateGreetingCliCommandTest extends TestCase
         self::assertSame(Command::SUCCESS, $this->commandTester->getStatusCode());
         $output = $this->commandTester->getDisplay();
         self::assertStringContainsString('Le message de salutation a été créé avec succès !', $output);
+    }
+
+    public function testExecuteHandlesValidationException(): void
+    {
+        // 1. Arrange : On simule une ValidationException venant du bus.
+        // On y imbrique une InvalidArgumentException pour tester la récupération du message de l'exception précédente.
+        $previousException = new \InvalidArgumentException('L\'email fourni n\'est pas valide.');
+        $validationException = new ValidationException('La commande n\'est pas valide.', 0, $previousException);
+
+        $this->commandBusMock
+            ->expects(self::once())
+            ->method('dispatch')
+            ->with(self::isInstanceOf(CreateGreetingCommand::class))
+            ->willThrowException($validationException);
+
+        // 2. Act
+        $this->commandTester->execute([
+            'message' => 'Un message valide',
+            'author' => 'email-invalide',
+        ]);
+
+        // 3. Assert
+        self::assertSame(Command::FAILURE, $this->commandTester->getStatusCode());
+        $output = $this->commandTester->getDisplay();
+        self::assertStringContainsString('Erreur de validation : L\'email fourni n\'est pas valide.', $output);
     }
 
     public function testExecuteHandlesErrorsGracefully(): void

@@ -83,4 +83,25 @@ final class GreetingTest extends TestCase
         self::assertTrue($greeting->id->equals($event->aggregateId));
         self::assertEquals($clock->now(), $event->occurredOn);
     }
+
+    public function testGetStatusReturnsCorrectValue(): void
+    {
+        // 1. Arrange
+        $clock = new MockClock();
+        $greeting = Greeting::create(
+            'Test message',
+            Author::create(Email::fromValidatedValue('test@example.com')),
+            $clock->now(),
+            $clock
+        );
+
+        // 2. Assert initial state
+        self::assertSame('draft', $greeting->getStatus());
+
+        // 3. Act
+        $greeting->publish($clock);
+
+        // 4. Assert final state
+        self::assertSame('published', $greeting->getStatus());
+    }
 }

@@ -9,6 +9,7 @@ use App\Business\Contexts\Greeting\Application\Command\CreateGreetingHandler;
 use App\Business\Contexts\Greeting\Domain\Event\GreetingWasCreated;
 use App\Business\Contexts\Greeting\Domain\Greeting;
 use App\Business\Contexts\Greeting\Domain\GreetingRepositoryInterface;
+use App\Kernel\Exception\ValidationException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -57,6 +58,24 @@ final class CreateGreetingHandlerTest extends TestCase
         // On fait maintenant des assertions claires sur l'objet capturé
         self::assertInstanceOf(Greeting::class, $greetingCaptor);
         self::assertEquals($now, $greetingCaptor->createdAt);
+    }
+
+    public function testInvokeThrowsValidationExceptionForInvalidEmail(): void
+    {
+        // 1. Arrange : On crée une commande avec un email volontairement invalide.
+        $command = new CreateGreetingCommand('Hello World!', 'not-an-email');
+
+        // On s'attend à ce qu'une ValidationException soit levée.
+        $this->expectException(ValidationException::class);
+
+        // On s'assure également que le repository n'est JAMAIS appelé si la validation échoue.
+        $this->repositoryMock->expects(self::never())->method('add');
+
+        // 2. Act
+        $handler = new CreateGreetingHandler($this->repositoryMock, $this->clock);
+        $handler($command);
+
+        // 3. Assert (implicite) : Le test échouera si aucune exception (ou une mauvaise) n'est levée.
     }
 
     public function testInvokeWithSpecificDateUsesCorrectTimestamps(): void
