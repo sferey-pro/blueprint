@@ -8,8 +8,10 @@ use App\Business\Contexts\Greeting\Application\Query\GreetingFinderInterface;
 use App\Business\Contexts\Greeting\Application\Query\GreetingView;
 use App\Business\Contexts\Greeting\Domain\Greeting;
 use App\Business\Contexts\Greeting\Domain\GreetingRepositoryInterface;
+use App\Business\Contexts\Greeting\Domain\ValueObject\Author;
 use App\Business\Contexts\Greeting\Domain\ValueObject\GreetingId;
 use App\Business\Contexts\Greeting\Infrastructure\Persistence\Doctrine\Repository\DoctrineGreetingRepository;
+use App\Business\Shared\Domain\ValueObject\Email;
 use App\Tests\Factory\GreetingFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -44,8 +46,11 @@ final class DoctrineGreetingRepositoryTest extends KernelTestCase
     public function testAddPersistsGreeting(): void
     {
         // 1. Arrange
+        $email = Email::fromValidatedValue('integration-author@example.com');
+
         $greeting = Greeting::create(
             'Hello from an integration test!',
+            Author::create($email),
             $this->clock->now(),
             $this->clock
         );
@@ -58,6 +63,7 @@ final class DoctrineGreetingRepositoryTest extends KernelTestCase
         GreetingFactory::assert()->exists([
             'id' => $greeting->id,
             'message' => 'Hello from an integration test!',
+            'author.email' => $email,
         ]);
     }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\E2E\Greeting;
 
 use App\Business\Contexts\Greeting\Infrastructure\Command\CreateGreetingCliCommand;
+use App\Business\Shared\Domain\ValueObject\Email;
 use App\Tests\Factory\GreetingFactory;
 use App\Tests\Helper\Command\CommandTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -22,10 +23,12 @@ final class CreateGreetingCommandTest extends CommandTestCase
     {
         // 1. Arrange
         $message = 'Hello from a Foundry-powered E2E test!';
+        $email = 'e2e-author@example.com';
 
         // 2. Act
         $commandTester = $this->executeCommand([
             'message' => $message,
+            'author' => $email,
         ]);
 
         // 3. Assert
@@ -37,6 +40,7 @@ final class CreateGreetingCommandTest extends CommandTestCase
         // b) On vérifie la persistance en base de données avec la syntaxe expressive de Foundry
         GreetingFactory::assert()->count(1, [
             'message' => $message,
+            'author.email' => Email::fromValidatedValue($email),
         ]);
     }
 

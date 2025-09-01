@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Functional\Greeting;
 
 use App\Business\Contexts\Greeting\Application\Command\CreateGreetingCommand;
+use App\Business\Shared\Domain\ValueObject\Email;
 use App\Kernel\Bus\CommandBusInterface;
 use App\Tests\Factory\GreetingFactory;
 use PHPUnit\Framework\Attributes\Group;
@@ -26,7 +27,7 @@ final class CreateGreetingTest extends KernelTestCase
         /** @var CommandBusInterface $commandBus */
         $commandBus = $container->get(CommandBusInterface::class);
         $message = 'Hello, functional test!';
-        $command = new CreateGreetingCommand($message);
+        $command = new CreateGreetingCommand($message, 'new@example.com');
 
         // 2. Act
         $commandBus->dispatch($command);
@@ -36,6 +37,7 @@ final class CreateGreetingTest extends KernelTestCase
         // à nos critères existe maintenant en base de données.
         GreetingFactory::assert()->exists([
             'message' => $message,
+            'author.email' => Email::fromValidatedValue('new@example.com'),
         ]);
     }
 }

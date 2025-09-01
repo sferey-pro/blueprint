@@ -14,11 +14,6 @@ final class PhoneNumberType extends AbstractValueObjectStringType
      */
     public const string NAME = 'phone_number';
 
-    public function getTypeName(): string
-    {
-        return PhoneNumber::class;
-    }
-
     /**
      * Spécifie la classe du ValueObject que ce type gère.
      */

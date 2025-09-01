@@ -33,7 +33,7 @@ final class CreateGreetingHandlerTest extends TestCase
     public function testInvokeUsesClockWhenDateIsNotProvided(): void
     {
         // 1. Arrange
-        $command = new CreateGreetingCommand('Hello from test!');
+        $command = new CreateGreetingCommand('Hello from test!', 'test@example.com');
         $now = $this->clock->now();
 
         // On prépare une variable pour "capturer" l'argument passé à la méthode add()
@@ -64,7 +64,7 @@ final class CreateGreetingHandlerTest extends TestCase
         // 1. Arrange
         $businessDate = new \DateTimeImmutable('2024-12-24 18:00:00'); // Une date métier spécifique
         $systemDate = $this->clock->now(); // L'heure "actuelle" de l'action
-        $command = new CreateGreetingCommand('Hello for Christmas!', $businessDate);
+        $command = new CreateGreetingCommand('Hello for Christmas!', 'test@example.com', $businessDate);
 
         $this->repositoryMock
             ->expects(self::once())

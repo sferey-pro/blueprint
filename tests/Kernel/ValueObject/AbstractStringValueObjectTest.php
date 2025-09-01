@@ -9,8 +9,10 @@ use App\Kernel\ValueObject\AbstractStringValueObject;
 use App\Kernel\ValueObject\ValidatedValueObjectTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
+use Webmozart\Assert\InvalidArgumentException;
 
 #[Group('unit')]
 #[Group('kernel')]
@@ -40,6 +42,47 @@ final class AbstractStringValueObjectTest extends TestCase
         $vo = DummyStringVO::fromValidatedValue('valid value');
 
         self::assertSame('valid value', $vo->value());
+    }
+
+    /**
+     * @param list<mixed> $invalidArgs
+     */
+    #[DataProvider('provideInvalidConstructorArguments')]
+    public function testCreateWithInvalidArguments(array $invalidArgs, string $expectedMessage): void
+    {
+        // 1. Act
+        $result = DummyStringVO::create(...$invalidArgs);
+
+        // 2. Assert
+        self::assertTrue($result->isFailure(), 'The creation should have failed but it succeeded.');
+
+        $error = $result->error();
+        self::assertInstanceOf(ValidationException::class, $error);
+        self::assertInstanceOf(InvalidArgumentException::class, $error->getPrevious());
+        self::assertStringContainsString($expectedMessage, $error->getPrevious()->getMessage());
+    }
+
+    public static function provideInvalidConstructorArguments(): \Generator
+    {
+        yield 'no arguments' => [
+            'invalidArgs' => [],
+            'expectedMessage' => 'Value Object expects a single string argument',
+        ];
+
+        yield 'too many arguments' => [
+            'invalidArgs' => ['value1', 'value2'],
+            'expectedMessage' => 'Value Object expects a single string argument',
+        ];
+
+        yield 'wrong argument type (int)' => [
+            'invalidArgs' => [123],
+            'expectedMessage' => 'Value Object expects a single string argument, got "integer"',
+        ];
+
+        yield 'wrong argument type (array)' => [
+            'invalidArgs' => [['array']],
+            'expectedMessage' => 'Value Object expects a single string argument, got "array"',
+        ];
     }
 
     public function testFromValidatedValueWithInvalidValueThrowsException(): void

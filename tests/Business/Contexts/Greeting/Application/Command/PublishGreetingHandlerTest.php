@@ -10,7 +10,9 @@ use App\Business\Contexts\Greeting\Domain\Event\GreetingWasPublished;
 use App\Business\Contexts\Greeting\Domain\Greeting;
 use App\Business\Contexts\Greeting\Domain\GreetingRepositoryInterface;
 use App\Business\Contexts\Greeting\Domain\GreetingStatus;
+use App\Business\Contexts\Greeting\Domain\ValueObject\Author;
 use App\Business\Contexts\Greeting\Domain\ValueObject\GreetingId;
+use App\Business\Shared\Domain\ValueObject\Email;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -42,7 +44,12 @@ final class PublishGreetingHandlerTest extends TestCase
         $command = new PublishGreetingCommand($greetingId);
 
         // On crée une vraie instance de l'agrégat pour le test.
-        $greeting = Greeting::create('test message', $this->clock->now(), $this->clock);
+        $greeting = Greeting::create(
+            'test message',
+            Author::create(Email::fromValidatedValue('test@example.com')),
+            $this->clock->now(),
+            $this->clock
+        );
 
         // On configure les mocks pour simuler le "happy path"
         $this->repositoryMock->method('ofId')->with($greetingId)->willReturn($greeting);
@@ -74,7 +81,12 @@ final class PublishGreetingHandlerTest extends TestCase
         // 1. Arrange
         $greetingId = GreetingId::generate();
         $command = new PublishGreetingCommand($greetingId);
-        $greeting = Greeting::create('test message', $this->clock->now(), $this->clock);
+        $greeting = Greeting::create(
+            'test message',
+            Author::create(Email::fromValidatedValue('test@example.com')),
+            $this->clock->now(),
+            $this->clock
+        );
 
         $this->repositoryMock->method('ofId')->willReturn($greeting);
         // On configure le mock du workflow pour qu'il refuse la transition.

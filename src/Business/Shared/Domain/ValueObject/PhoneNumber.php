@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Business\Shared\Domain\ValueObject;
 
 use App\Kernel\ValueObject\AbstractStringValueObject;
-use Assert\Assert;
+use Webmozart\Assert\Assert;
 
 /**
  * @template-extends AbstractStringValueObject<string>
@@ -28,14 +28,12 @@ final readonly class PhoneNumber extends AbstractStringValueObject
         $phone = mb_trim($value);
 
         // Étape 1 : Valider le format de l'entrée BRUTE
-        Assert::that($phone)
-            ->notEmpty('Phone number cannot be empty.')
-            ->regex('/^\+?[0-9\s\-()]+$/', 'Phone number "%s" is not valid. It should contain only digits, spaces, dashes, parentheses, and an optional leading plus sign.');
+        Assert::notEmpty($phone, 'Phone number cannot be empty.');
+        Assert::regex($phone, '/^\+?[0-9\s\-()]+$/', 'Phone number %s is not valid. It should contain only digits, spaces, dashes, parentheses, and an optional leading plus sign.');
 
         // Étape 2 : Valider les propriétés de la version NORMALISÉE
         $normalizedPhone = self::normalize($phone);
-        Assert::that($normalizedPhone)
-            ->maxLength(15, 'Phone number cannot exceed 15 characters.');
+        Assert::maxLength($normalizedPhone, 15, 'Phone number cannot exceed 15 characters.');
     }
 
     private static function normalize(string $rawPhoneNumber): string
@@ -46,10 +44,6 @@ final readonly class PhoneNumber extends AbstractStringValueObject
         $digitsOnly = preg_replace('/[^\d]/', '', $trimmed);
 
         // Si l'original commençait par '+', on s'assure que le résultat le fait aussi.
-        if (str_starts_with($trimmed, '+')) {
-            return '+'.$digitsOnly;
-        }
-
-        return $digitsOnly;
+        return str_starts_with($trimmed, '+') ? '+'.$digitsOnly : $digitsOnly;
     }
 }

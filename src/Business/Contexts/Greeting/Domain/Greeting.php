@@ -6,6 +6,7 @@ namespace App\Business\Contexts\Greeting\Domain;
 
 use App\Business\Contexts\Greeting\Domain\Event\GreetingWasCreated;
 use App\Business\Contexts\Greeting\Domain\Event\GreetingWasPublished;
+use App\Business\Contexts\Greeting\Domain\ValueObject\Author;
 use App\Business\Contexts\Greeting\Domain\ValueObject\GreetingId;
 use App\Business\Contexts\Greeting\Infrastructure\Persistence\Doctrine\Repository\DoctrineGreetingRepository;
 use App\Business\Contexts\Greeting\Infrastructure\Persistence\Doctrine\Types\GreetingIdType;
@@ -31,17 +32,22 @@ class Greeting extends AggregateRoot
     #[ORM\Column(name: 'status', type: Types::STRING, length: 255, enumType: GreetingStatus::class)]
     public private(set) GreetingStatus $status;
 
-    private function __construct(GreetingId $id, string $message, \DateTimeImmutable $createdAt)
+    #[ORM\Embedded(class: Author::class, columnPrefix: 'author_')]
+    public private(set) Author $author;
+
+    private function __construct(GreetingId $id, string $message, Author $author, \DateTimeImmutable $createdAt)
     {
         $this->id = $id;
         $this->message = $message;
+        $this->author = $author;
         $this->createdAt = $createdAt;
+
         $this->status = GreetingStatus::DRAFT; // Un nouveau Greeting est toujours un brouillon.
     }
 
-    public static function create(string $message, \DateTimeImmutable $createdAt, ClockInterface $clock): self
+    public static function create(string $message, Author $author, \DateTimeImmutable $createdAt, ClockInterface $clock): self
     {
-        $greeting = new self(GreetingId::generate(), $message, $createdAt);
+        $greeting = new self(GreetingId::generate(), $message, $author, $createdAt);
 
         $greeting->raise(new GreetingWasCreated(
             $greeting->id,

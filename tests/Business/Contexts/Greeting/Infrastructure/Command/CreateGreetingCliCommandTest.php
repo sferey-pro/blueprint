@@ -40,14 +40,19 @@ final class CreateGreetingCliCommandTest extends TestCase
     public function testExecuteSuccess(): void
     {
         // 1. Arrange : On s'attend à ce que la méthode "dispatch" soit appelée une seule fois.
-        // C'est notre principale assertion sur l'interaction.
+        $message = 'Hello from a unit test!';
+        $email = 'test@example.com';
+
         $this->commandBusMock
             ->expects(self::once())
             ->method('dispatch')
             ->with(self::isInstanceOf(CreateGreetingCommand::class));
 
         // 2. Act : On exécute la commande avec un message.
-        $this->commandTester->execute(['message' => 'Hello from a unit test!']);
+        $this->commandTester->execute([
+            'message' => $message,
+            'author' => $email,
+        ]);
 
         // 3. Assert : On vérifie que la commande s'est bien terminée et a affiché le bon message.
         self::assertSame(Command::SUCCESS, $this->commandTester->getStatusCode());
@@ -66,7 +71,10 @@ final class CreateGreetingCliCommandTest extends TestCase
             ->willThrowException(new \RuntimeException('Bus en maintenance !'));
 
         // Act: On exécute la commande via le tester.
-        $this->commandTester->execute(['message' => 'un message qui va échouer']);
+        $this->commandTester->execute([
+            'message' => 'un message qui va échouer',
+            'author' => 'fail@example.com',
+        ]);
 
         // Assert: On vérifie que la commande a bien échoué et affiché le bon message.
         self::assertSame(Command::FAILURE, $this->commandTester->getStatusCode());

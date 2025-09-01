@@ -6,11 +6,11 @@ namespace App\Tests\Business\Shared\Domain\ValueObject;
 
 use App\Business\Shared\Domain\ValueObject\Email;
 use App\Kernel\Exception\ValidationException;
-use Assert\InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
+use Webmozart\Assert\InvalidArgumentException;
 
 #[Group('unit')]
 #[Group('shared')]

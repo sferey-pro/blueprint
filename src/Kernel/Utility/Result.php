@@ -42,6 +42,8 @@ final class Result
      *
      * @template TFailureValue of \Throwable
      *
+     * @param TFailureValue $error
+     *
      * @return self<never, TFailureValue>
      */
     public static function failure(\Throwable $error): self

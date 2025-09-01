@@ -8,7 +8,9 @@ use App\Business\Contexts\Greeting\Domain\Event\GreetingWasCreated;
 use App\Business\Contexts\Greeting\Domain\Event\GreetingWasPublished;
 use App\Business\Contexts\Greeting\Domain\Greeting;
 use App\Business\Contexts\Greeting\Domain\GreetingStatus;
+use App\Business\Contexts\Greeting\Domain\ValueObject\Author;
 use App\Business\Contexts\Greeting\Domain\ValueObject\GreetingId;
+use App\Business\Shared\Domain\ValueObject\Email;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
@@ -23,16 +25,23 @@ final class GreetingTest extends TestCase
     {
         // 1. Arrange
         $message = 'Hello, DDD!';
+        $email = Email::fromValidatedValue('test@example.com');
         $businessCreatedAt = new \DateTimeImmutable('2023-10-27 10:00:00');
         $clock = new MockClock('2025-01-01 12:00:00'); // L'heure système est contrôlée
 
         // 2. Act
-        $greeting = Greeting::create($message, $businessCreatedAt, $clock);
+        $greeting = Greeting::create(
+            $message,
+            Author::create($email),
+            $businessCreatedAt,
+            $clock
+        );
 
         // 3. Assert
         self::assertInstanceOf(Greeting::class, $greeting);
         self::assertInstanceOf(GreetingId::class, $greeting->id);
         self::assertSame($message, $greeting->message);
+        self::assertSame($email, $greeting->author->email);
         self::assertSame($businessCreatedAt, $greeting->createdAt);
         self::assertSame(GreetingStatus::DRAFT, $greeting->status, 'A new greeting should be in DRAFT status.');
 
@@ -50,7 +59,12 @@ final class GreetingTest extends TestCase
     {
         // 1. Arrange
         $clock = new MockClock();
-        $greeting = Greeting::create('A message to publish', $clock->now(), $clock);
+        $greeting = Greeting::create(
+            'A message to publish',
+            Author::create(Email::fromValidatedValue('test@example.com')),
+            $clock->now(),
+            $clock
+        );
         $greeting->pullDomainEvents();
 
         // 2. Act

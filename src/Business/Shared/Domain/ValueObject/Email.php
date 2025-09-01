@@ -6,7 +6,7 @@ namespace App\Business\Shared\Domain\ValueObject;
 
 use App\Kernel\Exception\InvalidValueObjectDataException;
 use App\Kernel\ValueObject\AbstractStringValueObject;
-use Assert\Assert;
+use Webmozart\Assert\Assert;
 
 /**
  * @template-extends AbstractStringValueObject<string>
@@ -33,12 +33,8 @@ final readonly class Email extends AbstractStringValueObject
         $email = $value;
         $normalizedEmail = mb_strtolower(mb_trim($email));
 
-        Assert::that($normalizedEmail)
-            ->notEmpty('Email address cannot be empty')
-            ->maxLength(self::MAX_LENGTH, \sprintf(
-                'Email address cannot exceed %d characters',
-                self::MAX_LENGTH
-            ))
-            ->email('"%s" is not a valid email address');
+        Assert::notEmpty($normalizedEmail, 'Email address cannot be empty');
+        Assert::maxLength($normalizedEmail, self::MAX_LENGTH, 'Email address cannot exceed %2$d characters. Got %s');
+        Assert::email($normalizedEmail, '%s is not a valid email address');
     }
 }

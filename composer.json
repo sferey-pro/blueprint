@@ -9,7 +9,6 @@
         "php": ">=8.4.11",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "beberlei/assert": "^3.3",
         "doctrine/dbal": "^3",
         "doctrine/doctrine-bundle": "^2.15",
         "doctrine/doctrine-migrations-bundle": "^3.4",
@@ -26,7 +25,8 @@
         "symfony/twig-bundle": "7.3.*",
         "symfony/uid": "7.3.*",
         "symfony/workflow": "7.3.*",
-        "symfony/yaml": "7.3.*"
+        "symfony/yaml": "7.3.*",
+        "webmozart/assert": "^1.11"
     },
     "config": {
         "allow-plugins": {
@@ -110,6 +110,10 @@
         "test:integration": [
             "@test:db:setup",
             "phpunit --group integration"
+        ],
+        "test:functional": [
+            "@test:db:setup",
+            "phpunit --group functional"
         ],
         "test:e2e": [
             "@test:db:setup",

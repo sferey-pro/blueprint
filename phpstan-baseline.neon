@@ -25,12 +25,6 @@ parameters:
 			path: src/Kernel/Persistence/Adapter/Doctrine/Types/AbstractValueObjectStringType.php
 
 		-
-			message: '#^Method App\\Kernel\\Utility\\Result\:\:failure\(\) should return App\\Kernel\\Utility\\Result\<never, TFailureValue of Throwable\> but returns App\\Kernel\\Utility\\Result\<mixed, Throwable\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Kernel/Utility/Result.php
-
-		-
 			message: '#^Method App\\Kernel\\Utility\\Result\:\:flatMap\(\) should return App\\Kernel\\Utility\\Result\<U, TError of Throwable\> but returns App\\Kernel\\Utility\\Result\<never, Throwable\>\.$#'
 			identifier: return.type
 			count: 1
@@ -73,38 +67,20 @@ parameters:
 			path: src/Kernel/Utility/Result.php
 
 		-
-			message: '#^Template type TFailureValue of method App\\Kernel\\Utility\\Result\:\:failure\(\) is not referenced in a parameter\.$#'
-			identifier: method.templateTypeNotInParameter
-			count: 1
-			path: src/Kernel/Utility/Result.php
-
-		-
 			message: '#^Template type TSuccessValue of method App\\Kernel\\Utility\\Result\:\:success\(\) is not referenced in a parameter\.$#'
 			identifier: method.templateTypeNotInParameter
 			count: 1
 			path: src/Kernel/Utility/Result.php
 
 		-
-			message: '#^Generic type App\\Kernel\\Utility\\Result\<static\(App\\Kernel\\ValueObject\\AbstractStringValueObject\<T of string\>\)\> in PHPDoc tag @return does not specify all template types of class App\\Kernel\\Utility\\Result\: TValue, TError$#'
-			identifier: generics.lessTypes
-			count: 1
-			path: src/Kernel/ValueObject/AbstractStringValueObject.php
+			message: '#^Unable to resolve the template type TFailureValue in call to method static method App\\Kernel\\Utility\\Result\<TValue,TError of Throwable\>\:\:failure\(\)$#'
+			identifier: argument.templateType
+			count: 2
+			path: src/Kernel/Utility/Result.php
 
 		-
 			message: '#^Method App\\Kernel\\ValueObject\\AbstractStringValueObject\:\:create\(\) has parameter \$args with no type specified\.$#'
 			identifier: missingType.parameter
-			count: 1
-			path: src/Kernel/ValueObject/AbstractStringValueObject.php
-
-		-
-			message: '#^Method App\\Kernel\\ValueObject\\AbstractStringValueObject\:\:create\(\) should return App\\Kernel\\Utility\\Result\<static\(App\\Kernel\\ValueObject\\AbstractStringValueObject\<T of string\>\)\> but returns App\\Kernel\\Utility\\Result\<mixed, never\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Kernel/ValueObject/AbstractStringValueObject.php
-
-		-
-			message: '#^Method App\\Kernel\\ValueObject\\AbstractStringValueObject\:\:create\(\) should return App\\Kernel\\Utility\\Result\<static\(App\\Kernel\\ValueObject\\AbstractStringValueObject\<T of string\>\)\> but returns App\\Kernel\\Utility\\Result\<never, Throwable\>\.$#'
-			identifier: return.type
 			count: 1
 			path: src/Kernel/ValueObject/AbstractStringValueObject.php
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Kernel\ValueObject;
 
 use App\Kernel\Exception\InvalidValueObjectDataException;
-use Assert\Assert;
+use Webmozart\Assert\Assert;
 
 /**
  * Classe de base pour les Value Objects qui ne sont qu'un wrapper
@@ -32,8 +32,8 @@ abstract readonly class AbstractStringValueObject implements ValueObjectInterfac
      */
     final protected static function validate(...$args): void
     {
-        Assert::that($args)->count(1, '%s expects a single string argument.', static::class);
-        Assert::that($args[0])->string('%s expects a single string argument, got %%s.', static::class);
+        Assert::count($args, 1, 'Value Object expects a single string argument, got "%s".');
+        Assert::string($args[0], 'Value Object expects a single string argument, got "%s".');
 
         static::validateString($args[0]);
     }

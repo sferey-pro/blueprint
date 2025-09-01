@@ -6,15 +6,15 @@ namespace App\Kernel\Persistence\Adapter\Doctrine\Types;
 
 use App\Kernel\ValueObject\AbstractStringValueObject;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\StringType;
+use Doctrine\DBAL\Types\Type;
 
-abstract class AbstractValueObjectStringType extends StringType implements DoctrineCustomTypeInterface
+abstract class AbstractValueObjectStringType extends Type implements DoctrineCustomTypeInterface
 {
     /**
      * Doit retourner le nom unique du type Doctrine.
      * Ce nom sera utilisé dans les fichiers de mapping XML.
      */
-    abstract public function getTypeName(): string;
+    abstract public function getName(): string;
 
     /**
      * Doit retourner le FQCN (Fully Qualified Class Name) de la classe du Value Object.
@@ -50,5 +50,10 @@ abstract class AbstractValueObjectStringType extends StringType implements Doctr
         }
 
         return $value->value;
+    }
+
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform)
+    {
+        return $platform->getStringTypeDeclarationSQL($column);
     }
 }

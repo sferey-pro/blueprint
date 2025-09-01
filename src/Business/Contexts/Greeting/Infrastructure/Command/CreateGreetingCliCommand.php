@@ -6,6 +6,7 @@ namespace App\Business\Contexts\Greeting\Infrastructure\Command;
 
 use App\Business\Contexts\Greeting\Application\Command\CreateGreetingCommand;
 use App\Kernel\Bus\CommandBusInterface;
+use App\Kernel\Exception\ValidationException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -27,7 +28,8 @@ final class CreateGreetingCliCommand extends Command
 
     protected function configure(): void
     {
-        $this->addArgument('message', InputArgument::REQUIRED, 'Le message de salutation.');
+        $this->addArgument('message', InputArgument::REQUIRED, 'Le message de salutation.')
+             ->addArgument('author', InputArgument::REQUIRED, 'L\'email de l\'auteur.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -36,10 +38,16 @@ final class CreateGreetingCliCommand extends Command
 
         /** @var string $message */
         $message = $input->getArgument('message');
+        /** @var string $authorEmail */
+        $authorEmail = $input->getArgument('author');
 
         try {
-            $command = new CreateGreetingCommand($message);
+            $command = new CreateGreetingCommand($message, $authorEmail);
             $this->commandBus->dispatch($command);
+        } catch (ValidationException $e) {
+            $io->error(\sprintf('Erreur de validation : %s', $e->getPrevious()?->getMessage() ?? $e->getMessage()));
+
+            return Command::FAILURE;
         } catch (\Throwable $e) {
             $io->error(\sprintf('Une erreur est survenue : %s', $e->getMessage()));
 

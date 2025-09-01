@@ -6,6 +6,8 @@ namespace App\Tests\Factory;
 
 use App\Business\Contexts\Greeting\Domain\Greeting;
 use App\Business\Contexts\Greeting\Domain\GreetingStatus;
+use App\Business\Contexts\Greeting\Domain\ValueObject\Author;
+use App\Business\Shared\Domain\ValueObject\Email;
 use Psr\Clock\ClockInterface;
 use Symfony\Component\Clock\Clock;
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
@@ -25,6 +27,7 @@ final class GreetingFactory extends PersistentObjectFactory
         return [
             'message' => self::faker()->sentence(),
             'status' => self::faker()->randomElement(GreetingStatus::cases()),
+            'author' => Author::create(Email::fromValidatedValue(self::faker()->email())),
             'createdAt' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
         ];
     }
@@ -41,6 +44,7 @@ final class GreetingFactory extends PersistentObjectFactory
         return $this
             ->instantiateWith(fn (array $attributes): Greeting => Greeting::create(
                 $attributes['message'],
+                $attributes['author'],
                 $attributes['createdAt'],
                 $attributes['clock'] ?? Clock::get(),
             ));

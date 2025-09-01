@@ -14,11 +14,6 @@ final class EmailType extends AbstractValueObjectStringType
      */
     public const string NAME = 'email';
 
-    public function getTypeName(): string
-    {
-        return Email::class;
-    }
-
     /**
      * Spécifie la classe du ValueObject que ce type gère.
      */
