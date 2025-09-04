@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Kernel\Utility;
+namespace App\Business\Shared\Utility;
 
 /**
  * Représente le résultat d'une opération qui peut soit réussir (success)

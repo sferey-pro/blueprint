@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Kernel\ValueObject;
+namespace App\Business\Shared\Domain\ValueObject;
 
 /**
  * Contrat de base pour tous les objets de valeur (Value Objects) du domaine.

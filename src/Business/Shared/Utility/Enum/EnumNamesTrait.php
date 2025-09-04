@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Kernel\Enum;
+namespace App\Business\Shared\Utility\Enum;
 
 trait EnumNamesTrait
 {

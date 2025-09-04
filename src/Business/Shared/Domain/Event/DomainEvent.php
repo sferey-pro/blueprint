@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Kernel\Bus\Message;
+namespace App\Business\Shared\Domain\Event;
 
 /**
  * @template T

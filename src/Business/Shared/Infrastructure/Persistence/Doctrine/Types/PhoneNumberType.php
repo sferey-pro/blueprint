@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Business\Shared\Infrastructure\Persistence\Doctrine\Types;
 
 use App\Business\Shared\Domain\ValueObject\PhoneNumber;
-use App\Kernel\Persistence\Adapter\Doctrine\Types\AbstractValueObjectStringType;
 
 final class PhoneNumberType extends AbstractValueObjectStringType
 {

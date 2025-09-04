@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Kernel\ValueObject;
+namespace App\Business\Shared\Domain\ValueObject;
 
 /**
  * Classe de base abstraite pour tous les identifiants d'agrégat.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Kernel\Exception;
+namespace App\Business\Shared\Domain\Exception;
 
 /**
  * Exception levée lorsqu'une donnée fournie pour la création d'un Value Object

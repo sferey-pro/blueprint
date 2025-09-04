@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Business\Contexts\Greeting\Application\Command;
 
 use App\Business\Contexts\Greeting\Domain\GreetingRepositoryInterface;
+use App\Business\Shared\Domain\Port\UuidFactoryInterface;
 use App\Kernel\Attribute\AsCommandHandler;
 use Psr\Clock\ClockInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -14,10 +15,11 @@ use Symfony\Component\Workflow\WorkflowInterface;
 final readonly class PublishGreetingHandler
 {
     public function __construct(
+        private UuidFactoryInterface $uuidFactory,
+        private ClockInterface $clock,
         private GreetingRepositoryInterface $repository,
         #[Autowire(service: 'state_machine.greeting_publishing')]
         private WorkflowInterface $workflow,
-        private ClockInterface $clock,
     ) {
     }
 
@@ -36,7 +38,7 @@ final readonly class PublishGreetingHandler
         }
 
         // 2. On demande à l'agrégat d'exécuter le comportement métier
-        $greeting->publish($this->clock);
+        $greeting->publish($this->uuidFactory, $this->clock);
 
         // 3. On persiste l'état modifié de l'agrégat.
         // La transaction du bus de commande s'occupera du flush.

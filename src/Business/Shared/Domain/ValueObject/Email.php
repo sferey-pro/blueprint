@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Business\Shared\Domain\ValueObject;
 
-use App\Kernel\Exception\InvalidValueObjectDataException;
-use App\Kernel\ValueObject\AbstractStringValueObject;
+use App\Business\Shared\Domain\Exception\InvalidValueObjectDataException;
 use Webmozart\Assert\Assert;
 
 /**

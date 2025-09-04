@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Kernel\Persistence\Adapter\Doctrine\Types;
+namespace App\Business\Shared\Infrastructure\Persistence\Doctrine\Types;
 
-use App\Kernel\ValueObject\AggregateRootId;
+use App\Business\Shared\Domain\Port\UuidFactoryInterface;
+use App\Business\Shared\Domain\ValueObject\AggregateRootId;
+use App\Kernel\Persistence\Adapter\Doctrine\Types\DoctrineCustomTypeInterface;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
@@ -19,6 +21,13 @@ use Doctrine\DBAL\Types\Type;
  */
 abstract class AbstractValueObjectIdType extends Type implements DoctrineCustomTypeInterface
 {
+    private ?UuidFactoryInterface $uuidFactory = null;
+
+    public function setFactory(UuidFactoryInterface $factory): void
+    {
+        $this->uuidFactory = $factory;
+    }
+
     /**
      * Doit retourner le nom unique du type Doctrine (ex: 'user_id', 'dummy_id').
      * Ce nom sera utilisé dans les fichiers de mapping XML.
@@ -56,7 +65,7 @@ abstract class AbstractValueObjectIdType extends Type implements DoctrineCustomT
         }
 
         try {
-            return $voClass::fromString($value);
+            return $this->uuidFactory->fromString($voClass, $value);
         } catch (\InvalidArgumentException $e) {
             throw ConversionException::conversionFailed($value, $this->getName());
         }
@@ -84,7 +93,7 @@ abstract class AbstractValueObjectIdType extends Type implements DoctrineCustomT
         }
 
         try {
-            return $this->getValueObjectClass()::fromString($valueObject)->$toString();
+            return $voClass::fromString($valueObject)->$toString();
         } catch (\InvalidArgumentException $e) {
             throw ConversionException::conversionFailed($valueObject, $this->getName());
         }

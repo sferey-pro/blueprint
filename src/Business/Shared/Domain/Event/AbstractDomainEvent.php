@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Kernel\Bus\Message;
+namespace App\Business\Shared\Domain\Event;
 
-use App\Kernel\ValueObject\AggregateRootId;
-use App\Kernel\ValueObject\EventId;
+use App\Business\Shared\Domain\ValueObject\AggregateRootId;
+use App\Business\Shared\Domain\ValueObject\EventId;
 
 /**
  * Classe de base pour tous les événements de domaine, fournissant une structure commune.
@@ -16,19 +16,16 @@ use App\Kernel\ValueObject\EventId;
  */
 abstract readonly class AbstractDomainEvent implements DomainEvent
 {
-    public private(set) EventId $eventId;
-    public private(set) AggregateRootId $aggregateId;
-    public private(set) \DateTimeImmutable $occurredOn;
-
     /**
+     * @param EventId            $eventId     L'ID de l'événement
      * @param AggregateRootId    $aggregateId L'ID de l'agrégat qui a levé l'événement
      * @param \DateTimeImmutable $occurredOn  le moment où l'événement s'est produit
      */
-    public function __construct(AggregateRootId $aggregateId, \DateTimeImmutable $occurredOn)
-    {
-        $this->eventId = EventId::generate();
-        $this->aggregateId = $aggregateId;
-        $this->occurredOn = $occurredOn;
+    public function __construct(
+        public private(set) EventId $eventId,
+        public private(set) AggregateRootId $aggregateId,
+        public private(set) \DateTimeImmutable $occurredOn,
+    ) {
     }
 
     /**

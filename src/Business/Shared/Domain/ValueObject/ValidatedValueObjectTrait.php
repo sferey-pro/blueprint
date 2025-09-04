@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Kernel\ValueObject;
+namespace App\Business\Shared\Domain\ValueObject;
 
-use App\Kernel\Exception\ValidationException;
-use App\Kernel\Utility\Result;
+use App\Business\Shared\Domain\Exception\ValidationException;
+use App\Business\Shared\Utility\Result;
 use Webmozart\Assert\InvalidArgumentException;
 
 /**

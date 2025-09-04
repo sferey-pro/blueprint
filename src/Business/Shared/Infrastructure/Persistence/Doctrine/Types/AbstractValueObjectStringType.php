@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Kernel\Persistence\Adapter\Doctrine\Types;
+namespace App\Business\Shared\Infrastructure\Persistence\Doctrine\Types;
 
-use App\Kernel\ValueObject\AbstractStringValueObject;
+use App\Business\Shared\Domain\ValueObject\AbstractStringValueObject;
+use App\Kernel\Persistence\Adapter\Doctrine\Types\DoctrineCustomTypeInterface;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 

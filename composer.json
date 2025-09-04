@@ -13,6 +13,7 @@
         "doctrine/doctrine-bundle": "^2.15",
         "doctrine/doctrine-migrations-bundle": "^3.4",
         "doctrine/orm": "^3.5",
+        "psr/clock": "^1.0",
         "runtime/frankenphp-symfony": "^0.2.0",
         "symfony/clock": "7.3.*",
         "symfony/console": "7.3.*",

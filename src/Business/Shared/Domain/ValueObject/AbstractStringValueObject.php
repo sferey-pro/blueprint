@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Kernel\ValueObject;
+namespace App\Business\Shared\Domain\ValueObject;
 
-use App\Kernel\Exception\InvalidValueObjectDataException;
+use App\Business\Shared\Domain\Exception\InvalidValueObjectDataException;
 use Webmozart\Assert\Assert;
 
 /**

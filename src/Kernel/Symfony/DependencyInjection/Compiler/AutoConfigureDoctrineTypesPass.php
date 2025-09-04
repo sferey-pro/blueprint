@@ -41,7 +41,8 @@ final class AutoConfigureDoctrineTypesPass implements CompilerPassInterface
         $taggedServiceIds = $container->findTaggedServiceIds(self::CUSTOM_TYPE_TAG);
 
         foreach ($taggedServiceIds as $serviceId => $tags) {
-            $typeClass = $container->getDefinition((string) $serviceId)->getClass();
+            $definition = $container->getDefinition((string) $serviceId);
+            $typeClass = $definition->getClass();
             $reflection = new \ReflectionClass($typeClass);
 
             if (!$reflection->implementsInterface(DoctrineCustomTypeInterface::class)) {
