@@ -11,6 +11,7 @@ use App\Business\Contexts\Greeting\Domain\GreetingRepositoryInterface;
 use App\Business\Contexts\Greeting\Domain\ValueObject\Author;
 use App\Business\Contexts\Greeting\Domain\ValueObject\GreetingId;
 use App\Business\Contexts\Greeting\Infrastructure\Persistence\Doctrine\Repository\DoctrineGreetingRepository;
+use App\Business\Shared\Domain\Port\UuidFactoryInterface;
 use App\Business\Shared\Domain\ValueObject\Email;
 use App\Tests\Factory\GreetingFactory;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,6 +32,7 @@ final class DoctrineGreetingRepositoryTest extends KernelTestCase
     private ?GreetingRepositoryInterface $repository;
     private ?GreetingFinderInterface $finder;
     private ?ClockInterface $clock;
+    private ?UuidFactoryInterface $uuidFactory;
 
     protected function setUp(): void
     {
@@ -41,6 +43,7 @@ final class DoctrineGreetingRepositoryTest extends KernelTestCase
         $this->repository = $container->get(GreetingRepositoryInterface::class);
         $this->finder = $container->get(GreetingFinderInterface::class);
         $this->clock = $container->get(ClockInterface::class);
+        $this->uuidFactory = $container->get(UuidFactoryInterface::class);
     }
 
     public function testAddPersistsGreeting(): void
@@ -52,6 +55,7 @@ final class DoctrineGreetingRepositoryTest extends KernelTestCase
             'Hello from an integration test!',
             Author::create($email),
             $this->clock->now(),
+            $this->uuidFactory,
             $this->clock
         );
 
@@ -86,7 +90,7 @@ final class DoctrineGreetingRepositoryTest extends KernelTestCase
     public function testOfIdReturnsNullForNonExistingGreeting(): void
     {
         // 1. Arrange
-        $nonExistentId = GreetingId::generate();
+        $nonExistentId = $this->uuidFactory->generate(GreetingId::class);
 
         // 2. Act
         $foundGreeting = $this->repository->ofId($nonExistentId);

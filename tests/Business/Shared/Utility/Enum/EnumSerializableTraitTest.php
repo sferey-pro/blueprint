@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Kernel\Enum;
+namespace App\Tests\Business\Shared\Utility\Enum;
 
-use App\Kernel\Enum\EnumArraySerializableTrait;
-use App\Kernel\Enum\EnumJsonSerializableTrait;
-use App\Kernel\Enum\EnumNamesTrait;
-use App\Kernel\Enum\EnumValuesTrait;
-use App\Tests\Kernel\Enum\Fixtures\DummyBackedEnum;
-use App\Tests\Kernel\Enum\Fixtures\DummyUnitEnum;
+use App\Business\Shared\Utility\Enum\EnumArraySerializableTrait;
+use App\Business\Shared\Utility\Enum\EnumJsonSerializableTrait;
+use App\Business\Shared\Utility\Enum\EnumNamesTrait;
+use App\Business\Shared\Utility\Enum\EnumValuesTrait;
+use App\Tests\Business\Shared\Utility\Enum\Fixtures\DummyBackedEnum;
+use App\Tests\Business\Shared\Utility\Enum\Fixtures\DummyUnitEnum;
 use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;

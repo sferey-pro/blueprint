@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Kernel\Enum\Fixtures;
+namespace App\Tests\Business\Shared\Utility\Enum\Fixtures;
 
-use App\Kernel\Enum\EnumArraySerializableTrait;
-use App\Kernel\Enum\EnumJsonSerializableTrait;
+use App\Business\Shared\Utility\Enum\EnumArraySerializableTrait;
+use App\Business\Shared\Utility\Enum\EnumJsonSerializableTrait;
 
 enum DummyBackedEnum: string
 {

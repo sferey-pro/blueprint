@@ -6,8 +6,8 @@ namespace App\Tests\Business\Contexts\Greeting\Infrastructure\Command;
 
 use App\Business\Contexts\Greeting\Application\Command\CreateGreetingCommand;
 use App\Business\Contexts\Greeting\Infrastructure\Command\CreateGreetingCliCommand;
+use App\Business\Shared\Domain\Exception\ValidationException;
 use App\Kernel\Bus\CommandBusInterface;
-use App\Kernel\Exception\ValidationException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;

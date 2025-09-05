@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Kernel\Utility;
+namespace App\Tests\Business\Shared\Utility;
 
-use App\Kernel\Utility\Result;
+use App\Business\Shared\Utility\Result;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;

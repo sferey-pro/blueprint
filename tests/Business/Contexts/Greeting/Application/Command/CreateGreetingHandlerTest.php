@@ -9,7 +9,9 @@ use App\Business\Contexts\Greeting\Application\Command\CreateGreetingHandler;
 use App\Business\Contexts\Greeting\Domain\Event\GreetingWasCreated;
 use App\Business\Contexts\Greeting\Domain\Greeting;
 use App\Business\Contexts\Greeting\Domain\GreetingRepositoryInterface;
-use App\Kernel\Exception\ValidationException;
+use App\Business\Shared\Domain\Exception\ValidationException;
+use App\Business\Shared\Domain\Port\UuidFactoryInterface;
+use App\Tests\Faker\FakerUuidFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -24,11 +26,13 @@ final class CreateGreetingHandlerTest extends TestCase
 {
     private GreetingRepositoryInterface&MockObject $repositoryMock;
     private ClockInterface&MockClock $clock;
+    private UuidFactoryInterface $uuidFactory;
 
     protected function setUp(): void
     {
         $this->repositoryMock = $this->createMock(GreetingRepositoryInterface::class);
         $this->clock = new MockClock();
+        $this->uuidFactory = new FakerUuidFactory();
     }
 
     public function testInvokeUsesClockWhenDateIsNotProvided(): void
@@ -51,7 +55,7 @@ final class CreateGreetingHandlerTest extends TestCase
             }));
 
         // 2. Act
-        $handler = new CreateGreetingHandler($this->repositoryMock, $this->clock);
+        $handler = new CreateGreetingHandler($this->uuidFactory, $this->clock, $this->repositoryMock);
         $handler($command);
 
         // 3. Assert
@@ -72,7 +76,7 @@ final class CreateGreetingHandlerTest extends TestCase
         $this->repositoryMock->expects(self::never())->method('add');
 
         // 2. Act
-        $handler = new CreateGreetingHandler($this->repositoryMock, $this->clock);
+        $handler = new CreateGreetingHandler($this->uuidFactory, $this->clock, $this->repositoryMock);
         $handler($command);
 
         // 3. Assert (implicite) : Le test échouera si aucune exception (ou une mauvaise) n'est levée.
@@ -102,7 +106,7 @@ final class CreateGreetingHandlerTest extends TestCase
             }));
 
         // 2. Act
-        $handler = new CreateGreetingHandler($this->repositoryMock, $this->clock);
+        $handler = new CreateGreetingHandler($this->uuidFactory, $this->clock, $this->repositoryMock);
         $handler($command);
     }
 }

@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Helper\Doctrine\Types;
 
-use App\Kernel\ValueObject\AggregateRootId;
+use App\Business\Shared\Domain\Port\UuidFactoryInterface;
+use App\Business\Shared\Domain\ValueObject\AggregateRootId;
+use App\Business\Shared\Infrastructure\Persistence\Doctrine\Types\AbstractValueObjectIdType;
+use App\Tests\Faker\FakerUuidFactory;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -17,7 +20,8 @@ use PHPUnit\Framework\TestCase;
 abstract class ValueObjectIdTypeTestCase extends TestCase
 {
     private AbstractPlatform&MockObject $platform;
-    private Type $type;
+    private AbstractValueObjectIdType $type;
+    private UuidFactoryInterface $uuidFactory;
 
     /**
      * Doit retourner le FQCN (nom complet) de la classe de Type à tester.
@@ -43,6 +47,9 @@ abstract class ValueObjectIdTypeTestCase extends TestCase
     {
         $this->platform = $this->createMock(AbstractPlatform::class);
         $this->type = Type::getType($this->getTypeName());
+        $this->uuidFactory = new FakerUuidFactory();
+
+        $this->type->setFactory($this->uuidFactory);
     }
 
     public function testGetNameReturnsCorrectName(): void
@@ -65,7 +72,8 @@ abstract class ValueObjectIdTypeTestCase extends TestCase
     public function testConvertToPHPValueWithValidUuidString(): void
     {
         $voClass = $this->getValueObjectClass();
-        $uuidString = $voClass::generate()->value()->toRfc4122();
+        $uuid = $this->uuidFactory->generate($voClass);
+        $uuidString = (string) $uuid;
 
         $id = $this->type->convertToPHPValue($uuidString, $this->platform);
 
@@ -81,7 +89,8 @@ abstract class ValueObjectIdTypeTestCase extends TestCase
     public function testConvertToPHPValueWithObjectInstanceReturnsSameInstance(): void
     {
         $voClass = $this->getValueObjectClass();
-        $id = $voClass::generate();
+
+        $id = $this->uuidFactory->generate($voClass);
 
         $result = $this->type->convertToPHPValue($id, $this->platform);
 
@@ -95,8 +104,9 @@ abstract class ValueObjectIdTypeTestCase extends TestCase
         $this->platform->method('getStringTypeDeclarationSQL')->willReturn('CHAR(36)');
 
         $voClass = $this->getValueObjectClass();
+
         /** @var AggregateRootId $id */
-        $id = $voClass::generate();
+        $id = $this->uuidFactory->generate($voClass);
 
         // 2. Act
         $databaseValue = $this->type->convertToDatabaseValue($id, $this->platform);
@@ -112,8 +122,9 @@ abstract class ValueObjectIdTypeTestCase extends TestCase
         $this->platform->method('getStringTypeDeclarationSQL')->willReturn('CHAR(36)');
 
         $voClass = $this->getValueObjectClass();
+
         /** @var AggregateRootId $id */
-        $id = $voClass::generate();
+        $id = $this->uuidFactory->generate($voClass);
 
         // 2. Act
         $databaseValue = $this->type->convertToDatabaseValue($id, $this->platform);

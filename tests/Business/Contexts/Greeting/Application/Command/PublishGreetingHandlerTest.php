@@ -12,7 +12,9 @@ use App\Business\Contexts\Greeting\Domain\GreetingRepositoryInterface;
 use App\Business\Contexts\Greeting\Domain\GreetingStatus;
 use App\Business\Contexts\Greeting\Domain\ValueObject\Author;
 use App\Business\Contexts\Greeting\Domain\ValueObject\GreetingId;
+use App\Business\Shared\Domain\Port\UuidFactoryInterface;
 use App\Business\Shared\Domain\ValueObject\Email;
+use App\Tests\Faker\FakerUuidFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -29,18 +31,20 @@ final class PublishGreetingHandlerTest extends TestCase
     private GreetingRepositoryInterface&MockObject $repositoryMock;
     private WorkflowInterface&MockObject $workflowMock;
     private ClockInterface $clock;
+    private UuidFactoryInterface $uuidFactory;
 
     protected function setUp(): void
     {
         $this->repositoryMock = $this->createMock(GreetingRepositoryInterface::class);
         $this->workflowMock = $this->createMock(WorkflowInterface::class);
         $this->clock = new MockClock(); // Utilisation d'une horloge contrôlable pour les tests
+        $this->uuidFactory = new FakerUuidFactory();
     }
 
     public function testInvokeCallsPublishOnAggregateWhenTransitionIsAllowed(): void
     {
         // 1. Arrange
-        $greetingId = GreetingId::generate();
+        $greetingId = $this->uuidFactory->generate(GreetingId::class);
         $command = new PublishGreetingCommand($greetingId);
 
         // On crée une vraie instance de l'agrégat pour le test.
@@ -48,6 +52,7 @@ final class PublishGreetingHandlerTest extends TestCase
             'test message',
             Author::create(Email::fromValidatedValue('test@example.com')),
             $this->clock->now(),
+            $this->uuidFactory,
             $this->clock
         );
 
@@ -59,7 +64,7 @@ final class PublishGreetingHandlerTest extends TestCase
         $greeting->pullDomainEvents();
 
         // 2. Act
-        $handler = new PublishGreetingHandler($this->repositoryMock, $this->workflowMock, $this->clock);
+        $handler = new PublishGreetingHandler($this->uuidFactory, $this->clock, $this->repositoryMock, $this->workflowMock);
         $handler($command);
 
         // 3. Assert
@@ -79,12 +84,13 @@ final class PublishGreetingHandlerTest extends TestCase
         $this->expectExceptionMessage('Cannot publish this greeting.');
 
         // 1. Arrange
-        $greetingId = GreetingId::generate();
+        $greetingId = $this->uuidFactory->generate(GreetingId::class);
         $command = new PublishGreetingCommand($greetingId);
         $greeting = Greeting::create(
             'test message',
             Author::create(Email::fromValidatedValue('test@example.com')),
             $this->clock->now(),
+            $this->uuidFactory,
             $this->clock
         );
 
@@ -93,7 +99,7 @@ final class PublishGreetingHandlerTest extends TestCase
         $this->workflowMock->method('can')->with($greeting, 'publish')->willReturn(false);
 
         // 2. Act
-        $handler = new PublishGreetingHandler($this->repositoryMock, $this->workflowMock, $this->clock);
+        $handler = new PublishGreetingHandler($this->uuidFactory, $this->clock, $this->repositoryMock, $this->workflowMock);
         $handler($command);
     }
 
@@ -104,7 +110,7 @@ final class PublishGreetingHandlerTest extends TestCase
         $this->expectExceptionMessage('Greeting not found.');
 
         // 1. Arrange
-        $greetingId = GreetingId::generate();
+        $greetingId = $this->uuidFactory->generate(GreetingId::class);
         $command = new PublishGreetingCommand($greetingId);
 
         // On configure le mock du repository pour qu'il retourne null,
@@ -116,7 +122,7 @@ final class PublishGreetingHandlerTest extends TestCase
         $this->workflowMock->expects(self::never())->method('apply');
 
         // 2. Act
-        $handler = new PublishGreetingHandler($this->repositoryMock, $this->workflowMock, $this->clock);
+        $handler = new PublishGreetingHandler($this->uuidFactory, $this->clock, $this->repositoryMock, $this->workflowMock);
         $handler($command);
     }
 }

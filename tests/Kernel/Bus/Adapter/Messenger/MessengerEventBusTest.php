@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Kernel\Bus\Adapter\Messenger;
 
+use App\Business\Shared\Domain\Event\DomainEvent;
 use App\Kernel\Bus\Adapter\Messenger\MessengerEventBus;
-use App\Kernel\Bus\Message\DomainEvent;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;

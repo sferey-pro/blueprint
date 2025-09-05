@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Kernel\Enum\Fixtures;
+namespace App\Tests\Business\Shared\Utility\Enum\Fixtures;
 
-use App\Kernel\Enum\EnumNamesTrait;
+use App\Business\Shared\Utility\Enum\EnumNamesTrait;
 
 enum DummyUnitEnum
 {

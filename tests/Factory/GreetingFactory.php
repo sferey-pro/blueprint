@@ -7,6 +7,7 @@ namespace App\Tests\Factory;
 use App\Business\Contexts\Greeting\Domain\Greeting;
 use App\Business\Contexts\Greeting\Domain\GreetingStatus;
 use App\Business\Contexts\Greeting\Domain\ValueObject\Author;
+use App\Business\Shared\Domain\Port\UuidFactoryInterface;
 use App\Business\Shared\Domain\ValueObject\Email;
 use Psr\Clock\ClockInterface;
 use Symfony\Component\Clock\Clock;
@@ -17,6 +18,11 @@ use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
  */
 final class GreetingFactory extends PersistentObjectFactory
 {
+    public function __construct(
+        public UuidFactoryInterface $uuidFactory,
+    ) {
+    }
+
     public static function class(): string
     {
         return Greeting::class;
@@ -46,6 +52,7 @@ final class GreetingFactory extends PersistentObjectFactory
                 $attributes['message'],
                 $attributes['author'],
                 $attributes['createdAt'],
+                $this->uuidFactory,
                 $attributes['clock'] ?? Clock::get(),
             ));
     }

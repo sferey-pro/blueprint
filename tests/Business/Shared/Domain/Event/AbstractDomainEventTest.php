@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Kernel\Bus\Message;
+namespace App\Tests\Business\Shared\Domain\Event;
 
-use App\Kernel\Bus\Message\AbstractDomainEvent;
-use App\Kernel\ValueObject\AggregateRootId;
-use App\Kernel\ValueObject\EventId;
+use App\Business\Shared\Domain\Event\AbstractDomainEvent;
+use App\Business\Shared\Domain\Port\UuidFactoryInterface;
+use App\Business\Shared\Domain\ValueObject\AggregateRootId;
+use App\Business\Shared\Domain\ValueObject\EventId;
+use App\Tests\Faker\FakerUuidFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
@@ -16,14 +18,22 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(AbstractDomainEvent::class)]
 final class AbstractDomainEventTest extends TestCase
 {
+    private UuidFactoryInterface $uuidFactory;
+
+    protected function setUp(): void
+    {
+        $this->uuidFactory = new FakerUuidFactory();
+    }
+
     public function testConstructorAndGettersWorkAsExpected(): void
     {
         // 1. Arrange
-        $aggregateId = DummyAggregateRootId::generate();
+        $eventId = $this->uuidFactory->generate(EventId::class);
+        $aggregateId = $this->uuidFactory->generate(DummyAggregateRootId::class);
         $occurredOn = new \DateTimeImmutable();
 
         // 2. Act
-        $event = new readonly class($aggregateId, $occurredOn) extends AbstractDomainEvent {
+        $event = new readonly class($eventId, $aggregateId, $occurredOn) extends AbstractDomainEvent {
             public static function eventName(): string
             {
                 return 'dummy.event';
@@ -32,6 +42,7 @@ final class AbstractDomainEventTest extends TestCase
 
         // 3. Assert
         self::assertInstanceOf(EventId::class, $event->eventId);
+        self::assertTrue($eventId->equals($event->eventId));
         self::assertTrue($aggregateId->equals($event->aggregateId));
         self::assertSame($occurredOn, $event->occurredOn);
     }

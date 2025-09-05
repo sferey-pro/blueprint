@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Kernel\ValueObject;
+namespace App\Tests\Business\Shared\Domain\ValueObject;
 
-use App\Kernel\ValueObject\AbstractStringValueObject;
+use App\Business\Shared\Domain\ValueObject\AbstractStringValueObject;
 use Webmozart\Assert\Assert;
 
 /**

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Kernel\ValueObject;
+namespace App\Tests\Business\Shared\Domain\ValueObject;
 
-use App\Kernel\Exception\ValidationException;
-use App\Kernel\ValueObject\AbstractStringValueObject;
-use App\Kernel\ValueObject\ValidatedValueObjectTrait;
+use App\Business\Shared\Domain\Exception\ValidationException;
+use App\Business\Shared\Domain\ValueObject\AbstractStringValueObject;
+use App\Business\Shared\Domain\ValueObject\ValidatedValueObjectTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
