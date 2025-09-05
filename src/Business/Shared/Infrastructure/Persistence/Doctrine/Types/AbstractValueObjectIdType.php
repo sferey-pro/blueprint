@@ -8,8 +8,7 @@ use App\Business\Shared\Domain\Port\UuidFactoryInterface;
 use App\Business\Shared\Domain\ValueObject\AggregateRootId;
 use App\Kernel\Persistence\Adapter\Doctrine\Types\DoctrineCustomTypeInterface;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\{ConversionException, Type};
 
 /**
  * Classe de base pour les types Doctrine qui gèrent nos Value Objects d'ID d'agrégat.

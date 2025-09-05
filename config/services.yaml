@@ -21,9 +21,5 @@ services:
 
     Psr\Clock\ClockInterface: '@clock'
 
-    # App\Business\Shared\Infrastructure\Persistence\Doctrine\Type\AbstractValueObjectIdType:
-    #     calls:
-    #         - setFactory: ['@App\Business\Shared\Domain\Port\UuidFactoryInterface']
-
     App\Business\Shared\Domain\Port\UuidFactoryInterface:
         class: App\Business\Shared\Infrastructure\Adapter\Symfony\SymfonyUuidFactory

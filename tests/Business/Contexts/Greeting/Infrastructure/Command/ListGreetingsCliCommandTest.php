@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Business\Contexts\Greeting\Infrastructure\Command;
 
-use App\Business\Contexts\Greeting\Application\Query\GreetingView;
-use App\Business\Contexts\Greeting\Application\Query\ListGreetingsQuery;
+use App\Business\Contexts\Greeting\Application\Query\{GreetingView, ListGreetingsQuery};
 use App\Business\Contexts\Greeting\Domain\GreetingStatus;
 use App\Business\Contexts\Greeting\Infrastructure\Command\ListGreetingsCliCommand;
 use App\Kernel\Bus\QueryBusInterface;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\{CoversClass, Group};
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;

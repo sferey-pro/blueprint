@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Business\Contexts\Greeting\Domain\ValueObject;
 
-use App\Business\Shared\Domain\ValueObject\Email;
-use App\Business\Shared\Domain\ValueObject\ValueObjectInterface;
+use App\Business\Shared\Domain\ValueObject\{Email, ValueObjectInterface};
 
 final readonly class Author implements ValueObjectInterface
 {

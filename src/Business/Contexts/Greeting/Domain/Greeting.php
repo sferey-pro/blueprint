@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Business\Contexts\Greeting\Domain;
 
-use App\Business\Contexts\Greeting\Domain\Event\GreetingWasCreated;
-use App\Business\Contexts\Greeting\Domain\Event\GreetingWasPublished;
-use App\Business\Contexts\Greeting\Domain\ValueObject\Author;
-use App\Business\Contexts\Greeting\Domain\ValueObject\GreetingId;
+use App\Business\Contexts\Greeting\Domain\Event\{GreetingWasCreated, GreetingWasPublished};
+use App\Business\Contexts\Greeting\Domain\ValueObject\{Author, GreetingId};
 use App\Business\Shared\Domain\Aggregate\AggregateRoot;
 use App\Business\Shared\Domain\Port\UuidFactoryInterface;
 use App\Business\Shared\Domain\ValueObject\EventId;

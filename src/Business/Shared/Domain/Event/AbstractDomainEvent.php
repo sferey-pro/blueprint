@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Business\Shared\Domain\Event;
 
-use App\Business\Shared\Domain\ValueObject\AggregateRootId;
-use App\Business\Shared\Domain\ValueObject\EventId;
+use App\Business\Shared\Domain\ValueObject\{AggregateRootId, EventId};
 
 /**
  * Classe de base pour tous les événements de domaine, fournissant une structure commune.

@@ -10,8 +10,9 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final class MessengerEventBus implements EventBusInterface
 {
-    public function __construct(private MessageBusInterface $eventBus)
-    {
+    public function __construct(
+        private MessageBusInterface $eventBus,
+    ) {
     }
 
     public function dispatch(object $event): void

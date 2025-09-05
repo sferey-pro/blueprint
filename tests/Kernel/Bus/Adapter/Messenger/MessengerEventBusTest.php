@@ -6,12 +6,10 @@ namespace App\Tests\Kernel\Bus\Adapter\Messenger;
 
 use App\Business\Shared\Domain\Event\DomainEvent;
 use App\Kernel\Bus\Adapter\Messenger\MessengerEventBus;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\{CoversClass, Group};
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\{Envelope, MessageBusInterface};
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 #[Group('unit')]

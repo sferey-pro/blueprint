@@ -4,19 +4,15 @@ declare(strict_types=1);
 
 namespace App\Tests\Business\Contexts\Greeting\Infrastructure\Persistence\Doctrine\Repository;
 
-use App\Business\Contexts\Greeting\Application\Query\GreetingFinderInterface;
-use App\Business\Contexts\Greeting\Application\Query\GreetingView;
-use App\Business\Contexts\Greeting\Domain\Greeting;
-use App\Business\Contexts\Greeting\Domain\GreetingRepositoryInterface;
-use App\Business\Contexts\Greeting\Domain\ValueObject\Author;
-use App\Business\Contexts\Greeting\Domain\ValueObject\GreetingId;
+use App\Business\Contexts\Greeting\Application\Query\{GreetingFinderInterface, GreetingView};
+use App\Business\Contexts\Greeting\Domain\{Greeting, GreetingRepositoryInterface};
+use App\Business\Contexts\Greeting\Domain\ValueObject\{Author, GreetingId};
 use App\Business\Contexts\Greeting\Infrastructure\Persistence\Doctrine\Repository\DoctrineGreetingRepository;
 use App\Business\Shared\Domain\Port\UuidFactoryInterface;
 use App\Business\Shared\Domain\ValueObject\Email;
 use App\Tests\Factory\GreetingFactory;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\{CoversClass, Group};
 use Psr\Clock\ClockInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Zenstruck\Foundry\Test\ResetDatabase;

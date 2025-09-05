@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace App\Tests\Business\Contexts\Greeting\Application\Command;
 
-use App\Business\Contexts\Greeting\Application\Command\CreateGreetingCommand;
-use App\Business\Contexts\Greeting\Application\Command\CreateGreetingHandler;
+use App\Business\Contexts\Greeting\Application\Command\{CreateGreetingCommand, CreateGreetingHandler};
 use App\Business\Contexts\Greeting\Domain\Event\GreetingWasCreated;
-use App\Business\Contexts\Greeting\Domain\Greeting;
-use App\Business\Contexts\Greeting\Domain\GreetingRepositoryInterface;
+use App\Business\Contexts\Greeting\Domain\{Greeting, GreetingRepositoryInterface};
 use App\Business\Shared\Domain\Exception\ValidationException;
 use App\Business\Shared\Domain\Port\UuidFactoryInterface;
 use App\Tests\Faker\FakerUuidFactory;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\{CoversClass, Group};
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;

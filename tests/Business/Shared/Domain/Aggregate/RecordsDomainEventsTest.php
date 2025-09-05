@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Business\Shared\Domain\Aggregate;
 
 use App\Business\Shared\Domain\Aggregate\RecordsDomainEvents;
-use PHPUnit\Framework\Attributes\CoversTrait;
-use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\{CoversTrait, Group};
 use PHPUnit\Framework\TestCase;
 
 #[Group('unit')]

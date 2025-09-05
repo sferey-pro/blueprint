@@ -8,9 +8,7 @@ use App\Business\Shared\Domain\Port\UuidFactoryInterface;
 use App\Business\Shared\Domain\ValueObject\AbstractUid;
 use App\Business\Shared\Infrastructure\Adapter\Symfony\SymfonyUuid;
 use App\Tests\Faker\FakerUuidFactory;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\{CoversClass, DataProvider, Group};
 use PHPUnit\Framework\TestCase;
 
 #[Group('unit')]

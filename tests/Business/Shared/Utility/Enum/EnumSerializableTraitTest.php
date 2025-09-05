@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Business\Shared\Utility\Enum;
 
-use App\Business\Shared\Utility\Enum\EnumArraySerializableTrait;
-use App\Business\Shared\Utility\Enum\EnumJsonSerializableTrait;
-use App\Business\Shared\Utility\Enum\EnumNamesTrait;
-use App\Business\Shared\Utility\Enum\EnumValuesTrait;
-use App\Tests\Business\Shared\Utility\Enum\Fixtures\DummyBackedEnum;
-use App\Tests\Business\Shared\Utility\Enum\Fixtures\DummyUnitEnum;
-use PHPUnit\Framework\Attributes\CoversTrait;
-use PHPUnit\Framework\Attributes\Group;
+use App\Business\Shared\Utility\Enum\{EnumArraySerializableTrait, EnumJsonSerializableTrait, EnumNamesTrait, EnumValuesTrait};
+use App\Tests\Business\Shared\Utility\Enum\Fixtures\{DummyBackedEnum, DummyUnitEnum};
+use PHPUnit\Framework\Attributes\{CoversTrait, Group};
 use PHPUnit\Framework\TestCase;
 
 #[Group('unit')]

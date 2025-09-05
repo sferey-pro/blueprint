@@ -6,9 +6,7 @@ namespace App\Tests\Business\Shared\Domain\ValueObject;
 
 use App\Business\Shared\Domain\Exception\ValidationException;
 use App\Business\Shared\Domain\ValueObject\PhoneNumber;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\{CoversClass, DataProvider, Group};
 use PHPUnit\Framework\TestCase;
 use Webmozart\Assert\InvalidArgumentException;
 

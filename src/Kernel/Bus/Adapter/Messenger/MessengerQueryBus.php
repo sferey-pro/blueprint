@@ -7,8 +7,7 @@ namespace App\Kernel\Bus\Adapter\Messenger;
 use App\Kernel\Bus\Message\Query;
 use App\Kernel\Bus\QueryBusInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
-use Symfony\Component\Messenger\HandleTrait;
-use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\{HandleTrait, MessageBusInterface};
 
 final class MessengerQueryBus implements QueryBusInterface
 {

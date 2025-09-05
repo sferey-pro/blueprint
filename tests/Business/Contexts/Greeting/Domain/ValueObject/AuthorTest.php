@@ -6,8 +6,7 @@ namespace App\Tests\Business\Contexts\Greeting\Domain\ValueObject;
 
 use App\Business\Contexts\Greeting\Domain\ValueObject\Author;
 use App\Business\Shared\Domain\ValueObject\Email;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\{CoversClass, Group};
 use PHPUnit\Framework\TestCase;
 
 #[Group('unit')]

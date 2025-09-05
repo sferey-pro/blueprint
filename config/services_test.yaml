@@ -12,8 +12,7 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
     App\Tests\Factory\:
-        resource: '../tests/Factory/*'
-        public: true
+        resource: '../tests/Factory'
 
     App\Business\Shared\Domain\Port\UuidFactoryInterface:
         class: App\Tests\Faker\FakerUuidFactory

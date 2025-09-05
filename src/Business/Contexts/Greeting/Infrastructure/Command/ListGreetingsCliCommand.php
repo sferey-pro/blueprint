@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Business\Contexts\Greeting\Infrastructure\Command;
 
-use App\Business\Contexts\Greeting\Application\Query\GreetingView;
-use App\Business\Contexts\Greeting\Application\Query\ListGreetingsQuery;
+use App\Business\Contexts\Greeting\Application\Query\{GreetingView, ListGreetingsQuery};
 use App\Kernel\Bus\QueryBusInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

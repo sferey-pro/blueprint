@@ -6,11 +6,9 @@ namespace App\Tests\Business\Shared\Domain\Event;
 
 use App\Business\Shared\Domain\Event\AbstractDomainEvent;
 use App\Business\Shared\Domain\Port\UuidFactoryInterface;
-use App\Business\Shared\Domain\ValueObject\AggregateRootId;
-use App\Business\Shared\Domain\ValueObject\EventId;
+use App\Business\Shared\Domain\ValueObject\{AggregateRootId, EventId};
 use App\Tests\Faker\FakerUuidFactory;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\{CoversClass, Group};
 use PHPUnit\Framework\TestCase;
 
 #[Group('unit')]

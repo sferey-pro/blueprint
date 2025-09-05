@@ -7,8 +7,7 @@ namespace App\Tests\E2E\Greeting;
 use App\Business\Contexts\Greeting\Infrastructure\Command\ListGreetingsCliCommand;
 use App\Tests\Factory\GreetingFactory;
 use App\Tests\Helper\Command\CommandTestCase;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\{CoversClass, Group};
 use Psr\Clock\ClockInterface;
 use Zenstruck\Foundry\Test\ResetDatabase;
 

@@ -10,8 +10,7 @@ use App\Business\Contexts\Greeting\Infrastructure\Command\PublishGreetingCliComm
 use App\Business\Shared\Domain\Port\UuidFactoryInterface;
 use App\Kernel\Bus\CommandBusInterface;
 use App\Tests\Faker\FakerUuidFactory;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\{CoversClass, Group};
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;

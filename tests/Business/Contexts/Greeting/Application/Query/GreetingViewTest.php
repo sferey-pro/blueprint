@@ -6,8 +6,7 @@ namespace App\Tests\Business\Contexts\Greeting\Application\Query;
 
 use App\Business\Contexts\Greeting\Application\Query\GreetingView;
 use App\Business\Contexts\Greeting\Domain\GreetingStatus;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\{CoversClass, Group};
 use PHPUnit\Framework\TestCase;
 
 #[Group('unit')]

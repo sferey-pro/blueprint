@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Factory;
 
-use App\Business\Contexts\Greeting\Domain\Greeting;
-use App\Business\Contexts\Greeting\Domain\GreetingStatus;
+use App\Business\Contexts\Greeting\Domain\{Greeting, GreetingStatus};
 use App\Business\Contexts\Greeting\Domain\ValueObject\Author;
 use App\Business\Shared\Domain\Port\UuidFactoryInterface;
 use App\Business\Shared\Domain\ValueObject\Email;

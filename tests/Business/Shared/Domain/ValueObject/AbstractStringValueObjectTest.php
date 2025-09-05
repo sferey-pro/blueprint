@@ -5,12 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Business\Shared\Domain\ValueObject;
 
 use App\Business\Shared\Domain\Exception\ValidationException;
-use App\Business\Shared\Domain\ValueObject\AbstractStringValueObject;
-use App\Business\Shared\Domain\ValueObject\ValidatedValueObjectTrait;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\CoversTrait;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
+use App\Business\Shared\Domain\ValueObject\{AbstractStringValueObject, ValidatedValueObjectTrait};
+use PHPUnit\Framework\Attributes\{CoversClass, CoversTrait, DataProvider, Group};
 use PHPUnit\Framework\TestCase;
 use Webmozart\Assert\InvalidArgumentException;
 

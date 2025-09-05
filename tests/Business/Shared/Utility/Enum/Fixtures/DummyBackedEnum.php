@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Business\Shared\Utility\Enum\Fixtures;
 
-use App\Business\Shared\Utility\Enum\EnumArraySerializableTrait;
-use App\Business\Shared\Utility\Enum\EnumJsonSerializableTrait;
+use App\Business\Shared\Utility\Enum\{EnumArraySerializableTrait, EnumJsonSerializableTrait};
 
 enum DummyBackedEnum: string
 {

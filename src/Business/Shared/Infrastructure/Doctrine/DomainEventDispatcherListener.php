@@ -7,8 +7,7 @@ namespace App\Business\Shared\Infrastructure\Doctrine;
 use App\Business\Shared\Domain\Aggregate\AggregateRoot;
 use App\Kernel\Bus\EventBusInterface;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
-use Doctrine\ORM\Event\OnFlushEventArgs;
-use Doctrine\ORM\Event\PostFlushEventArgs;
+use Doctrine\ORM\Event\{OnFlushEventArgs, PostFlushEventArgs};
 use Doctrine\ORM\Events;
 
 /**
