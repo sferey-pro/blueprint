@@ -26,6 +26,11 @@ final readonly class SymfonyUuid implements UuidInterface
         return $this->value->toRfc4122();
     }
 
+    public function toBinary(): string
+    {
+        return $this->value->toBinary();
+    }
+
     public function equals(UuidInterface $other): bool
     {
         return $other instanceof self && $this->value->equals($other->value);
