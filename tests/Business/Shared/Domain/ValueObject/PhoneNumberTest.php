@@ -38,6 +38,7 @@ final class PhoneNumberTest extends TestCase
         yield 'with spaces and dashes' => ['+33 (0)1 23-45-67-89', '+330123456789'];
         yield 'local number with formatting' => ['(04) 12 34 56 78', '0412345678'];
         yield 'number with leading/trailing spaces' => ['  +33 123 456 789  ', '+33123456789'];
+        yield 'exactly 15 chars normalized' => ['+1 (234) 567-8901-333', '+12345678901333'];
     }
 
     /**
@@ -60,6 +61,7 @@ final class PhoneNumberTest extends TestCase
     {
         yield 'empty phone number' => ['', 'Phone number cannot be empty.'];
         yield 'too long' => ['+12345678901234567890', 'Phone number cannot exceed 15 characters.'];
+        yield 'exactly 16 chars' => ['+123456789012345', 'Phone number cannot exceed 15 characters.'];
         yield 'invalid characters' => ['+33-abc-123', 'Phone number "+33-abc-123" is not valid.'];
         yield 'plus sign in the middle' => ['01+23456789', 'Phone number "01+23456789" is not valid.'];
     }

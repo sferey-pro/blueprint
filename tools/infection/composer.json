@@ -1,0 +1,15 @@
+{
+    "require": {
+        "infection/infection": "^0.31.2"
+    },
+    "config": {
+        "allow-plugins": {
+            "infection/extension-installer": true
+        },
+        "platform": {
+            "php": "8.4"
+        },
+        "bin-dir": "../bin",
+        "sort-packages": true
+    }
+}

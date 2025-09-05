@@ -107,7 +107,7 @@ final class AbstractStringValueObjectTest extends TestCase
 
     public function testToArray(): void
     {
-        $vo = DummyStringVo::fromValidatedValue('test value');
+        $vo = DummyStringVO::fromValidatedValue('test value');
         $expected = ['value' => 'test value'];
 
         self::assertSame($expected, $vo->__toArray());
@@ -116,9 +116,9 @@ final class AbstractStringValueObjectTest extends TestCase
     public function testFromArrayWithValidData(): void
     {
         $data = ['value' => 'test value'];
-        $vo = DummyStringVo::fromArray($data);
+        $vo = DummyStringVO::fromArray($data);
 
-        self::assertInstanceOf(DummyStringVo::class, $vo);
+        self::assertInstanceOf(DummyStringVO::class, $vo);
         self::assertSame('test value', $vo->value());
     }
 
@@ -127,6 +127,6 @@ final class AbstractStringValueObjectTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Missing required fields: value');
 
-        DummyStringVo::fromArray([]);
+        DummyStringVO::fromArray([]);
     }
 }

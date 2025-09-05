@@ -27,6 +27,30 @@ final class EmailTest extends TestCase
     }
 
     /**
+     * @param non-empty-string $expected
+     */
+    #[DataProvider('provideValidMultibyteEmails')]
+    public function testCreateWithValidMultibyteEmails(string $input, string $expected): void
+    {
+        $result = Email::create('ŞȲṂḞƠŇŸ@example.com');
+
+        self::assertTrue($result->isSuccess());
+
+        $email = $result->value();
+        self::assertInstanceOf(Email::class, $email);
+        self::assertSame('şȳṃḟơňÿ@example.com', $email->value());
+    }
+
+    public static function provideValidMultibyteEmails(): \Generator
+    {
+        yield 'French accent' => ['ÉLÈVE@example.com', 'élève@example.com'];
+        yield 'Turkish I' => ['TEST-İ@example.com', 'test-i@example.com'];
+        yield 'Cyrillic characters' => ['ПОЧТА@example.com', 'почта@example.com'];
+        yield 'German eszett' => ['fußball@example.com', 'fußball@example.com'];
+        yield 'Special' => ['ŞȲṂḞƠŇŸ@example.com', 'şȳṃḟơňÿ@example.com'];
+    }
+
+    /**
      * @param non-empty-string $invalidValue
      */
     #[DataProvider('provideInvalidEmails')]

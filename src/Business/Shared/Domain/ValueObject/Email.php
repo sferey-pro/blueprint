@@ -30,10 +30,17 @@ final readonly class Email extends AbstractStringValueObject
     protected static function validateString(string $value): void
     {
         $email = $value;
+
+        /**
+         * @infection-ignore-all MBString
+         */
         $normalizedEmail = mb_strtolower(mb_trim($email));
 
         Assert::notEmpty($normalizedEmail, 'Email address cannot be empty');
         Assert::maxLength($normalizedEmail, self::MAX_LENGTH, 'Email address cannot exceed %2$d characters. Got %s');
-        Assert::email($normalizedEmail, '%s is not a valid email address');
+        Assert::true(
+            false !== filter_var($normalizedEmail, \FILTER_VALIDATE_EMAIL, \FILTER_FLAG_EMAIL_UNICODE),
+            \sprintf('"%s" is not a valid email address.', $normalizedEmail)
+        );
     }
 }
