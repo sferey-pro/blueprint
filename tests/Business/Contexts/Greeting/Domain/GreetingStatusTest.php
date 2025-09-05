@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Business\Contexts\Greeting\Domain;
 
 use App\Business\Contexts\Greeting\Domain\GreetingStatus;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\{CoversClass, DataProvider, Group};
 use PHPUnit\Framework\TestCase;
 
 #[Group('unit')]

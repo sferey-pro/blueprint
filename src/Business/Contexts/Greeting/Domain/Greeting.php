@@ -4,35 +4,19 @@ declare(strict_types=1);
 
 namespace App\Business\Contexts\Greeting\Domain;
 
-use App\Business\Contexts\Greeting\Domain\Event\GreetingWasCreated;
-use App\Business\Contexts\Greeting\Domain\Event\GreetingWasPublished;
-use App\Business\Contexts\Greeting\Domain\ValueObject\Author;
-use App\Business\Contexts\Greeting\Domain\ValueObject\GreetingId;
-use App\Business\Contexts\Greeting\Infrastructure\Persistence\Doctrine\Repository\DoctrineGreetingRepository;
-use App\Business\Contexts\Greeting\Infrastructure\Persistence\Doctrine\Types\GreetingIdType;
+use App\Business\Contexts\Greeting\Domain\Event\{GreetingWasCreated, GreetingWasPublished};
+use App\Business\Contexts\Greeting\Domain\ValueObject\{Author, GreetingId};
 use App\Business\Shared\Domain\Aggregate\AggregateRoot;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
+use App\Business\Shared\Domain\Port\UuidFactoryInterface;
+use App\Business\Shared\Domain\ValueObject\EventId;
 use Psr\Clock\ClockInterface;
 
-#[ORM\Entity(repositoryClass: DoctrineGreetingRepository::class)]
-#[ORM\Table(name: 'greetings')]
 class Greeting extends AggregateRoot
 {
-    #[ORM\Id]
-    #[ORM\Column(type: GreetingIdType::NAME, length: 36, unique: true)]
     public private(set) GreetingId $id;
-
-    #[ORM\Column(type: 'text')]
     public private(set) string $message;
-
-    #[ORM\Column(type: 'datetime_immutable')]
     public private(set) \DateTimeImmutable $createdAt;
-
-    #[ORM\Column(name: 'status', type: Types::STRING, length: 255, enumType: GreetingStatus::class)]
     public private(set) GreetingStatus $status;
-
-    #[ORM\Embedded(class: Author::class, columnPrefix: 'author_')]
     public private(set) Author $author;
 
     private function __construct(GreetingId $id, string $message, Author $author, \DateTimeImmutable $createdAt)
@@ -45,11 +29,21 @@ class Greeting extends AggregateRoot
         $this->status = GreetingStatus::DRAFT; // Un nouveau Greeting est toujours un brouillon.
     }
 
-    public static function create(string $message, Author $author, \DateTimeImmutable $createdAt, ClockInterface $clock): self
-    {
-        $greeting = new self(GreetingId::generate(), $message, $author, $createdAt);
+    public static function create(
+        string $message,
+        Author $author,
+        \DateTimeImmutable $createdAt,
+        UuidFactoryInterface $uuidFactory,
+        ClockInterface $clock,
+    ): self {
+        $id = $uuidFactory->generate(GreetingId::class);
+
+        $greeting = new self($id, $message, $author, $createdAt);
+
+        $eventId = $uuidFactory->generate(EventId::class);
 
         $greeting->raise(new GreetingWasCreated(
+            $eventId,
             $greeting->id,
             $greeting->message,
             $greeting->createdAt,
@@ -59,13 +53,16 @@ class Greeting extends AggregateRoot
         return $greeting;
     }
 
-    public function publish(ClockInterface $clock): void
+    public function publish(UuidFactoryInterface $uuidFactory, ClockInterface $clock): void
     {
+        $eventId = $uuidFactory->generate(EventId::class);
         $this->status = GreetingStatus::PUBLISHED;
 
-        $this->raise(
-            new GreetingWasPublished($this->id, $clock->now())
-        );
+        $this->raise(new GreetingWasPublished(
+            $eventId,
+            $this->id,
+            $clock->now()
+        ));
     }
 
     public function getStatus(): string

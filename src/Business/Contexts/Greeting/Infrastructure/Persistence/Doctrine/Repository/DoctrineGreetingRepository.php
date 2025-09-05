@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Business\Contexts\Greeting\Infrastructure\Persistence\Doctrine\Repository;
 
-use App\Business\Contexts\Greeting\Application\Query\GreetingFinderInterface;
-use App\Business\Contexts\Greeting\Application\Query\GreetingView;
-use App\Business\Contexts\Greeting\Domain\Greeting;
-use App\Business\Contexts\Greeting\Domain\GreetingRepositoryInterface;
+use App\Business\Contexts\Greeting\Application\Query\{GreetingFinderInterface, GreetingView};
+use App\Business\Contexts\Greeting\Domain\{Greeting, GreetingRepositoryInterface};
 use App\Business\Contexts\Greeting\Domain\ValueObject\GreetingId;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

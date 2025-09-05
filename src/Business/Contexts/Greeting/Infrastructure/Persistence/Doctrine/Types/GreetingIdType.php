@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Business\Contexts\Greeting\Infrastructure\Persistence\Doctrine\Types;
 
 use App\Business\Contexts\Greeting\Domain\ValueObject\GreetingId;
-use App\Kernel\Persistence\Adapter\Doctrine\Types\AbstractValueObjectIdType;
+use App\Business\Shared\Infrastructure\Persistence\Doctrine\Types\AbstractValueObjectIdType;
 
 /**
  * Classe de type Doctrine pour le ValueObject GreetingId.

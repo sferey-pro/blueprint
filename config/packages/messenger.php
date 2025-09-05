@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Business\Shared\Domain\Event\DomainEvent;
 use App\Kernel\Bus\Message\Command;
-use App\Kernel\Bus\Message\DomainEvent;
 use App\Kernel\Bus\Message\Query;
 use Symfony\Config\FrameworkConfig;
 

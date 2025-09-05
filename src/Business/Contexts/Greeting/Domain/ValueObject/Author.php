@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace App\Business\Contexts\Greeting\Domain\ValueObject;
 
-use App\Business\Shared\Domain\ValueObject\Email;
-use App\Business\Shared\Infrastructure\Persistence\Doctrine\Types\EmailType;
-use App\Kernel\ValueObject\ValueObjectInterface;
-use Doctrine\ORM\Mapping as ORM;
+use App\Business\Shared\Domain\ValueObject\{Email, ValueObjectInterface};
 
-#[ORM\Embeddable]
 final readonly class Author implements ValueObjectInterface
 {
-    #[ORM\Column(type: EmailType::NAME, length: 180)]
     public private(set) Email $email;
 
     private function __construct(Email $email)

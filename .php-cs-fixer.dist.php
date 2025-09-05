@@ -53,6 +53,10 @@ return (new Config())
         'phpdoc_to_comment' => false,        // https://cs.symfony.com/doc/rules/phpdoc/phpdoc_to_comment.html Needed to avoid messing with @var annotations for PHPStan
         'yoda_style' => true,                // https://cs.symfony.com/doc/rules/control_structure/yoda_style.html
         'declare_strict_types' => true,      // https://cs.symfony.com/doc/rules/strict/declare_strict_types.html
+        'single_import_per_statement' => false,
+        'group_import' => [
+            'group_types' => ['classy'],         // https://cs.symfony.com/doc/rules/import/group_import.html
+        ],
     ])
 
     ->setFinder($finder)                                 // https://cs.symfony.com/doc/config.html#the-simplest-config

@@ -20,3 +20,6 @@ services:
     # please note that last definitions always *replace* previous ones
 
     Psr\Clock\ClockInterface: '@clock'
+
+    App\Business\Shared\Domain\Port\UuidFactoryInterface:
+        class: App\Business\Shared\Infrastructure\Adapter\Symfony\SymfonyUuidFactory

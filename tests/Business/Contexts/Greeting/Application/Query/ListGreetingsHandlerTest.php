@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Business\Contexts\Greeting\Application\Query;
 
-use App\Business\Contexts\Greeting\Application\Query\GreetingFinderInterface;
-use App\Business\Contexts\Greeting\Application\Query\ListGreetingsHandler;
-use App\Business\Contexts\Greeting\Application\Query\ListGreetingsQuery;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Group;
+use App\Business\Contexts\Greeting\Application\Query\{GreetingFinderInterface, ListGreetingsHandler, ListGreetingsQuery};
+use PHPUnit\Framework\Attributes\{CoversClass, Group};
 use PHPUnit\Framework\TestCase;
 
 #[Group('unit')]

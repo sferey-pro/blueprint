@@ -6,11 +6,9 @@ namespace App\Tests\Kernel\Symfony\DependencyInjection\Compiler;
 
 use App\Kernel\Persistence\Adapter\Doctrine\Types\DoctrineCustomTypeInterface;
 use App\Kernel\Symfony\DependencyInjection\Compiler\AutoConfigureDoctrineTypesPass;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\{CoversClass, Group};
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\{ContainerBuilder, Definition};
 
 #[Group('unit')]
 #[Group('kernel')]

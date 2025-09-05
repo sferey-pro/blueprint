@@ -7,9 +7,10 @@ namespace App\Tests\Business\Contexts\Greeting\Infrastructure\Command;
 use App\Business\Contexts\Greeting\Application\Command\PublishGreetingCommand;
 use App\Business\Contexts\Greeting\Domain\ValueObject\GreetingId;
 use App\Business\Contexts\Greeting\Infrastructure\Command\PublishGreetingCliCommand;
+use App\Business\Shared\Domain\Port\UuidFactoryInterface;
 use App\Kernel\Bus\CommandBusInterface;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Group;
+use App\Tests\Faker\FakerUuidFactory;
+use PHPUnit\Framework\Attributes\{CoversClass, Group};
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -23,11 +24,13 @@ final class PublishGreetingCliCommandTest extends TestCase
 {
     private CommandTester $commandTester;
     private CommandBusInterface&MockObject $commandBusMock;
+    private UuidFactoryInterface $uuidFactory;
 
     protected function setUp(): void
     {
+        $this->uuidFactory = new FakerUuidFactory();
         $this->commandBusMock = $this->createMock(CommandBusInterface::class);
-        $command = new PublishGreetingCliCommand($this->commandBusMock);
+        $command = new PublishGreetingCliCommand($this->commandBusMock, $this->uuidFactory);
 
         $application = new Application();
         $application->add($command);
@@ -37,7 +40,7 @@ final class PublishGreetingCliCommandTest extends TestCase
     public function testExecuteSuccess(): void
     {
         // 1. Arrange
-        $greetingId = GreetingId::generate();
+        $greetingId = $this->uuidFactory->generate(GreetingId::class);
 
         // On s'attend à ce que le bus soit appelé 1x avec la bonne commande
         $this->commandBusMock
@@ -58,7 +61,7 @@ final class PublishGreetingCliCommandTest extends TestCase
     public function testExecuteHandlesBusErrorsGracefully(): void
     {
         // 1. Arrange
-        $greetingId = GreetingId::generate();
+        $greetingId = $this->uuidFactory->generate(GreetingId::class);
         $this->commandBusMock
             ->expects(self::once())
             ->method('dispatch')

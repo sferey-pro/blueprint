@@ -6,11 +6,11 @@ namespace App\Business\Contexts\Greeting\Infrastructure\Command;
 
 use App\Business\Contexts\Greeting\Application\Command\PublishGreetingCommand;
 use App\Business\Contexts\Greeting\Domain\ValueObject\GreetingId;
+use App\Business\Shared\Domain\Port\UuidFactoryInterface;
 use App\Kernel\Bus\CommandBusInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\{InputArgument, InputInterface};
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -22,6 +22,7 @@ final class PublishGreetingCliCommand extends Command
 {
     public function __construct(
         private readonly CommandBusInterface $commandBus,
+        private readonly UuidFactoryInterface $uuidFactory,
     ) {
         parent::__construct();
     }
@@ -39,7 +40,10 @@ final class PublishGreetingCliCommand extends Command
         $id = $input->getArgument('id');
 
         try {
-            $command = new PublishGreetingCommand(GreetingId::fromString($id));
+            /** @var GreetingId $greetingId */
+            $greetingId = $this->uuidFactory->fromString(GreetingId::class, $id);
+
+            $command = new PublishGreetingCommand($greetingId);
             $this->commandBus->dispatch($command);
         } catch (\Throwable $e) {
             $io->error(\sprintf('Une erreur est survenue : %s', $e->getMessage()));

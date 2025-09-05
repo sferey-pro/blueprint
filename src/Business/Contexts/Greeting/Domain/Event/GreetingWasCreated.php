@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Business\Contexts\Greeting\Domain\Event;
 
 use App\Business\Contexts\Greeting\Domain\ValueObject\GreetingId;
-use App\Kernel\Bus\Message\AbstractDomainEvent;
+use App\Business\Shared\Domain\Event\AbstractDomainEvent;
+use App\Business\Shared\Domain\ValueObject\EventId;
 
 /**
  * Événement de domaine levé lorsqu'un Greeting est crée.
@@ -21,12 +22,13 @@ final readonly class GreetingWasCreated extends AbstractDomainEvent
      * @param \DateTimeImmutable $occurredOn la date système (quand l'événement a été levé)
      */
     public function __construct(
+        EventId $eventId,
         public GreetingId $greetingId,
         public string $message,
         public \DateTimeImmutable $createdAt,
         \DateTimeImmutable $occurredOn,
     ) {
-        parent::__construct($greetingId, $occurredOn);
+        parent::__construct($eventId, $greetingId, $occurredOn);
     }
 
     public static function eventName(): string

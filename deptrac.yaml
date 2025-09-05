@@ -3,16 +3,122 @@ deptrac:
     - ./src
   cache_file: build/cache/.deptrac.cache
   exclude_files:
-    - '#.*test.*#'
+    - .*test.*
+    - Kernel.php
+  
   layers:
-    - name: Business
-      collectors:
-        - type: directory
-          value: src/Business/.*
+    # --- KERNEL LAYER ---
     - name: Kernel
       collectors:
         - type: directory
           value: src/Kernel/.*
+
+    # --- SHARED KERNEL ---
+    # Le Shared Kernel est un cas particulier, nous le définissons explicitement.
+    - name: SharedDomain
+      collectors:
+        - type: directory
+          value: src/Business/Shared/Domain/.*
+
+    - name: SharedUtility
+      collectors:
+        - type: directory
+          value: src/Business/Shared/Utility/.*
+
+    - name: SharedInfrastructure
+      collectors:
+        - type: directory
+          value: src/Business/Shared/Infrastructure/.*
+
+    - name: Domain
+      collectors:
+        - type: directory
+          value: src/Business/Contexts/(.+)/Domain/.*
+
+    - name: Application
+      collectors:
+        - type: directory
+          value: src/Business/Contexts/(.+)/Application/.*
+
+    - name: Infrastructure
+      collectors:
+        - type: directory
+          value: src/Business/Contexts/(.+)/Infrastructure/.*
+
+    
+
+    # ---- Third-party layers
+
+    -   name: Doctrine
+        collectors:
+            -   type: classNameRegex
+                value: '#^Doctrine\\#'
+        # Doctrine ORM and DBAL classes. Allowed only in Infrastructure.
+
+    -   name: Framework
+        collectors:
+            -   type: classNameRegex
+                value: '#^Symfony\\#'
+        # Symfony framework classes. Allowed only in Infrastructure and Presentation.
+
+    - name: Vendors
+      collectors:
+        - type: composer
+          composerPath: composer.json
+          composerLockPath: composer.lock
+          packages:
+            - psr/clock
+            - webmozart/assert 
+
   ruleset:
-    Business:
-        - Kernel
+    # --- RÈGLES DU SHARED KERNEL ---
+    # Le Domain du Shared Kernel ne doit dépendre de rien.
+    SharedDomain: 
+      - SharedUtility
+      - Vendors
+
+    # L'infrastructure du Shared Kernel ne peut dépendre que du Domain du Shared Kernel.
+    SharedInfrastructure:
+      - SharedDomain
+      - Framework
+      - Vendors
+      - Doctrine
+      - Kernel
+
+    # --- RÈGLES DU BUSINESS ---
+    # Le Domaine est le coeur, il ne dépend que du Shared Kernel Domain / / Webmozart (Assertions).
+    Domain: 
+      - SharedDomain
+      - SharedUtility
+      - Vendors
+
+    # L'Application dépend du Domaine (le sien et celui du Shared Kernel).
+    Application:
+      - Domain
+      - SharedDomain
+      - SharedUtility
+      - Framework
+      - Vendors
+      - Kernel
+
+    # L'Infrastructure dépend de l'Application et du Domaine.
+    # C'est elle qui implémente les interfaces.
+    Infrastructure:
+      - Application
+      - Domain
+      - SharedInfrastructure 
+      - SharedDomain
+      - SharedUtility
+      - Framework
+      - Vendors
+      - Doctrine
+      - Kernel
+
+    # --- RÈGLE GLOBALE ---
+    # Le Kernel ne doit jamais dépendre du Business.
+    Kernel: 
+      - Framework
+      - Vendors
+      - Doctrine
+     
+    

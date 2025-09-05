@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace App\Tests\Business\Contexts\Greeting\Domain;
 
-use App\Business\Contexts\Greeting\Domain\Event\GreetingWasCreated;
-use App\Business\Contexts\Greeting\Domain\Event\GreetingWasPublished;
-use App\Business\Contexts\Greeting\Domain\Greeting;
-use App\Business\Contexts\Greeting\Domain\GreetingStatus;
-use App\Business\Contexts\Greeting\Domain\ValueObject\Author;
-use App\Business\Contexts\Greeting\Domain\ValueObject\GreetingId;
+use App\Business\Contexts\Greeting\Domain\Event\{GreetingWasCreated, GreetingWasPublished};
+use App\Business\Contexts\Greeting\Domain\{Greeting, GreetingStatus};
+use App\Business\Contexts\Greeting\Domain\ValueObject\{Author, GreetingId};
+use App\Business\Shared\Domain\Port\UuidFactoryInterface;
 use App\Business\Shared\Domain\ValueObject\Email;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Group;
+use App\Tests\Faker\FakerUuidFactory;
+use PHPUnit\Framework\Attributes\{CoversClass, Group};
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Clock\MockClock;
 
@@ -21,6 +19,13 @@ use Symfony\Component\Clock\MockClock;
 #[CoversClass(Greeting::class)]
 final class GreetingTest extends TestCase
 {
+    private UuidFactoryInterface $uuidFactory;
+
+    protected function setUp(): void
+    {
+        $this->uuidFactory = new FakerUuidFactory();
+    }
+
     public function testCreateSetsInitialStateAndRaisesEvent(): void
     {
         // 1. Arrange
@@ -34,6 +39,7 @@ final class GreetingTest extends TestCase
             $message,
             Author::create($email),
             $businessCreatedAt,
+            $this->uuidFactory,
             $clock
         );
 
@@ -63,13 +69,14 @@ final class GreetingTest extends TestCase
             'A message to publish',
             Author::create(Email::fromValidatedValue('test@example.com')),
             $clock->now(),
+            $this->uuidFactory,
             $clock
         );
         $greeting->pullDomainEvents();
 
         // 2. Act
         $clock->modify('+10 seconds');
-        $greeting->publish($clock);
+        $greeting->publish($this->uuidFactory, $clock);
 
         // 3. Assert
         self::assertSame(GreetingStatus::PUBLISHED, $greeting->status);
@@ -92,6 +99,7 @@ final class GreetingTest extends TestCase
             'Test message',
             Author::create(Email::fromValidatedValue('test@example.com')),
             $clock->now(),
+            $this->uuidFactory,
             $clock
         );
 
@@ -99,7 +107,7 @@ final class GreetingTest extends TestCase
         self::assertSame('draft', $greeting->getStatus());
 
         // 3. Act
-        $greeting->publish($clock);
+        $greeting->publish($this->uuidFactory, $clock);
 
         // 4. Assert final state
         self::assertSame('published', $greeting->getStatus());

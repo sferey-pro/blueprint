@@ -1,6 +1,48 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Method App\\Business\\Contexts\\Greeting\\Application\\Command\\CreateGreetingHandler\:\:__construct\(\) has parameter \$uuidFactory with generic interface App\\Business\\Shared\\Domain\\Port\\UuidFactoryInterface but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Business/Contexts/Greeting/Application/Command/CreateGreetingHandler.php
+
+		-
+			message: '#^Method App\\Business\\Contexts\\Greeting\\Application\\Command\\PublishGreetingHandler\:\:__construct\(\) has parameter \$uuidFactory with generic interface App\\Business\\Shared\\Domain\\Port\\UuidFactoryInterface but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Business/Contexts/Greeting/Application/Command/PublishGreetingHandler.php
+
+		-
+			message: '#^Method App\\Business\\Contexts\\Greeting\\Domain\\Greeting\:\:create\(\) has parameter \$uuidFactory with generic interface App\\Business\\Shared\\Domain\\Port\\UuidFactoryInterface but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Business/Contexts/Greeting/Domain/Greeting.php
+
+		-
+			message: '#^Method App\\Business\\Contexts\\Greeting\\Domain\\Greeting\:\:publish\(\) has parameter \$uuidFactory with generic interface App\\Business\\Shared\\Domain\\Port\\UuidFactoryInterface but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Business/Contexts/Greeting/Domain/Greeting.php
+
+		-
+			message: '#^Parameter \#1 \$eventId of class App\\Business\\Contexts\\Greeting\\Domain\\Event\\GreetingWasCreated constructor expects App\\Business\\Shared\\Domain\\ValueObject\\EventId, App\\Business\\Shared\\Domain\\ValueObject\\AbstractUid given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Business/Contexts/Greeting/Domain/Greeting.php
+
+		-
+			message: '#^Parameter \#1 \$eventId of class App\\Business\\Contexts\\Greeting\\Domain\\Event\\GreetingWasPublished constructor expects App\\Business\\Shared\\Domain\\ValueObject\\EventId, App\\Business\\Shared\\Domain\\ValueObject\\AbstractUid given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Business/Contexts/Greeting/Domain/Greeting.php
+
+		-
+			message: '#^Parameter \#1 \$id of class App\\Business\\Contexts\\Greeting\\Domain\\Greeting constructor expects App\\Business\\Contexts\\Greeting\\Domain\\ValueObject\\GreetingId, App\\Business\\Shared\\Domain\\ValueObject\\AbstractUid given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Business/Contexts/Greeting/Domain/Greeting.php
+
+		-
 			message: '#^Method App\\Business\\Contexts\\Greeting\\Domain\\GreetingStatus\:\:array\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -19,91 +61,157 @@ parameters:
 			path: src/Business/Contexts/Greeting/Domain/GreetingStatus.php
 
 		-
-			message: '#^Method App\\Kernel\\Persistence\\Adapter\\Doctrine\\Types\\AbstractValueObjectStringType\:\:convertToPHPValue\(\) return type with generic class App\\Kernel\\ValueObject\\AbstractStringValueObject does not specify its types\: T$#'
+			message: '#^Method App\\Business\\Contexts\\Greeting\\Infrastructure\\Command\\PublishGreetingCliCommand\:\:__construct\(\) has parameter \$uuidFactory with generic interface App\\Business\\Shared\\Domain\\Port\\UuidFactoryInterface but does not specify its types\: T$#'
 			identifier: missingType.generics
 			count: 1
-			path: src/Kernel/Persistence/Adapter/Doctrine/Types/AbstractValueObjectStringType.php
+			path: src/Business/Contexts/Greeting/Infrastructure/Command/PublishGreetingCliCommand.php
 
 		-
-			message: '#^Method App\\Kernel\\Utility\\Result\:\:flatMap\(\) should return App\\Kernel\\Utility\\Result\<U, TError of Throwable\> but returns App\\Kernel\\Utility\\Result\<never, Throwable\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Kernel/Utility/Result.php
-
-		-
-			message: '#^Method App\\Kernel\\Utility\\Result\:\:map\(\) should return App\\Kernel\\Utility\\Result\<U, TError of Throwable\> but returns App\\Kernel\\Utility\\Result\<never, Throwable\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Kernel/Utility/Result.php
-
-		-
-			message: '#^Method App\\Kernel\\Utility\\Result\:\:success\(\) should return App\\Kernel\\Utility\\Result\<TSuccessValue, never\> but returns App\\Kernel\\Utility\\Result\<mixed, Throwable\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Kernel/Utility/Result.php
-
-		-
-			message: '#^PHPDoc tag @param for parameter \$value with type TSuccessValue is not subtype of native type object\.$#'
-			identifier: parameter.phpDocType
-			count: 1
-			path: src/Kernel/Utility/Result.php
-
-		-
-			message: '#^PHPDoc tag @param for parameter \$value with type TValue\|null is not subtype of native type object\|null\.$#'
-			identifier: parameter.phpDocType
-			count: 1
-			path: src/Kernel/Utility/Result.php
-
-		-
-			message: '#^PHPDoc tag @return with type TValue is not subtype of native type object\.$#'
-			identifier: return.phpDocType
-			count: 3
-			path: src/Kernel/Utility/Result.php
-
-		-
-			message: '#^PHPDoc type for property App\\Kernel\\Utility\\Result\:\:\$value with type TValue\|null is not subtype of native type object\|null\.$#'
-			identifier: property.phpDocType
-			count: 1
-			path: src/Kernel/Utility/Result.php
-
-		-
-			message: '#^Template type TSuccessValue of method App\\Kernel\\Utility\\Result\:\:success\(\) is not referenced in a parameter\.$#'
-			identifier: method.templateTypeNotInParameter
-			count: 1
-			path: src/Kernel/Utility/Result.php
-
-		-
-			message: '#^Unable to resolve the template type TFailureValue in call to method static method App\\Kernel\\Utility\\Result\<TValue,TError of Throwable\>\:\:failure\(\)$#'
-			identifier: argument.templateType
-			count: 2
-			path: src/Kernel/Utility/Result.php
-
-		-
-			message: '#^Method App\\Kernel\\ValueObject\\AbstractStringValueObject\:\:create\(\) has parameter \$args with no type specified\.$#'
+			message: '#^Method App\\Business\\Shared\\Domain\\ValueObject\\AbstractStringValueObject\:\:create\(\) has parameter \$args with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
-			path: src/Kernel/ValueObject/AbstractStringValueObject.php
+			path: src/Business/Shared/Domain/ValueObject/AbstractStringValueObject.php
 
 		-
-			message: '#^Method App\\Kernel\\ValueObject\\AbstractStringValueObject\:\:fromValidatedValue\(\) has parameter \$args with no type specified\.$#'
+			message: '#^Method App\\Business\\Shared\\Domain\\ValueObject\\AbstractStringValueObject\:\:fromValidatedValue\(\) has parameter \$args with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
-			path: src/Kernel/ValueObject/AbstractStringValueObject.php
+			path: src/Business/Shared/Domain/ValueObject/AbstractStringValueObject.php
 
 		-
-			message: '#^Method App\\Kernel\\ValueObject\\AbstractStringValueObject\:\:fromValidatedValue\(\) should return static\(App\\Kernel\\ValueObject\\AbstractStringValueObject\<T of string\>\) but returns object\.$#'
+			message: '#^Method App\\Business\\Shared\\Domain\\ValueObject\\AbstractStringValueObject\:\:fromValidatedValue\(\) should return static\(App\\Business\\Shared\\Domain\\ValueObject\\AbstractStringValueObject\<T of string\>\) but returns object\.$#'
 			identifier: return.type
 			count: 1
-			path: src/Kernel/ValueObject/AbstractStringValueObject.php
+			path: src/Business/Shared/Domain/ValueObject/AbstractStringValueObject.php
 
 		-
-			message: '#^Method App\\Kernel\\ValueObject\\AbstractStringValueObject\:\:validate\(\) has parameter \$args with no type specified\.$#'
+			message: '#^Method App\\Business\\Shared\\Domain\\ValueObject\\AbstractStringValueObject\:\:validate\(\) has parameter \$args with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
-			path: src/Kernel/ValueObject/AbstractStringValueObject.php
+			path: src/Business/Shared/Domain/ValueObject/AbstractStringValueObject.php
 
 		-
 			message: '#^Unsafe usage of new static\(\)\.$#'
 			identifier: new.static
 			count: 1
-			path: src/Kernel/ValueObject/AbstractStringValueObject.php
+			path: src/Business/Shared/Domain/ValueObject/AbstractStringValueObject.php
+
+		-
+			message: '#^Class App\\Business\\Shared\\Infrastructure\\Adapter\\Symfony\\SymfonyUuidFactory implements generic interface App\\Business\\Shared\\Domain\\Port\\UuidFactoryInterface but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Business/Shared/Infrastructure/Adapter/Symfony/SymfonyUuidFactory.php
+
+		-
+			message: '#^Method App\\Business\\Shared\\Infrastructure\\Doctrine\\UuidTypeDependencyInjectorMiddleware\:\:__construct\(\) has parameter \$customTypeNames with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Business/Shared/Infrastructure/Doctrine/UuidTypeDependencyInjectorMiddleware.php
+
+		-
+			message: '#^Method App\\Business\\Shared\\Infrastructure\\Doctrine\\UuidTypeDependencyInjectorMiddleware\:\:__construct\(\) has parameter \$uuidFactory with generic interface App\\Business\\Shared\\Domain\\Port\\UuidFactoryInterface but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Business/Shared/Infrastructure/Doctrine/UuidTypeDependencyInjectorMiddleware.php
+
+		-
+			message: '#^Call to an undefined method App\\Business\\Shared\\Domain\\ValueObject\\UuidInterface\:\:toBinary\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Business/Shared/Infrastructure/Persistence/Doctrine/Types/AbstractValueObjectIdType.php
+
+		-
+			message: '#^Call to an undefined method App\\Business\\Shared\\Domain\\ValueObject\\UuidInterface\:\:toRfc4122\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Business/Shared/Infrastructure/Persistence/Doctrine/Types/AbstractValueObjectIdType.php
+
+		-
+			message: '#^Method App\\Business\\Shared\\Infrastructure\\Persistence\\Doctrine\\Types\\AbstractValueObjectIdType\:\:convertToPHPValue\(\) should return App\\Business\\Shared\\Domain\\ValueObject\\AggregateRootId\|null but returns App\\Business\\Shared\\Domain\\ValueObject\\AbstractUid\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Business/Shared/Infrastructure/Persistence/Doctrine/Types/AbstractValueObjectIdType.php
+
+		-
+			message: '#^Method App\\Business\\Shared\\Infrastructure\\Persistence\\Doctrine\\Types\\AbstractValueObjectIdType\:\:setFactory\(\) has parameter \$factory with generic interface App\\Business\\Shared\\Domain\\Port\\UuidFactoryInterface but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Business/Shared/Infrastructure/Persistence/Doctrine/Types/AbstractValueObjectIdType.php
+
+		-
+			message: '#^Property App\\Business\\Shared\\Infrastructure\\Persistence\\Doctrine\\Types\\AbstractValueObjectIdType\:\:\$uuidFactory with generic interface App\\Business\\Shared\\Domain\\Port\\UuidFactoryInterface does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Business/Shared/Infrastructure/Persistence/Doctrine/Types/AbstractValueObjectIdType.php
+
+		-
+			message: '#^Method App\\Business\\Shared\\Infrastructure\\Persistence\\Doctrine\\Types\\AbstractValueObjectStringType\:\:convertToPHPValue\(\) return type with generic class App\\Business\\Shared\\Domain\\ValueObject\\AbstractStringValueObject does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Business/Shared/Infrastructure/Persistence/Doctrine/Types/AbstractValueObjectStringType.php
+
+		-
+			message: '#^Method App\\Business\\Shared\\Utility\\Result\:\:flatMap\(\) should return App\\Business\\Shared\\Utility\\Result\<U, TError of Throwable\> but returns App\\Business\\Shared\\Utility\\Result\<never, Throwable\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Business/Shared/Utility/Result.php
+
+		-
+			message: '#^Method App\\Business\\Shared\\Utility\\Result\:\:map\(\) should return App\\Business\\Shared\\Utility\\Result\<U, TError of Throwable\> but returns App\\Business\\Shared\\Utility\\Result\<never, Throwable\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Business/Shared/Utility/Result.php
+
+		-
+			message: '#^Method App\\Business\\Shared\\Utility\\Result\:\:success\(\) should return App\\Business\\Shared\\Utility\\Result\<TSuccessValue, never\> but returns App\\Business\\Shared\\Utility\\Result\<mixed, Throwable\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Business/Shared/Utility/Result.php
+
+		-
+			message: '#^PHPDoc tag @param for parameter \$value with type TSuccessValue is not subtype of native type object\.$#'
+			identifier: parameter.phpDocType
+			count: 1
+			path: src/Business/Shared/Utility/Result.php
+
+		-
+			message: '#^PHPDoc tag @param for parameter \$value with type TValue\|null is not subtype of native type object\|null\.$#'
+			identifier: parameter.phpDocType
+			count: 1
+			path: src/Business/Shared/Utility/Result.php
+
+		-
+			message: '#^PHPDoc tag @return with type TValue is not subtype of native type object\.$#'
+			identifier: return.phpDocType
+			count: 3
+			path: src/Business/Shared/Utility/Result.php
+
+		-
+			message: '#^PHPDoc type for property App\\Business\\Shared\\Utility\\Result\:\:\$value with type TValue\|null is not subtype of native type object\|null\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: src/Business/Shared/Utility/Result.php
+
+		-
+			message: '#^Template type TSuccessValue of method App\\Business\\Shared\\Utility\\Result\:\:success\(\) is not referenced in a parameter\.$#'
+			identifier: method.templateTypeNotInParameter
+			count: 1
+			path: src/Business/Shared/Utility/Result.php
+
+		-
+			message: '#^Unable to resolve the template type TFailureValue in call to method static method App\\Business\\Shared\\Utility\\Result\<TValue,TError of Throwable\>\:\:failure\(\)$#'
+			identifier: argument.templateType
+			count: 2
+			path: src/Business/Shared/Utility/Result.php
+
+		-
+			message: '#^PHPDoc tag @param for parameter \$event contains unresolvable type\.$#'
+			identifier: parameter.unresolvableType
+			count: 1
+			path: src/Kernel/Bus/EventBusInterface.php
+
+		-
+			message: '#^Template type T of method App\\Kernel\\Bus\\EventBusInterface\:\:dispatch\(\) is not referenced in a parameter\.$#'
+			identifier: method.templateTypeNotInParameter
+			count: 1
+			path: src/Kernel/Bus/EventBusInterface.php

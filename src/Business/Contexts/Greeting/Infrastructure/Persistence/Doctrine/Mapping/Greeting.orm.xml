@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Business\Contexts\Greeting\Domain\Greeting" table="`greetings`">
+
+        <id name="id" type="greeting_id" column="id" length="36"/>
+        <field name="message" type="text" nullable="false"/>
+        <field name="createdAt" type="datetime_immutable" column="created_at" nullable="false"/>
+        <field name="status" type="string" length="255" enum-type="App\Business\Contexts\Greeting\Domain\GreetingStatus"/>
+        <embedded name="author" class="App\Business\Contexts\Greeting\Domain\ValueObject\Author" column-prefix="author_"/>
+
+    </entity>
+</doctrine-mapping>

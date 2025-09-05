@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Business\Contexts\Greeting\Application\Command;
 
-use App\Business\Contexts\Greeting\Domain\Greeting;
-use App\Business\Contexts\Greeting\Domain\GreetingRepositoryInterface;
+use App\Business\Contexts\Greeting\Domain\{Greeting, GreetingRepositoryInterface};
 use App\Business\Contexts\Greeting\Domain\ValueObject\Author;
+use App\Business\Shared\Domain\Port\UuidFactoryInterface;
 use App\Business\Shared\Domain\ValueObject\Email;
 use App\Kernel\Attribute\AsCommandHandler;
 use Psr\Clock\ClockInterface;
@@ -15,8 +15,9 @@ use Psr\Clock\ClockInterface;
 final readonly class CreateGreetingHandler
 {
     public function __construct(
-        private GreetingRepositoryInterface $repository,
+        private UuidFactoryInterface $uuidFactory,
         private ClockInterface $clock,
+        private GreetingRepositoryInterface $repository,
     ) {
     }
 
@@ -37,6 +38,7 @@ final readonly class CreateGreetingHandler
             $command->message,
             $author,
             $businessCreatedAt,
+            $this->uuidFactory,
             $this->clock
         );
 

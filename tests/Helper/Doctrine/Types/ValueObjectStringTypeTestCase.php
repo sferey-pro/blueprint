@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Helper\Doctrine\Types;
 
+use App\Business\Shared\Infrastructure\Persistence\Doctrine\Types\AbstractValueObjectStringType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -12,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 abstract class ValueObjectStringTypeTestCase extends TestCase
 {
     private AbstractPlatform&MockObject $platform;
-    private Type $type;
+    private AbstractValueObjectStringType $type;
 
     abstract protected function getTypeClass(): string;
 
