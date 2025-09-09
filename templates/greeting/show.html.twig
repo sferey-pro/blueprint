@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Salutations{% endblock %}
+
+{% block body %}
+    <div style="width: 80%; margin: 2rem auto;">
+        <h1>Liste des Salutations (via React)</h1>
+
+        <p>
+            Ce tableau est rendu par un composant React monté via Twig UX.
+            Les données sont chargées dynamiquement depuis une API.
+        </p>
+
+        <div {{ react_component('GreetingList', {
+            endpoint: path('api_greetings_list')
+        }) }}>
+            <p>Veuillez activer JavaScript pour voir la liste des salutations.</p>
+        </div>
+    </div>
+{% endblock %}
