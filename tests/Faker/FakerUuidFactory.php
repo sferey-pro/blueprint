@@ -17,8 +17,7 @@ final class FakerUuidFactory implements UuidFactoryInterface
 
     public function generate(string $uidClass): AbstractUid
     {
-        ++self::$sequence;
-        $uuid = Uuid::fromString(\sprintf('00000000-0000-0000-0000-%012d', self::$sequence++));
+        $uuid = Uuid::fromString(\sprintf('00000000-0000-0000-0000-%012d', ++self::$sequence));
 
         return new $uidClass(new SymfonyUuid($uuid));
     }
