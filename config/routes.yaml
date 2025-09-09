@@ -1,0 +1,4 @@
+content_controllers:
+    resource: ../src/Content/routes.yaml
+    prefix: /
+

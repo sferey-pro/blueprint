@@ -1,3 +1,9 @@
 workers:
     # https://symfony.com/doc/current/setup/symfony_server.html#docker-integration
     docker_compose: ~
+    sass:
+        cmd: ['symfony', 'console', 'sass:build', '--watch']
+    tailwind:
+        cmd: ['symfony', 'console', 'tailwind:build', '--watch']
+http:
+    use_gzip: true

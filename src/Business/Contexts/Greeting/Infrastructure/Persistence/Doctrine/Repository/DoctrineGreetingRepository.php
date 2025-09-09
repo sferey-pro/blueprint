@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Business\Contexts\Greeting\Infrastructure\Persistence\Doctrine\Repository;
 
-use App\Business\Contexts\Greeting\Application\Query\{GreetingFinderInterface, GreetingView};
-use App\Business\Contexts\Greeting\Domain\{Greeting, GreetingRepositoryInterface};
+use App\Business\Contexts\Greeting\Application\Query\{GreetingFinderInterface, GreetingStatisticsView, GreetingView};
+use App\Business\Contexts\Greeting\Domain\{Greeting, GreetingRepositoryInterface, GreetingStatus};
 use App\Business\Contexts\Greeting\Domain\ValueObject\GreetingId;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -46,5 +46,25 @@ final class DoctrineGreetingRepository extends ServiceEntityRepository implement
         $result = $query->getResult();
 
         return $result;
+    }
+
+    public function getStatistics(): GreetingStatisticsView
+    {
+        $qb = $this->createQueryBuilder('g')
+            ->select('
+                COUNT(g.id) as total,
+                SUM(CASE WHEN g.status = :draft THEN 1 ELSE 0 END) as draftCount,
+                SUM(CASE WHEN g.status = :published THEN 1 ELSE 0 END) as publishedCount
+            ')
+            ->setParameter('draft', GreetingStatus::DRAFT->value)
+            ->setParameter('published', GreetingStatus::PUBLISHED->value);
+
+        $result = $qb->getQuery()->getSingleResult();
+
+        return new GreetingStatisticsView(
+            (int) $result['total'],
+            (int) $result['draftCount'],
+            (int) $result['publishedCount']
+        );
     }
 }

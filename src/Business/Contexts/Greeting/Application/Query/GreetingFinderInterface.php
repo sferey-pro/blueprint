@@ -10,4 +10,6 @@ interface GreetingFinderInterface
      * @return list<GreetingView>
      */
     public function findAllAsView(): array;
+
+    public function getStatistics(): GreetingStatisticsView;
 }
