@@ -7,7 +7,9 @@ use Castor\Attribute\AsTask;
 use function Castor\context;
 use function Castor\io;
 use function Castor\variable;
+use function docker\docker_compose_exec;
 use function docker\docker_compose_run;
+use function docker\docker_exec_exit_code;
 use function docker\docker_exit_code;
 use function utils\title;
 
@@ -21,9 +23,12 @@ function phpstan(bool $generateBaseline = false): int
         install();
     }
 
-    if (!file_exists('var/cache/dev/App_KernelDevDebugContainer.xml')) {
+    $containerCacheFile = variable('root_dir') . '/var/cache/dev/App_KernelDevDebugContainer.xml';
+
+
+    if (docker_exec_exit_code(sprintf('[ -f %s ]', $containerCacheFile), c: context()->withAllowFailure()->withQuiet()) !== 0) {
         io()->note('PHPStan needs the dev/debug cache. Generating it...');
-        docker_compose_run('bin/console cache:warmup');
+        docker_compose_exec('bin/console cache:warmup');
     }
 
     $command = [
@@ -37,7 +42,7 @@ function phpstan(bool $generateBaseline = false): int
         $command[] = '-b';
     }
 
-    return docker_exit_code($command);
+    return docker_exec_exit_code($command);
 }
 
 #[AsTask(description: 'install dependencies')]

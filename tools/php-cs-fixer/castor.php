@@ -8,6 +8,7 @@ use function Castor\context;
 use function Castor\io;
 use function Castor\variable;
 use function docker\docker_compose_run;
+use function docker\docker_exec_exit_code;
 use function docker\docker_exit_code;
 use function utils\title;
 
@@ -30,7 +31,7 @@ function cs(bool $dryRun = false): int
         $command[] = '--dry-run';
     }
 
-    return docker_exit_code($command);
+    return docker_exec_exit_code($command);
 }
 
 #[AsTask(description: 'install dependencies')]

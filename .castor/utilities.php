@@ -22,6 +22,7 @@ function title(): void
 function success(int $exitCode): int
 {
     if ($exitCode === 0) {
+        io()->newLine();
         io()->success('Done!');
     } else {
         io()->error(sprintf('Failure (exit code %d returned).', $exitCode));

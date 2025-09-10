@@ -1,8 +1,8 @@
-# Project Context: Symfony Blueprint
+# Blueprint Project
 
-## Overview
+## Project Overview
 
-This is a modern Symfony 7.3 application built with PHP 8.4. It serves as a blueprint for new projects, showcasing a robust and clean architecture. The application is designed to run with FrankenPHP.
+This is a PHP project built with the Symfony framework. It serves as an application skeleton and architectural manifest, emphasizing modularity, testability, and scalability. The project follows Domain-Driven Design (DDD), CQRS, and Hexagonal Architecture principles.
 
 ## Architecture
 
@@ -21,6 +21,7 @@ The project strictly follows **Domain-Driven Design (DDD)** principles and a **C
 
 *   **Shared Kernel**: A `src/Kernel` directory exists for code shared across different Bounded Contexts.
 
+
 ## Key Technologies & Dependencies
 
 *   **Backend**: Symfony 7.3, PHP 8.4
@@ -31,6 +32,7 @@ The project strictly follows **Domain-Driven Design (DDD)** principles and a **C
     *   **Tailwind CSS** for styling.
 *   **Asynchronous Operations**: Symfony Messenger is installed.
 *   **Web Server**: FrankenPHP.
+*   **Task Runner**: Castor
 
 ## Core Functionality (Example)
 
@@ -79,3 +81,50 @@ A rich set of Castor tasks is available to streamline development.
     *   `castor composer:outdated`: Shows outdated Composer packages.
 *   **Asset Management**:
     *   `castor symfony:assets`: Builds frontend assets. Supports a `--watch` flag.
+
+### Getting Started
+
+1.  Install dependencies:
+    ```bash
+    castor install
+    ```
+2.  Start the application:
+    ```bash
+    castor start
+    ```
+3.  Reload the database:
+    ```bash
+    castor db:reload
+    ```
+
+## Development Conventions
+
+### Quality Assurance
+
+The project has a strict quality assurance process enforced by the following tools:
+
+- **CaptainHook**: Git hooks to validate code and commit messages.
+- **PHP-CS-Fixer**: Enforces PSR-12 coding standard.
+- **PHPStan**: Static analysis for error detection.
+- **Deptrac**: Enforces architectural dependencies and layer isolation.
+
+You can run all the quality assurance tools with the following command:
+
+```bash
+castor qa:all
+```
+
+### Testing
+
+The project uses PHPUnit for testing. You can run the tests with the following command:
+
+```bash
+castor test
+```
+
+You can also run specific test groups:
+
+```bash
+castor test --group=unit
+castor test --group=integration
+```

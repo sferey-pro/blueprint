@@ -1,16 +1,16 @@
 <?php
 
 use Castor\Attribute\AsTask;
+use Symfony\Component\Console\Helper\ProgressIndicator;
 
 use function Castor\context;
 use function Castor\fs;
 use function Castor\io;
-use function Castor\run;
+use function Castor\output;
 use function docker\docker_compose;
 use function docker\docker_compose_exec;
 use function docker\docker_compose_run;
 use function utils\aborted;
-use function utils\docker_health_check;
 use function utils\success;
 use function utils\title;
 
@@ -18,8 +18,16 @@ use function utils\title;
 function start(): void
 {
     title();
-    $c ??= context();
-    docker_compose(['up', '-d', '--build'], c: $c->withQuiet(true));
+
+    $progressIndicator = new ProgressIndicator(output(), finishedIndicatorValue: '✅');
+    $progressIndicator->start('Processing...');
+
+    try {
+        docker_compose(['up', '-d', '--build'], c: context()->withQuiet(true));
+        $progressIndicator->finish('Finished');
+    } catch (\Exception) {
+        $progressIndicator->finish('Failed', '🚨');
+    }
 
     success(0);
 }
@@ -27,7 +35,17 @@ function start(): void
 #[AsTask(namespace: 'symfony', description: 'Stop application', aliases: ['stop'])]
 function stop(): void
 {
-    docker_compose(['down', '--remove-orphans'], c: context()->withQuiet());
+    title();
+
+    $progressIndicator = new ProgressIndicator(output(), finishedIndicatorValue: '✅');
+    $progressIndicator->start('Processing...');
+
+    try {
+        docker_compose(['down', '--remove-orphans'], c: context()->withQuiet(true));
+        $progressIndicator->finish('Finished');
+    } catch (\Exception) {
+        $progressIndicator->finish('Failed', '🚨');
+    }
 
     success(0);
 }
