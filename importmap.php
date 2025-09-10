@@ -29,16 +29,16 @@ return [
         'version' => '3.2.2',
     ],
     'react' => [
-        'version' => '19.1.1',
+        'version' => '18.3.1',
     ],
     'react-dom/client' => [
-        'version' => '19.1.1',
+        'version' => '18.3.1',
     ],
     'react-dom' => [
-        'version' => '19.1.1',
+        'version' => '18.3.1',
     ],
     'scheduler' => [
-        'version' => '0.26.0',
+        'version' => '0.23.2',
     ],
     'axios' => [
         'version' => '1.11.0',

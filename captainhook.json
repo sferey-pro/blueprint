@@ -3,11 +3,7 @@
     "ansi-colors": true,
     "fail-on-first-error": false,
     "plugins": [],
-    "verbosity": "normal",
-    "run": {
-      "mode": "docker",
-      "exec": "docker compose exec php"
-    }
+    "verbosity": "normal"
   },
   "commit-msg": {
     "enabled": true,
@@ -15,7 +11,7 @@
         {
             "action": "\\Ramsey\\CaptainHook\\ValidateConventionalCommit",
               "config": {
-                "label": "👮 Validation du commit message"
+                "label": "👮  Validation du commit message"
               }
         }
     ]
@@ -24,9 +20,15 @@
       "enabled": true,
       "actions": [
           {
-              "action": "composer test",
+              "action": "castor --ansi test:phpunit",
               "config": {
-                "label": "🔬 Analyse statique approfondie du code et lancement des tests"
+                "label": "🔬  Lancement des tests"
+              }
+          },
+          {
+              "action": "castor qa:analyze",
+              "config": {
+                "label": "🔬  Analyse statique approfondie du code"
               }
           }
       ]
@@ -35,26 +37,14 @@
       "enabled": true,
       "actions": [
           {
-            "action": "composer lint:syntax",
+            "action": "castor --ansi qa:lint",
               "config": {
-                "label": "✅ Vérification de la syntaxe PHP"
+                "label": "✅  Vérification de la syntaxe PHP et style de code"
               },
               "conditions": [
                   {
                       "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
                       "args": [["php", "twig", "yaml", "yml"]]
-                  }
-              ]
-          },
-          {
-            "action": "composer lint:style",
-              "config": {
-                "label": "🎨 Analyse du style de code (PSR-12)"
-              },
-              "conditions": [
-                  {
-                      "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
-                      "args": ["php"]
                   }
               ]
           }
@@ -66,7 +56,7 @@
             {
                 "action": "\\Ramsey\\CaptainHook\\PrepareConventionalCommit",
                 "config": {
-                  "label": "🖊️ Préparation du commit message"
+                  "label": "🖊️  Préparation du commit message"
                 }
             }
         ]

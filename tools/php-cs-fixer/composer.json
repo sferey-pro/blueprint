@@ -6,7 +6,6 @@
         "platform": {
             "php": "8.4"
         },
-        "bin-dir": "../bin",
         "sort-packages": true
     }
 }

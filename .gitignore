@@ -1,4 +1,5 @@
 .draft
+.castor.stub.php
 
 ###> symfony/framework-bundle ###
 /.env.local

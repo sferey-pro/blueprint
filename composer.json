@@ -88,63 +88,7 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ],
-        "analyze": [
-            "echo ' '",
-            "echo '➡️  ANALYSE : DEPTRAC'",
-            "@analyze:deptrac",
-            "echo ' '",
-            "echo '➡️  ANALYSE : PHPSTAN'",
-            "@analyze:phpstan"
-        ],
-        "analyze:deptrac": "tools/bin/deptrac",
-        "analyze:phpstan": "tools/bin/phpstan analyze --memory-limit 1G --ansi -v",
-        "lint": [
-            "echo ' '",
-            "echo '➡️  LINT : SYNTAXE'",
-            "@lint:syntax",
-            "echo ' '",
-            "echo '➡️  LINT : STYLE DE CODE (PSR-12)'",
-            "@lint:style"
-        ],
-        "lint:style": "tools/bin/php-cs-fixer fix",
-        "lint:syntax": [
-            "tools/bin/parallel-lint --colors src tests",
-            "bin/console lint:yaml config",
-            "bin/console lint:container"
-        ],
-        "test": [
-            "echo ' '",
-            "echo '🚀  -- LANCEMENT DE LA SUITE DE TESTS COMPLÈTE -- 🚀'",
-            "@lint",
-            "@analyze",
-            "@test:db:setup",
-            "echo ' '",
-            "echo '➡️  TESTS : PHPUNIT'",
-            "phpunit --testdox"
-        ],
-        "test:unit": "phpunit --group unit",
-        "test:integration": [
-            "@test:db:setup",
-            "phpunit --group integration"
-        ],
-        "test:functional": [
-            "@test:db:setup",
-            "phpunit --group functional"
-        ],
-        "test:e2e": [
-            "@test:db:setup",
-            "phpunit --group e2e"
-        ],
-        "test:db:setup": [
-            "echo ' '",
-            "echo '➡️  SETUP : BASE DE DONNÉES DE TEST'",
-            "bin/console doctrine:database:drop --force --env=test --if-exists",
-            "bin/console doctrine:database:create --env=test --if-not-exists",
-            "bin/console doctrine:migrations:migrate -n --env=test"
-        ],
-        "test:coverage:ci": "phpunit --colors=always --coverage-text --coverage-clover build/coverage/clover.xml --coverage-cobertura build/coverage/cobertura.xml --coverage-crap4j build/coverage/crap4j.xml --coverage-xml build/coverage/coverage-xml --log-junit build/junit.xml",
-        "test:coverage:html": "phpunit --colors=always --coverage-html build/coverage/coverage-html"
+        ]
     },
     "conflict": {
         "symfony/symfony": "*"

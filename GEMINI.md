@@ -42,12 +42,40 @@ The `Greeting` context provides the following features:
 
 ## Development & Quality Assurance
 
-The project has a strong focus on code quality, with several tools and scripts configured:
+The project has a strong focus on code quality, with a comprehensive suite of tools managed via [Castor](https://castor.jolicode.com/) tasks.
 
-*   **Testing**: PHPUnit, with different test suites (`unit`, `integration`, `functional`, `e2e`).
-*   **Static Analysis**: PHPStan.
-*   **Coding Standards**: PHP-CS-Fixer (PSR-12).
-*   **Composer Scripts**:
-    *   `composer lint`: Checks code style and syntax.
-    *   `composer analyze`: Runs static analysis.
-    *   `composer test`: Runs the full test suite (linting, analysis, and PHPUnit tests).
+*   **Main Task**: `castor qa:all` runs the entire quality assurance suite (linting, static analysis, and tests).
+*   **Testing**:
+    *   **PHPUnit**: Run with `castor test`. Supports groups (`--group`), coverage (`--cover`), and CI reports (`--ci`).
+    *   **Infection (Mutation Testing)**: Run with `castor qa:infection:run`.
+*   **Static Analysis**: Run with `castor qa:analyze`.
+    *   **PHPStan**: For type and error checking.
+    *   **Deptrac**: To enforce architectural rules.
+*   **Linting & Coding Standards**: Run with `castor qa:lint`.
+    *   **PHP-CS-Fixer**: For PSR-12 coding style (`castor qa:cs:run`).
+    *   **Parallel-Lint**: For fast PHP syntax checking.
+    *   **Symfony Linters**: For Twig, YAML, and the container.
+
+## Project Management & Development Tasks
+
+A rich set of Castor tasks is available to streamline development.
+
+*   **Application Lifecycle**:
+    *   `castor symfony:start`: Starts the application services.
+    *   `castor symfony:stop`: Stops the application services.
+    *   `castor docker:build`: Builds or rebuilds the Docker services.
+*   **Database Management**:
+    *   `castor database:reload`: Drops and recreates the database, then runs migrations.
+    *   `castor database:seed`: Loads data fixtures.
+    *   `castor database:setup-test`: Prepares the test database.
+*   **Development Tools**:
+    *   `castor symfony:bash`: Opens a shell inside the PHP container.
+    *   `castor log:tail`: Tails the development log file.
+    *   `castor cache:clear`: Clears the Symfony application cache.
+    *   `castor symfony:purge`: Removes cache, logs, and asset directories.
+*   **Dependency Management**:
+    *   `castor composer:install`: Installs Composer dependencies.
+    *   `castor composer:update`: Updates Composer dependencies.
+    *   `castor composer:outdated`: Shows outdated Composer packages.
+*   **Asset Management**:
+    *   `castor symfony:assets`: Builds frontend assets. Supports a `--watch` flag.
