@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import DataTable from 'react-data-table-component';
 import axios from 'axios';
+import DataTable from 'react-data-table-component';
 const columns = [{
   name: 'ID',
   selector: row => row.id,
@@ -24,30 +24,33 @@ export default function GreetingList({
 }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   useEffect(() => {
     axios.get(endpoint).then(res => {
       setData(res.data);
       setLoading(false);
     }).catch(error => {
-      console.error("Error fetching data:", error);
-      setError('Impossible de charger les salutations.');
+      console.error("Erreur lors du chargement initial des données:", error);
       setLoading(false);
     });
   }, [endpoint]);
-  if (loading) {
-    return /*#__PURE__*/React.createElement("div", null, "Chargement en cours...");
-  }
-  if (error) {
-    return /*#__PURE__*/React.createElement("div", {
-      style: {
-        color: 'red'
-      }
-    }, error);
-  }
-  if (data.length === 0) {
-    return /*#__PURE__*/React.createElement("div", null, "Aucun message \xE0 afficher.");
-  }
+  useEffect(() => {
+    const topicUrl = 'https://localhost/greetings-notify';
+    const hubUrl = new URL('https://localhost/.well-known/mercure');
+    hubUrl.searchParams.append('topic', topicUrl);
+    const eventSource = new EventSource(hubUrl);
+    eventSource.onmessage = event => {
+      const newGreeting = JSON.parse(event.data);
+      setData(currentData => {
+        if (currentData.some(item => item.id === newGreeting.id)) {
+          return currentData;
+        }
+        return [newGreeting, ...currentData];
+      });
+    };
+    return () => {
+      eventSource.close();
+    };
+  }, []);
   return /*#__PURE__*/React.createElement(DataTable, {
     columns: columns,
     data: data,
