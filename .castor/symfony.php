@@ -63,7 +63,7 @@ function assets(bool $watch = false): void
         $command[] = '--watch';
     }
 
-    docker_compose_run($command);
+    docker_compose_exec($command);
 
     success(0);
 }
