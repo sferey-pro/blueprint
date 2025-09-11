@@ -2,7 +2,6 @@
 
 namespace docker;
 
-use Castor\Attribute\AsContext;
 use Castor\Attribute\AsTask;
 use Castor\Context;
 use Symfony\Component\Process\Process;
@@ -35,24 +34,10 @@ function build(?string $service = null): void
     docker_compose($command);
 }
 
-#[AsContext(name: 'ci')]
-function create_ci_context(): Context
-{
-    $c = create_default_context();
-
-    return $c
-        ->withData([])
-        ->withEnvironment([
-            'COMPOSE_ANSI' => 'never',
-        ])
-    ;
-}
-
 function docker_compose(array $subCommand, ?Context $c = null): Process
 {
-    docker_health_check($c);
-
     $c ??= context();
+    docker_health_check($c);
 
     $command = [
         'docker',
@@ -77,6 +62,8 @@ function docker_compose_run(
     ?string $workDir = null,
     bool $portMapping = false
 ): Process {
+    $c ??= context();
+
     if(is_array($runCommand)) {
         $runCommand = implode(" ", $runCommand);
     }
@@ -97,6 +84,11 @@ function docker_compose_run(
     if (null !== $workDir) {
         $command[] = '-w';
         $command[] = $workDir;
+    }
+
+    foreach ($c['docker_compose_run_environment'] as $key => $value) {
+        $command[] = '-e';
+        $command[] = "{$key}={$value}";
     }
 
     $command[] = $service;
@@ -126,10 +118,15 @@ function docker_compose_exec(
         $command[] = $workDir;
     }
 
+    foreach ($c['docker_compose_run_environment'] as $key => $value) {
+        $command[] = '-e';
+        $command[] = "{$key}={$value}";
+    }
+
     $command[] = $service;
     $command[] = '/bin/bash';
     $command[] = '-c';
-    $command[] = "exec {$execCommand}";
+    $command[] = "{$execCommand}";
 
     return docker_compose($command, c: $c);
 }

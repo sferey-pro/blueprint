@@ -26,3 +26,25 @@ function outdated(): void
     title();
     docker_compose_run('composer outdated -D');
 }
+
+#[AsTask(namespace: 'tools', name: 'install',description: 'Install all tools dependencies')]
+function installTools(): void
+{
+    title();
+
+    \qa\cs\install();
+    \qa\phpstan\install();
+    \qa\deptrac\install();
+    \qa\parallelLint\install();
+}
+
+#[AsTask(namespace: 'tools', name: 'update', description: 'Update all tools dependencies')]
+function updateTools(): void
+{
+    title();
+
+    \qa\cs\update();
+    \qa\phpstan\update();
+    \qa\deptrac\update();
+    \qa\parallelLint\update();
+}

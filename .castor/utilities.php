@@ -25,6 +25,7 @@ function success(int $exitCode): int
         io()->newLine();
         io()->success('Done!');
     } else {
+        io()->newLine();
         io()->error(sprintf('Failure (exit code %d returned).', $exitCode));
     }
 

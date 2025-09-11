@@ -17,19 +17,21 @@ use function utils\title;
 #[AsTask(namespace: 'symfony', description: 'Serve the application', aliases: ['start'])]
 function start(): void
 {
+    $exitCode = 1;
     title();
 
     $progressIndicator = new ProgressIndicator(output(), finishedIndicatorValue: '✅');
     $progressIndicator->start('Processing...');
 
     try {
-        docker_compose(['up', '-d', '--build'], c: context()->withQuiet(true));
+        $process = docker_compose(['up', '-d', '--build'], c: context()->withQuiet(true));
+        $exitCode = $process->getExitCode();
         $progressIndicator->finish('Finished');
-    } catch (\Exception) {
+    } catch (\Exception $e) {
         $progressIndicator->finish('Failed', '🚨');
     }
 
-    success(0);
+    success($exitCode);
 }
 
 #[AsTask(namespace: 'symfony', description: 'Stop application', aliases: ['stop'])]
