@@ -11,11 +11,6 @@ use function Castor\import;
 use function Castor\io;
 use function docker\docker_exit_code;
 use function docker\docker_exec_exit_code;
-use function qa\cs\cs;
-use function qa\deptrac\deptrac;
-use function qa\parallelLint\parallelLint;
-use function qa\phpstan\phpstan;
-use function utils\title;
 
 import(__DIR__. '/../tools/deptrac/castor.php');
 import(__DIR__. '/../tools/infection/castor.php');
@@ -26,30 +21,89 @@ import(__DIR__. '/../tools/phpstan/castor.php');
 #[AsTask(name: 'all', namespace: 'qa', description: 'Lance tous les outils de qualité du code (lint, analyse, tests)')]
 function all(): int
 {
-    $lint = qa_lint();
-    $analyze = qa_analyze();
+    $lint = lint();
+    $analyse = analyse();
 
-    $phpunit = phpunit();
+    $test = phpunit();
 
-    return max($lint, $analyze, $phpunit);
+    return max($lint, $analyse, $test);
 }
 
 #[AsTask(name: 'lint', namespace: 'qa', description: 'Vérifie la syntaxe et le style du code')]
-function qa_lint(): int
+function lint(): int
 {
     return max(
-        parallelLint(),
-        cs(),
+        parallelLint\run(),
+        cs\run(),
         docker_exec_exit_code('bin/console lint:twig templates/'),
         docker_exec_exit_code('bin/console lint:yaml --parse-tags config/'),
         docker_exec_exit_code('bin/console lint:container')
     );
 }
 
-#[AsTask(name: 'analyze', namespace: 'qa', description: 'Lance l\'analyse statique du code')]
-function qa_analyze(): int
+#[AsTask(name: 'analyse', namespace: 'qa', description: 'Lance les outils d\'analyse statique (phpstan, deptrac, infection)')]
+function analyse(): int
 {
-    return max(deptrac(), phpstan());
+    return max(
+        phpstan\run(),
+        deptrac\run(),
+        infection\run()
+    );
+}
+
+
+#[AsTask(namespace: 'qa', name: 'install',description: 'Install all Quality Assurance dependencies')]
+function install(): void
+{
+    io()->title('Installing Quality Assurance dependencies');
+    \qa\cs\install();
+    \qa\phpstan\install();
+    \qa\deptrac\install();
+    \qa\parallelLint\install();
+    \qa\infection\install();
+}
+
+#[AsTask(namespace: 'qa', name: 'update', description: 'Update all Quality Assurance dependencies')]
+function update(): void
+{
+    io()->title('Updating Quality Assurance dependencies');
+    \qa\cs\update();
+    \qa\phpstan\update();
+    \qa\deptrac\update();
+    \qa\parallelLint\update();
+    \qa\infection\update();
+}
+
+//
+
+#[AsTask(namespace: 'qa', description: 'Run Deptrac', aliases: ['deptrac'])]
+function deptrac(): int
+{
+    return deptrac\run();
+}
+
+#[AsTask(namespace: 'qa', description: 'Fixes Coding Style', aliases: ['cs'])]
+function cs(bool $dryRun = false): int
+{
+    return cs\run($dryRun);
+}
+
+#[AsTask(namespace: 'qa', description: 'Run infection', aliases: ['infection'])]
+function infection(): int
+{
+    return infection\run();
+}
+
+#[AsTask(namespace: 'qa', description: 'Lint the syntax of PHP files', aliases: ['plint'])]
+function parallelLint(): int
+{
+    return parallelLint\run();
+}
+
+#[AsTask(namespace: 'qa', description: 'Run PHPStan', aliases: ['stan'])]
+function phpstan(bool $generateBaseline = false): int
+{
+    return phpstan\run($generateBaseline);
 }
 
 #[AsTask(namespace: 'test', description: 'Run all PHPUnit tests', aliases: ['test'])]
@@ -58,15 +112,12 @@ function phpunit(
     ?string $group = null,
     #[AsOption(description: 'Enable code coverage')]
     bool $cover = false,
-    #[AsOption(description: 'Run tests in CI mode (generates reports)')]
-    bool $ci = false,
     #[AsArgument(name: 'args', description: 'Additional arguments to pass to PHPUnit')]
     array $args = [],
 ): int {
 
-    title();
-    $c = context()
-        ->withEnvironment(['APP_ENV' => 'test']);
+    io()->title('Running tests');
+    $c = context('test');
 
     $command = [
         'bin/phpunit',
@@ -78,16 +129,14 @@ function phpunit(
     }
 
     if ($cover) {
+        $c = $c->withData([
+            'docker_compose_run_environment' => [
+                'APP_ENV' => 'test',
+                'XDEBUG_MODE' => 'coverage',
+            ]
+        ]);
         $command[] = '--testdox-html=build/testdox.html';
         $command[] = '--coverage-html=build/coverage/coverage-html';
-    }
-
-    if ($ci) {
-        $command[] = '--coverage-clover=build/coverage/clover.xml';
-        $command[] = '--coverage-cobertura=build/coverage/cobertura.xml';
-        $command[] = '--coverage-crap4j=build/coverage/crap4j.xml';
-        $command[] = '--coverage-xml=build/coverage/coverage-xml';
-        $command[] = '--log-junit=build/junit.xml';
     }
 
     // Append any extra arguments from the command line
@@ -101,5 +150,5 @@ function phpunit(
         db_setup_test();
     }
 
-    return docker_exit_code($command, $c);
+    return docker_exit_code($command, c: $c);
 }

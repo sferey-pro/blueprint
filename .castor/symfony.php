@@ -6,56 +6,61 @@ use Symfony\Component\Console\Helper\ProgressIndicator;
 use function Castor\context;
 use function Castor\fs;
 use function Castor\io;
-use function Castor\output;
-use function docker\docker_compose;
+use function Castor\variable;
+use function docker\up as docker_up;
+use function docker\stop as docker_stop;
+use function docker\build as docker_build;
 use function docker\docker_compose_exec;
 use function docker\docker_compose_run;
-use function utils\aborted;
-use function utils\success;
-use function utils\title;
+
 
 #[AsTask(namespace: 'symfony', description: 'Serve the application', aliases: ['start'])]
-function start(): void
+function start()
 {
-    $exitCode = 1;
-    title();
+    io()->title('Starting the application');
 
-    $progressIndicator = new ProgressIndicator(output(), finishedIndicatorValue: '✅');
-    $progressIndicator->start('Processing...');
+    docker_build();
+    install();
+    docker_up();
 
-    try {
-        $process = docker_compose(['up', '-d', '--build'], c: context()->withQuiet(true));
-        $exitCode = $process->getExitCode();
-        $progressIndicator->finish('Finished');
-    } catch (\Exception $e) {
-        $progressIndicator->finish('Failed', '🚨');
-    }
-
-    success($exitCode);
+    io()->success('Done!');
 }
 
 #[AsTask(namespace: 'symfony', description: 'Stop application', aliases: ['stop'])]
 function stop(): void
 {
-    title();
+    io()->title('Stopping the application');
 
-    $progressIndicator = new ProgressIndicator(output(), finishedIndicatorValue: '✅');
-    $progressIndicator->start('Processing...');
+    docker_stop();
 
-    try {
-        docker_compose(['down', '--remove-orphans'], c: context()->withQuiet(true));
-        $progressIndicator->finish('Finished');
-    } catch (\Exception) {
-        $progressIndicator->finish('Failed', '🚨');
+    io()->success('Done!');
+}
+
+#[AsTask(description: 'Installs the application (composer, yarn, ...)', namespace: 'app', aliases: ['install'])]
+function install(): void
+{
+    io()->title('Installing the application');
+
+    $basePath = sprintf('%s', variable('root_dir'));
+
+    if (is_file("{$basePath}/composer.json")) {
+        dependencies\install();
     }
 
-    success(0);
+    if (is_file("{$basePath}/importmap.php")) {
+        dependencies\importmapInstall();
+    }
+
+    qa\install();
+
+    io()->success('Done!');
 }
 
 #[AsTask(namespace: 'symfony', description: 'Reload all assets', aliases: ['assets'])]
 function assets(bool $watch = false): void
 {
-    title();
+    io()->title('Compiling assets');
+
     $command = [
         'bin/console',
         'tailwind:build',
@@ -67,16 +72,16 @@ function assets(bool $watch = false): void
 
     docker_compose_exec($command);
 
-    success(0);
+    io()->success('Done!');
 }
 
 #[AsTask(namespace: 'symfony', description: 'Connect to the FrankenPHP container', aliases: ['bash'])]
 function bash(): void
 {
-    title();
+    io()->title('Connecting to FrankenPHP container');
+
     $c = context()
         ->withTimeout(null)
-        ->withTty()
         ->withAllowFailure()
     ;
 
@@ -86,9 +91,10 @@ function bash(): void
 #[AsTask(namespace: 'symfony', description: 'Purge all Symfony cache and logs', aliases: ['purge'])]
 function purge(): void
 {
-    title();
+    io()->title('Purging Symfony cache and logs');
+
     if (!io()->confirm('Are you sure?', false)) {
-        aborted();
+        io()->warning('Aborted.');
         return;
     }
 
@@ -97,28 +103,27 @@ function purge(): void
     fs()->remove('./var/logs/');
     fs()->remove('./build/coverage/coverage-html');
 
-    success(0);
+    io()->success('Done!');
 }
 
 #[AsTask(namespace: 'database', description: 'Reload all data in database', aliases: ['db:reload'])]
 function reload(): void
 {
-    title();
+    io()->info('Reloading database...');
     docker_compose_run('bin/console doctrine:database:drop --force --if-exists');
     docker_compose_run('bin/console doctrine:database:create --if-not-exists');
     docker_compose_run('bin/console doctrine:migrations:migrate --no-interaction');
 
-    success(0);
+    io()->success('Done!');
 }
 
 #[AsTask(namespace: 'database', description: 'Load data fixtures', aliases: ['db:seed'])]
 function seed(): void
 {
-    title();
     io()->info('Loading fixtures...');
     docker_compose_exec('bin/console doctrine:fixtures:load --no-interaction');
 
-    success(0);
+    io()->success('Done!');
 }
 
 #[AsTask(name: 'setup-test', namespace: 'database', description: 'Prépare la base de données de test')]
@@ -133,48 +138,52 @@ function db_setup_test(): void
 #[AsTask(namespace: 'symfony', description: 'Switch to the production environment', aliases: ['prod'])]
 function prod(): void
 {
-    title();
+    io()->title('Switching to the production environment');
     if (io()->confirm('Are you sure you want to switch to the production environment? This will overwrite your .env.local file.', false)) {
         fs()->copy('.env.local.dist', '.env.local');
         docker_compose_run('bin/console tailwind:build --minify');
         docker_compose_run('bin/console asset-map:compile');
-        success(0);
+
+        io()->success('Done!');
 
         return;
     }
 
-    aborted();
+    io()->warning('Aborted.');
 }
 
 #[AsTask(namespace: 'symfony', description: 'Switch to the development environment', aliases: ['dev'])]
 function dev(): void
 {
-    title();
+    io()->title('Switching to the development environment');
     if (io()->confirm('Are you sure you want to switch to the development environment? This will delete your .env.local file.', false)) {
         fs()->remove('.env.local');
         fs()->remove('./public/assets/');
-        success(0);
+
+        io()->success('Done!');
 
         return;
     }
 
-    aborted();
+    io()->warning('Aborted.');
 }
-
-
 
 #[AsTask(namespace: 'cache', description: 'Clear Symfony cache')]
 function clear(): void
 {
-    title();
+    io()->info('Clearing Symfony cache');
     docker_compose_exec('bin/console cache:clear');
-    success(0);
+
+    io()->success('Done!');
 }
 
 #[AsTask(namespace: 'log', description: 'Tail Symfony logs')]
 function tail(): void
 {
-    title();
-    $c = context()->withTty()->withTimeout(null);
+    io()->info('Symfony logs lives...');
+    $c = context()
+        ->withTty(true)
+        ->withTimeout(null);
+
     docker_compose_exec('tail -f var/log/dev.log', c: $c);
 }

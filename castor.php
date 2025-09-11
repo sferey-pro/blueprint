@@ -17,6 +17,7 @@ function create_default_variables(): array
     return [
         'project_name' => $projectName,
         'server_name' => $serverName,
+        'app_dir' => '/app',
         'php_version' => 8.4,
         'symfony_version' => '7.3.*',
     ];

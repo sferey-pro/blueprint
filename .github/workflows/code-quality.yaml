@@ -1,0 +1,103 @@
+name: Code Quality
+
+on:
+    push:
+        paths-ignore:
+            - 'docs/**'
+            - 'tools/**'
+            - '.github/workflows/tests.yaml'
+    pull_request:
+        paths-ignore:
+            - 'docs/**'
+            - 'tools/**'
+            - '.github/workflows/tests.yaml'
+
+permissions:
+    contents: read
+
+jobs:
+    php-cs-fixer:
+        name: PHP-CS-Fixer
+        runs-on: ubuntu-latest
+        steps:
+            - 
+                name: "Checkout code"
+                uses: actions/checkout@v5
+            - 
+                name: PHP-CS-Fixer
+                uses: docker://ghcr.io/php-cs-fixer/php-cs-fixer:3.87.2-php8.4
+                with:
+                    args: check --diff --using-cache=no
+
+    linters:
+        name: Linters
+        runs-on: ubuntu-latest
+        steps:
+            - 
+                name: "Checkout code"
+                uses: actions/checkout@v5
+            - 
+                name: "Install PHP"
+                uses: shivammathur/setup-php@v2
+                with:
+                    coverage: none
+                    php-version: 8.4
+                    tools: composer:v2
+            - 
+                name: Lint Composer config
+                run: composer validate --no-check-publish --strict
+            - 
+                name: "Install dependencies"
+                id: install
+                run: |
+                    composer install --ansi --no-interaction --no-progress
+                    composer install --ansi --no-interaction --no-progress --working-dir=tools/php-parallel-lint
+            - 
+                name: Lint YAML files
+                if: always() && steps.install.outcome == 'success'
+                run: ./bin/console lint:yaml config --parse-tags
+            - 
+                name: Lint Twig templates
+                if: always() && steps.install.outcome == 'success'
+                run: ./bin/console lint:twig templates --env=prod
+            -
+                name: Lint Parameters and Services
+                if: always() && steps.install.outcome == 'success'
+                run: ./bin/console lint:container --no-debug
+            - 
+                name: Lint Doctrine entities
+                if: always() && steps.install.outcome == 'success'
+                run: ./bin/console doctrine:schema:validate --skip-sync -vvv --no-interaction
+            - 
+                name: Check if any dependencies are compromised
+                if: always() && steps.install.outcome == 'success'
+                run: composer audit
+            -
+                name: Run PHP Parallel Lint
+                if: always() && steps.install.outcome == 'success'
+                run: tools/php-parallel-lint/vendor/bin/parallel-lint --colors .
+    
+    static-analysis:
+        name: PHPStan
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php-versions: ['8.2']
+        steps:
+            - 
+                name: "Checkout code"
+                uses: actions/checkout@v5
+            - 
+                name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    coverage: none
+                    php-version: 8.4
+            - 
+                name: Install dependencies
+                run: |
+                    composer install --ansi --no-interaction --no-progress
+                    composer install --ansi --no-interaction --no-progress --working-dir=tools/phpstan
+            - 
+                name: Run PHPStan
+                run: tools/phpstan/vendor/bin/phpstan analyze --no-progress

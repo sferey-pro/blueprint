@@ -15,16 +15,17 @@ function create_default_context(): Context
             'compose.yaml',
         ],
         'docker_compose_run_environment' => [],
-        'root_dir' => '/app',
+        'root_dir' => \dirname(__DIR__),
     ];
 
-    if (file_exists(dirname(__DIR__, 1) . '/compose.override.yaml')) {
+    if (file_exists($data['root_dir'] . '/compose.override.yaml')) {
         $data['docker_compose_files'][] = 'compose.override.yaml';
     }
 
     return new Context(
         $data,
         pty: Process::isPtySupported(),
+        tty: Process::isTtySupported(),
         environment: [
             'BUILDKIT_PROGRESS' => 'plain',
         ]
@@ -41,19 +42,6 @@ function create_test_context(): Context
             'docker_compose_run_environment' => [
                 'APP_ENV' => 'test',
             ],
-        ])
-    ;
-}
-
-#[AsContext(name: 'ci')]
-function create_ci_context(): Context
-{
-    $c = create_test_context();
-
-    return $c
-        ->withData([])
-        ->withEnvironment([
-            'COMPOSE_ANSI' => 'never',
         ])
     ;
 }

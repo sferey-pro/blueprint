@@ -1,8 +1,10 @@
+---
 services:
   php:
     image: ${IMAGES_PREFIX:-}app-php
     restart: unless-stopped
     environment:
+      RUN_MIGRATIONS: true
       SERVER_NAME: ${SERVER_NAME:-localhost}, php:80
       MERCURE_PUBLISHER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
       MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
@@ -36,12 +38,12 @@ services:
     image: ${IMAGES_PREFIX:-}app-php-worker
     restart: unless-stopped
     environment:
-      - RUN_MIGRATIONS=false
+      RUN_MIGRATIONS: false
     healthcheck:
       disable: true
     depends_on:
       - php
-      
+
 # Mercure is installed as a Caddy module, prevent the Flex recipe from installing another service
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###

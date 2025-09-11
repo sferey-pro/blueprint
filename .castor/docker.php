@@ -2,20 +2,23 @@
 
 namespace docker;
 
+use Castor\Attribute\AsOption;
 use Castor\Attribute\AsTask;
 use Castor\Context;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ExceptionInterface;
 
 use function Castor\context;
+use function Castor\io;
 use function Castor\run;
 use function Castor\variable;
-use function utils\docker_health_check;
-use function utils\title;
 
 #[AsTask(description: 'Build or rebuild services', aliases: ['build'])]
-function build(?string $service = null): void
-{
-    title();
+function build(
+    #[AsOption(description: 'The service to build (default: all services)')]
+    ?string $service = null
+): void {
+    io()->section(($service !== null) ? 'Building ' . $service : 'Building infrastructure');
 
     $command = [];
 
@@ -34,17 +37,87 @@ function build(?string $service = null): void
     docker_compose($command);
 }
 
-function docker_compose(array $subCommand, ?Context $c = null): Process
-{
+#[AsTask(description: 'Starts the infrastructure', aliases: ['up'])]
+function up(
+    #[AsOption(description: 'The service to start (default: all services)')]
+    ?string $service = null,
+): void {
+    io()->section(($service !== null) ? 'Starting ' . $service : 'Starting infrastructure');
+
+    $command = ['up', '--detach', '--no-build'];
+
+    if ($service) {
+        $command[] = $service;
+    }
+
+    try {
+        docker_compose($command);
+    } catch (ExceptionInterface $e) {
+        io()->error('An error occurred while starting the infrastructure.');
+        io()->note('Did you forget to run "castor docker:build"?');
+        io()->note('Or you forget to login to the registry?');
+
+        throw $e;
+    }
+}
+
+#[AsTask(description: 'Stops the infrastructure', aliases: ['stop'])]
+function stop(
+    #[AsOption(description: 'The service to stop (default: all services)')]
+    ?string $service = null,
+): void {
+    io()->section(($service !== null) ? 'Stopping ' . $service : 'Stopping infrastructure');
+
+    $command = ['stop'];
+
+    if ($service) {
+        $command[] = $service;
+    }
+
+    docker_compose($command);
+}
+
+#[AsTask(description: 'Cleans the infrastructure (remove container, volume, networks)', aliases: ['destroy'])]
+function destroy(
+    #[AsOption(description: 'Force the destruction without confirmation', shortcut: 'f')]
+    bool $force = false,
+): void {
+    io()->section('Destroying infrastructure');
+
+    if (!$force) {
+        io()->warning('This will permanently remove all containers, volumes, networks... created for this project.');
+        io()->note('You can use the --force option to avoid this confirmation.');
+        if (!io()->confirm('Are you sure?', false)) {
+            io()->comment('Aborted.');
+
+            return;
+        }
+    }
+
+    docker_compose(['down', '--remove-orphans', '--volumes', '--rmi=local']);
+}
+
+
+function docker_compose(
+    array $subCommand,
+    ?Context $c = null
+): Process {
     $c ??= context();
+
     docker_health_check($c);
+
+    $c = $c->withEnvironment([
+        'PROJECT_NAME' => $c['project_name'],
+        'PHP_VERSION' => $c['php_version']
+    ]);
 
     $command = [
         'docker',
-        'compose'
+        'compose',
+        '-p', $c['project_name'],
     ];
 
-    foreach (variable('docker_compose_files') as $file) {
+    foreach ($c['docker_compose_files'] as $file) {
         $command[] = '-f';
         $command[] = $c->workingDirectory . '/' . $file;
     }
@@ -82,12 +155,12 @@ function docker_compose_run(
     }
 
     if (null !== $workDir) {
-        $command[] = '-w';
+        $command[] = '--workdir';
         $command[] = $workDir;
     }
 
     foreach ($c['docker_compose_run_environment'] as $key => $value) {
-        $command[] = '-e';
+        $command[] = '--env';
         $command[] = "{$key}={$value}";
     }
 
@@ -116,12 +189,12 @@ function docker_compose_exec(
     ];
 
     if (null !== $workDir) {
-        $command[] = '-w';
+        $command[] = '--workdir';
         $command[] = $workDir;
     }
 
     foreach ($c['docker_compose_run_environment'] as $key => $value) {
-        $command[] = '-e';
+        $command[] = '--env';
         $command[] = "{$key}={$value}";
     }
 
@@ -129,6 +202,7 @@ function docker_compose_exec(
     $command[] = '/bin/bash';
     $command[] = '-c';
     $command[] = "{$execCommand}";
+
     return docker_compose($command, c: $c);
 }
 
@@ -168,4 +242,21 @@ function docker_exec_exit_code(
     );
 
     return $process->getExitCode() ?? 0;
+}
+
+function docker_health_check(?Context $c = null)
+{
+    $c ??= context();
+
+    $c = $c
+        ->withAllowFailure(true)
+        ->withQuiet(true)
+    ;
+
+    $process = run('docker --version', context: $c);
+
+    if(!$process->isSuccessful()) {
+        io()->error('Docker is not running');
+        die;
+    }
 }
