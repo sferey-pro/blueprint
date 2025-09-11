@@ -67,4 +67,11 @@ return [
     '@emotion/memoize' => [
         'version' => '0.9.0',
     ],
+    'tw-animate-css' => [
+        'version' => '1.3.8',
+    ],
+    'tw-animate-css/dist/tw-animate.min.css' => [
+        'version' => '1.3.8',
+        'type' => 'css',
+    ],
 ];

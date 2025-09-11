@@ -1,5 +1,6 @@
 .draft
 .castor.stub.php
+.gemini
 
 ###> symfony/framework-bundle ###
 /.env.local
