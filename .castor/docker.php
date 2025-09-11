@@ -105,6 +105,8 @@ function docker_compose_exec(
     string $service = 'php',
     ?string $workDir = null
 ): Process {
+    $c ??= context();
+
     if (is_array($execCommand)) {
         $execCommand = implode(' ', $execCommand);
     }
@@ -127,7 +129,6 @@ function docker_compose_exec(
     $command[] = '/bin/bash';
     $command[] = '-c';
     $command[] = "{$execCommand}";
-
     return docker_compose($command, c: $c);
 }
 
