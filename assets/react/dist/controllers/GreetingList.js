@@ -26,7 +26,7 @@ export default function GreetingList({
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     axios.get(endpoint).then(res => {
-      setData(res.data);
+      setData(res.data['member']);
       setLoading(false);
     }).catch(error => {
       console.error("Erreur lors du chargement initial des données:", error);

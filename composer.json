@@ -9,10 +9,13 @@
         "php": ">=8.4.11",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "api-platform/doctrine-orm": "^4.2",
+        "api-platform/symfony": "^4.2",
         "doctrine/dbal": "^3.10.2",
         "doctrine/doctrine-bundle": "^2.16.1",
         "doctrine/doctrine-migrations-bundle": "^3.4.2",
         "doctrine/orm": "^3.5.2",
+        "nelmio/cors-bundle": "^2.5",
         "phpdocumentor/reflection-docblock": "^5.6",
         "phpstan/phpdoc-parser": "^2.3",
         "psr/clock": "^1.0",
@@ -23,6 +26,7 @@
         "symfony/console": "7.3.*",
         "symfony/doctrine-messenger": "7.3.*",
         "symfony/dotenv": "7.3.*",
+        "symfony/expression-language": "7.3.*",
         "symfony/flex": "^2.8.2",
         "symfony/framework-bundle": "7.3.*",
         "symfony/mercure-bundle": "^0.3.9",
@@ -30,11 +34,13 @@
         "symfony/property-access": "7.3.*",
         "symfony/property-info": "7.3.*",
         "symfony/runtime": "7.3.*",
+        "symfony/security-bundle": "7.3.*",
         "symfony/serializer": "7.3.*",
         "symfony/twig-bundle": "7.3.*",
         "symfony/uid": "7.3.*",
         "symfony/ux-live-component": "^2.30",
         "symfony/ux-react": "^2.30",
+        "symfony/validator": "7.3.*",
         "symfony/workflow": "7.3.*",
         "symfony/yaml": "7.3.*",
         "symfonycasts/sass-bundle": "^0.8.3",
@@ -82,7 +88,8 @@
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
-            "importmap:install": "symfony-cmd"
+            "importmap:install": "symfony-cmd",
+            "tailwind:build": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"

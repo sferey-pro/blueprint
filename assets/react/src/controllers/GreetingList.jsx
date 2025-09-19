@@ -33,7 +33,7 @@ export default function GreetingList({ endpoint }) {
     useEffect(() => {
         axios.get(endpoint)
             .then(res => {
-                setData(res.data);
+                setData(res.data['member']);
                 setLoading(false);
             })
             .catch(error => {
