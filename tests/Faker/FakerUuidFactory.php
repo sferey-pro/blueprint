@@ -14,10 +14,11 @@ use Symfony\Component\Uid\Uuid;
 final class FakerUuidFactory implements UuidFactoryInterface
 {
     private static int $sequence = 0;
+    private ?string $uuid = null;
 
     public function generate(string $uidClass): AbstractUid
     {
-        $uuid = Uuid::fromString(\sprintf('00000000-0000-0000-0000-%012d', ++self::$sequence));
+        $uuid = Uuid::fromString($this->uuid ?? \sprintf('00000000-0000-0000-0000-%012d', ++self::$sequence));
 
         return new $uidClass(new SymfonyUuid($uuid));
     }
@@ -25,6 +26,13 @@ final class FakerUuidFactory implements UuidFactoryInterface
     public function fromString(string $uidClass, string $uuid): AbstractUid
     {
         return new $uidClass(new SymfonyUuid(Uuid::fromString($uuid)));
+    }
+
+    public function withUuid(string $uuid)
+    {
+        $this->uuid = $uuid;
+
+        return $this;
     }
 
     public static function reset(): void

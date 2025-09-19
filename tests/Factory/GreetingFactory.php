@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Factory;
 
 use App\Business\Contexts\Greeting\Domain\{Greeting, GreetingStatus};
-use App\Business\Contexts\Greeting\Domain\ValueObject\Author;
+use App\Business\Contexts\Greeting\Domain\ValueObject\{Author};
 use App\Business\Shared\Domain\Port\UuidFactoryInterface;
 use App\Business\Shared\Domain\ValueObject\Email;
 use App\Tests\Faker\FakerUuidFactory;
@@ -52,7 +52,7 @@ final class GreetingFactory extends PersistentObjectFactory
                 $attributes['message'],
                 $attributes['author'],
                 $attributes['createdAt'],
-                $this->uuidFactory ?? new FakerUuidFactory(),
+                $this->uuidFactory ?? (new FakerUuidFactory())->withUuid($attributes['id'] ?? self::faker()->uuid()),
                 $attributes['clock'] ?? Clock::get(),
             ));
     }

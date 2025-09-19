@@ -1,11 +1,12 @@
 <?php
 
+use Castor\Attribute\AsOption;
 use Castor\Attribute\AsTask;
-use Symfony\Component\Console\Helper\ProgressIndicator;
 
 use function Castor\context;
 use function Castor\fs;
 use function Castor\io;
+use function Castor\run;
 use function Castor\variable;
 use function docker\up as docker_up;
 use function docker\stop as docker_stop;
@@ -73,6 +74,24 @@ function assets(bool $watch = false): void
     docker_compose_exec($command);
 
     io()->success('Done!');
+
+    react_build();
+}
+
+#[AsTask(namespace: 'symfony', description: 'Build React assets', aliases: ['react:build'])]
+function react_build(): void
+{
+    $c = context()
+        ->withTimeout(300)
+    ;
+
+    io()->title('Building React assets');
+
+    $workDir = variable('root_dir') . '/assets/react';
+
+    run('docker run --rm -v "' . $workDir . ':/app" -w /app/build node:latest yarn build', context: $c);
+
+    io()->success('Done!');
 }
 
 #[AsTask(namespace: 'symfony', description: 'Connect to the FrankenPHP container', aliases: ['bash'])]
@@ -118,10 +137,26 @@ function reload(): void
 }
 
 #[AsTask(namespace: 'database', description: 'Load data fixtures', aliases: ['db:seed'])]
-function seed(): void
+function seed(
+    #[AsOption('append', description: 'Skip resetting database and append data to the existing database.')]
+    bool $append = false
+): void
 {
     io()->info('Loading fixtures...');
-    docker_compose_exec('bin/console doctrine:fixtures:load --no-interaction');
+
+    $command = [
+        'bin/console',
+        'foundry:load-fixtures',
+        '--silent'
+    ];
+
+
+    if ($append) {
+        $command[] = '--append';
+    }
+
+
+    docker_compose_exec($command);
 
     io()->success('Done!');
 }
