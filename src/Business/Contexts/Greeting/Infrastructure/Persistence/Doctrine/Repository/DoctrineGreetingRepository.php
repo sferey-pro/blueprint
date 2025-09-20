@@ -32,6 +32,23 @@ final class DoctrineGreetingRepository extends ServiceEntityRepository implement
         return $greeting;
     }
 
+    public function get(GreetingId $id): ?GreetingView
+    {
+        $dql = \sprintf(
+            'SELECT NEW %s(g.id, g.message, g.status, g.createdAt) FROM %s g WHERE g.id = :id',
+            GreetingView::class,
+            Greeting::class
+        );
+
+        $query = $this->getEntityManager()->createQuery($dql)
+                ->setParameter('id', $id->value());
+
+        /** @var ?GreetingView */
+        $result = $query->getOneOrNullResult();
+
+        return $result;
+    }
+
     public function findAllAsView(): array
     {
         $dql = \sprintf(

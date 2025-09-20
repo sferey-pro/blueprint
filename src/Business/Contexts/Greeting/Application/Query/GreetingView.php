@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Business\Contexts\Greeting\Application\Query;
 
-use ApiPlatform\Metadata\{ApiProperty, ApiResource, GetCollection};
+use ApiPlatform\Metadata\{ApiProperty, ApiResource, Get, GetCollection};
 use App\Business\Contexts\Greeting\Domain\GreetingStatus;
-use App\Business\Contexts\Greeting\Infrastructure\ApiPlatform\GreetingCollectionProvider;
+use App\Business\Contexts\Greeting\Infrastructure\ApiPlatform\State\Provider\{GreetingCollectionProvider, GreetingItemProvider};
 
 /**
  * Modèle de lecture (DTO) pour un Greeting.
@@ -14,6 +14,7 @@ use App\Business\Contexts\Greeting\Infrastructure\ApiPlatform\GreetingCollection
  */
 #[ApiResource(
     operations: [
+        new Get(provider: GreetingItemProvider::class),
         new GetCollection(provider: GreetingCollectionProvider::class),
     ],
     shortName: 'Greeting',
