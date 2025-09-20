@@ -1,1 +1,5 @@
-/api/greetings
+GET https://localhost/api/greetings
+
+###
+
+GET https://localhost/api/greetings?page=2

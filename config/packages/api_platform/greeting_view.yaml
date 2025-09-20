@@ -1,0 +1,11 @@
+resources:
+    App\Business\Contexts\Greeting\Application\Query\GreetingView:
+        shortName: 'Greeting'
+        operations:
+            ApiPlatform\Metadata\Get:
+                provider: App\Business\Contexts\Greeting\Infrastructure\ApiPlatform\State\Provider\GreetingItemProvider
+            ApiPlatform\Metadata\GetCollection:
+                provider: App\Business\Contexts\Greeting\Infrastructure\ApiPlatform\State\Provider\GreetingCollectionProvider
+        properties:
+            id:
+                identifier: true
