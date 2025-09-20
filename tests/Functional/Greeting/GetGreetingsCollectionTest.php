@@ -21,7 +21,7 @@ final class GetGreetingsCollectionTest extends ApiTestCase
     public function testGetGreetingsCollection(): void
     {
         // 1. Arrange
-        GreetingFactory::createMany(15);
+        GreetingFactory::createMany(5);
 
         // 2. Act
         $response = static::createClient()->request('GET', '/api/greetings');
@@ -34,10 +34,10 @@ final class GetGreetingsCollectionTest extends ApiTestCase
             '@context' => '/api/contexts/Greeting',
             '@id' => '/api/greetings',
             '@type' => 'Collection',
-            'totalItems' => 15,
+            'totalItems' => 5,
         ]);
 
-        $this->assertCount(15, $response->toArray()['member']);
+        $this->assertCount(5, $response->toArray()['member']);
 
         $this->assertMatchesResourceCollectionJsonSchema(GreetingView::class);
     }

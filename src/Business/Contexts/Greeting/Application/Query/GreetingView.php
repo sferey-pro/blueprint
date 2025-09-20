@@ -12,15 +12,11 @@ use App\Business\Contexts\Greeting\Domain\GreetingStatus;
  */
 final readonly class GreetingView
 {
-    public string $createdAt;
-
     public function __construct(
         public string $id,
         public string $message,
         public GreetingStatus $status,
-        \DateTimeImmutable $createdAt,
+        public \DateTimeImmutable $createdAt,
     ) {
-        // Le DTO est maintenant responsable du formatage de la date pour l'affichage.
-        $this->createdAt = $createdAt->format('Y-m-d H:i:s');
     }
 }

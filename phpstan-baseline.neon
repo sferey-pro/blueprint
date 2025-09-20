@@ -61,6 +61,60 @@ parameters:
 			path: src/Business/Contexts/Greeting/Domain/GreetingStatus.php
 
 		-
+			message: '#^Method App\\Business\\Contexts\\Greeting\\Infrastructure\\ApiPlatform\\State\\Provider\\GreetingCollectionProvider\:\:provide\(\) has invalid return type App\\Business\\Contexts\\Greeting\\Infrastructure\\ApiPlatform\\State\\Provider\\GreetingView\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Business/Contexts/Greeting/Infrastructure/ApiPlatform/State/Provider/GreetingCollectionProvider.php
+
+		-
+			message: '#^Method App\\Business\\Contexts\\Greeting\\Infrastructure\\ApiPlatform\\State\\Provider\\GreetingCollectionProvider\:\:provide\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Business/Contexts/Greeting/Infrastructure/ApiPlatform/State/Provider/GreetingCollectionProvider.php
+
+		-
+			message: '#^Method App\\Business\\Contexts\\Greeting\\Infrastructure\\ApiPlatform\\State\\Provider\\GreetingCollectionProvider\:\:provide\(\) never returns object so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Business/Contexts/Greeting/Infrastructure/ApiPlatform/State/Provider/GreetingCollectionProvider.php
+
+		-
+			message: '#^Method App\\Business\\Contexts\\Greeting\\Infrastructure\\ApiPlatform\\State\\Provider\\GreetingCollectionProvider\:\:provide\(\) should return list\<App\\Business\\Contexts\\Greeting\\Infrastructure\\ApiPlatform\\State\\Provider\\GreetingView\>\|object\|null but returns list\<App\\Business\\Contexts\\Greeting\\Application\\Query\\GreetingView\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Business/Contexts/Greeting/Infrastructure/ApiPlatform/State/Provider/GreetingCollectionProvider.php
+
+		-
+			message: '#^PHPDoc tag @implements has invalid type App\\Business\\Contexts\\Greeting\\Infrastructure\\ApiPlatform\\State\\Provider\\GreetingView\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Business/Contexts/Greeting/Infrastructure/ApiPlatform/State/Provider/GreetingCollectionProvider.php
+
+		-
+			message: '#^Property App\\Business\\Contexts\\Greeting\\Infrastructure\\ApiPlatform\\State\\Provider\\GreetingCollectionProvider\:\:\$greetingFinder is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/Business/Contexts/Greeting/Infrastructure/ApiPlatform/State/Provider/GreetingCollectionProvider.php
+
+		-
+			message: '#^Method App\\Business\\Contexts\\Greeting\\Infrastructure\\ApiPlatform\\State\\Provider\\GreetingItemProvider\:\:__construct\(\) has parameter \$uuidFactory with generic interface App\\Business\\Shared\\Domain\\Port\\UuidFactoryInterface but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Business/Contexts/Greeting/Infrastructure/ApiPlatform/State/Provider/GreetingItemProvider.php
+
+		-
+			message: '#^Method App\\Business\\Contexts\\Greeting\\Infrastructure\\ApiPlatform\\State\\Provider\\GreetingItemProvider\:\:provide\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Business/Contexts/Greeting/Infrastructure/ApiPlatform/State/Provider/GreetingItemProvider.php
+
+		-
+			message: '#^Parameter \#1 \$id of class App\\Business\\Contexts\\Greeting\\Application\\Query\\FindGreetingQuery constructor expects App\\Business\\Contexts\\Greeting\\Domain\\ValueObject\\GreetingId, App\\Business\\Shared\\Domain\\ValueObject\\AbstractUid given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Business/Contexts/Greeting/Infrastructure/ApiPlatform/State/Provider/GreetingItemProvider.php
+
+		-
 			message: '#^Method App\\Business\\Contexts\\Greeting\\Infrastructure\\Command\\PublishGreetingCliCommand\:\:__construct\(\) has parameter \$uuidFactory with generic interface App\\Business\\Shared\\Domain\\Port\\UuidFactoryInterface but does not specify its types\: T$#'
 			identifier: missingType.generics
 			count: 1

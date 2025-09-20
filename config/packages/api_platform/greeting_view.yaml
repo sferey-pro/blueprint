@@ -6,6 +6,14 @@ resources:
                 provider: App\Business\Contexts\Greeting\Infrastructure\ApiPlatform\State\Provider\GreetingItemProvider
             ApiPlatform\Metadata\GetCollection:
                 provider: App\Business\Contexts\Greeting\Infrastructure\ApiPlatform\State\Provider\GreetingCollectionProvider
+
         properties:
             id:
                 identifier: true
+            # createdAt:
+            #     normalizationContext:
+            #         datetime_format: 'Y-m-d'
+            #     openapiContext:
+            #         type: string
+            #         format: date 
+            #         example: '2025-09-21'

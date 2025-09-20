@@ -39,7 +39,12 @@ final class ListGreetingsCliCommand extends Command
             }
 
             $tableRows = array_map(
-                static fn (GreetingView $greeting): array => [$greeting->id, $greeting->status->getLabel(), $greeting->message, $greeting->createdAt],
+                static fn (GreetingView $greeting): array => [
+                    $greeting->id,
+                    $greeting->status->getLabel(),
+                    $greeting->message,
+                    $greeting->createdAt->format('Y-m-d H:i:s'),
+                ],
                 $greetings
             );
 
